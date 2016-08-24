@@ -8,22 +8,46 @@ import reducer from './reducers/index.js';
 
 import './index.css';
 
-let store = createStore(reducer);
+let dummyState = {
+  columns: [
+    {
+      name: "The Good",
+      cards: [
+        { name: "We shipped stuff" },
+        { name: "Lots of cake!" },
+        { name: "New team members" },
+        { name: "Game of Thrones session" },
+        { name: "We made lots of money" }
+      ]
+    },
+    {
+      name: "The Bad",
+      cards: [
+        { name: "Lots of bugs" },
+        { name: "Refactoring the whole app is hard" },
+        { name: "Finding time for pairing is hard with meetings, etc." },
+        { name: "Build keeps breaking" },
+        { name: "VC quality is not great" },
+        { name: "VC quality is not great" },
+        { name: "VC quality is not great" },
+        { name: "VC quality is not great" }
+      ]
+    },
+    {
+      name: "The Questions",
+      cards: [
+        { name: "What is next for the project?" },
+        { name: "How often should we do retros?" },
+        { name: "Are there going to be anymore team changes before EOFY?" }
+      ]
+    }
+  ]
+};
+let store = createStore(reducer, dummyState);
 
-console.log("Initial state = ", store.getState());
-
-let unsubscribe = store.subscribe(() =>
-  console.log("Updated state = ", store.getState())
+ReactDOM.render(
+  <Provider store={store}>
+    <App />
+  </Provider>,
+  document.getElementById('root')
 );
-
-import { addColumn } from './actions/index.js';
-store.dispatch(addColumn('foo'));
-
-unsubscribe();
-
-// ReactDOM.render(
-//   <Provider store={store}>
-//     <App />
-//   </Provider>,
-//   document.getElementById('root')
-// );
