@@ -7,20 +7,22 @@ class Card extends React.Component {
 }
 
 
-let Column = ({data}) => {
-  let cardItems = data.cards.map((card, i) => {
-    return <Card key={i} name={card.name} />;
-  });
+class Column extends React.Component {
+  render() {
+    let cardItems = this.props.data.cards.map((card, i) => {
+      return <Card key={i} name={card.name} />;
+    });
 
-  return (
-    <div className="column">
-      <h2>{data.name}</h2>
-      <ul>{cardItems}</ul>
-      <div className="add-card-placeholder">
-        <a href="#">Add a card...</a>
+    return (
+      <div className="column">
+        <h2>{this.props.data.name}</h2>
+        <ul>{cardItems}</ul>
+        <div className="add-card-placeholder">
+          <a href="#">Add a card...</a>
+        </div>
       </div>
-    </div>
-  );
+    );
+  }
 };
 
 export default Column;
