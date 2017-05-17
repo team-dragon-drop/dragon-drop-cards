@@ -1,8 +1,15 @@
 import React from 'react';
 
+class Card extends React.Component {
+  render() {
+    return <li key={this.props.key}>{this.props.name}</li>;
+  }
+}
+
+
 let Column = ({data}) => {
   let cardItems = data.cards.map((card, i) => {
-    return <li key={i}>{card.name}</li>;
+    return <Card key={i} name={card.name} />;
   });
 
   return (
