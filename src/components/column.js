@@ -1,11 +1,5 @@
 import React from 'react';
-
-class Card extends React.Component {
-  render() {
-    return <li key={this.props.key}>{this.props.name}</li>;
-  }
-}
-
+import Card from './Card';
 
 class Column extends React.Component {
   render() {
