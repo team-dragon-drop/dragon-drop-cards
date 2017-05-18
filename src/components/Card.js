@@ -1,9 +1,14 @@
 import React from 'react';
 import { DragSource } from 'react-dnd';
+import { database } from 'firebase';
 
 const cardSource = {
   beginDrag(props) {
-    return { name: props.name };
+    return {
+      id: props.id,
+      name: props.name,
+      parentId: props.parentId
+    };
   },
 
   endDrag(props, monitor) {
@@ -11,9 +16,13 @@ const cardSource = {
     const dropResult = monitor.getDropResult();
 
     if (dropResult) {
-      window.alert(
-        `You dropped ${item.name} into ${dropResult.name}!`,
-      );
+      let refAdd = database().ref(`/-KkOZOdWvt73GuEUCYum/columns/${dropResult.id}/cards`).push();
+      refAdd.set({
+        name: item.name
+      });
+
+      let refRemove = database().ref(`/-KkOZOdWvt73GuEUCYum/columns/${item.parentId}/cards`);
+      refRemove.child(item.id).remove();
     }
   },
 };

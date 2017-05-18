@@ -7,7 +7,10 @@ import Card from './Card';
 
 const cardTarget = {
   drop(props) {
-    return { name: props.data.name };
+    return {
+      id: props.id,
+      name: props.name
+    };
   },
 };
 
@@ -15,7 +18,7 @@ function collect(connect, monitor) {
   return {
     connectDropTarget: connect.dropTarget(),
     isOver: monitor.isOver(),
-    canDrop: monitor.canDrop()
+    //canDrop: monitor.canDrop()
   };
 }
 
@@ -25,13 +28,13 @@ class Column extends React.Component {
     let ref = database().ref(`/-KkOZOdWvt73GuEUCYum/columns/${id}/cards/`).push();
     ref.set({
       name: "Michael Jobs"
-    })
+    });
   }
 
   cardItems() {
     let cardData = this.props.cards;
     return Object.keys(cardData).map(key => {
-      return <Card key={key} name={cardData[key].name} />;
+      return <Card key={key} name={cardData[key].name} id={key} parentId={this.props.id} />;
     });
   }
 
@@ -40,8 +43,26 @@ class Column extends React.Component {
       <div className="column">
         <h2>{this.props.name}</h2>
         <ul>{this.props.cards ? this.cardItems() : "nope"}</ul>
-        <button onClick= { () => this.handleAddCard(this.props.id)}/>
+        <button onClick= { () => this.handleAddCard(this.props.id)} style={{margin:'20px 0'}}>
+          Add a card
+        </button>
+        {this.props.isOver && this.renderOverlay('black')}
       </div>
+    );
+  }
+
+  renderOverlay(color) {
+    return (
+      <div style={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        height: '100%',
+        width: '100%',
+        zIndex: 1,
+        opacity: 0.5,
+        backgroundColor: color,
+      }} />
     );
   }
 };
