@@ -12,9 +12,17 @@ class App extends Component {
       });
     });
   }
+
   constructor() {
     super();
     this.state = {columns:[]};
+  }
+
+  handleAddCard(id){
+    let ref = database().ref(`/-KkOZOdWvt73GuEUCYum/columns/${id}/cards/`).push();
+    ref.set({
+      name: "Michael Jobs"
+    });
   }
 
   render() {
@@ -25,6 +33,7 @@ class App extends Component {
         id={key}
         cards={columnData[key].cards}
         name={columnData[key].name}
+        addCard={()=>this.handleAddCard(key)}
       />;
     });
 
