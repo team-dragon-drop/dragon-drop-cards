@@ -1,29 +1,34 @@
 import React, { Component } from 'react';
-import Column from './components/Column.js';
+import Column from './components/Column';
 import { database } from 'firebase';
 import { DragDropContextProvider } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 
 class App extends Component {
   componentDidMount(){
-    let ref = database().ref('/-KkOZOdWvt73GuEUCYum/columns').on('value', snapshot => {
-      console.log("Stuff", snapshot.val());
+    var that = this;
+    database().ref('/-KkOZOdWvt73GuEUCYum/columns').on('value', snapshot => {
       this.setState({
         columns: snapshot.val()
       });
+      console.log(that.state);
     });
 
   }
   constructor() {
     super();
     this.state = {columns:[]};
-
   }
 
   render() {
-
-    let columns = this.state.columns.map((column, i) => {
-      return <Column key={i} data={column} />;
+    let columnData = this.state.columns;
+    let columns = Object.keys(columnData).map(key => {
+      return <Column
+        key={key}
+        id={key}
+        cards={columnData[key].cards}
+        name={columnData[key].name}
+      />;
     });
 
     return (
