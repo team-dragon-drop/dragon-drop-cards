@@ -21,13 +21,12 @@ function collect(connect, monitor) {
 
 class Column extends React.Component {
 
-  // handleAddCard(name){
-  //   let ref = database().ref('/-KkOZOdWvt73GuEUCYum/columns').push();
-  //   ref.set({
-  //     name: name,
-  //     cards: []
-  //   })
-  // }
+  handleAddCard(id){
+    let ref = database().ref(`/-KkOZOdWvt73GuEUCYum/columns/${id}/cards/`).push();
+    ref.set({
+      name: "Michael Jobs"
+    })
+  }
 
   cardItems() {
     let cardData = this.props.cards;
@@ -41,6 +40,7 @@ class Column extends React.Component {
       <div className="column">
         <h2>{this.props.name}</h2>
         <ul>{this.props.cards ? this.cardItems() : "nope"}</ul>
+        <button onClick= { () => this.handleAddCard(this.props.id)}/>
       </div>
     );
   }

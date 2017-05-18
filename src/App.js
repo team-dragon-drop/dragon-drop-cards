@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import Column from './components/Column';
 import { database } from 'firebase';
-import { DragDropContextProvider } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
+import { DragDropContext } from 'react-dnd';
 
 class App extends Component {
   componentDidMount(){
@@ -32,7 +32,6 @@ class App extends Component {
     });
 
     return (
-      <DragDropContextProvider backend={HTML5Backend}>
         <div className="App">
           <header>
             <h1>Idea Boardz</h1>
@@ -41,9 +40,8 @@ class App extends Component {
             {columns}
           </main>
         </div>
-      </DragDropContextProvider>
     );
   }
 }
 
-export default App;
+export default DragDropContext(HTML5Backend)(App);
