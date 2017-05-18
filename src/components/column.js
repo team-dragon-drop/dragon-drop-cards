@@ -1,5 +1,7 @@
 import React from 'react';
 import { DropTarget } from 'react-dnd';
+import AddButton from './AddButton';
+import { database } from 'firebase';
 
 import Card from './Card';
 
@@ -18,18 +20,27 @@ function collect(connect, monitor) {
 }
 
 class Column extends React.Component {
-  render() {
-    let cardItems = this.props.data.cards.map((card, i) => {
-      return <Card key={i} name={card.name} />;
-    });
 
+  // handleAddCard(name){
+  //   let ref = database().ref('/-KkOZOdWvt73GuEUCYum/columns').push();
+  //   ref.set({
+  //     name: name,
+  //     cards: []
+  //   })
+  // }
+
+  cardItems() {
+    let cardData = this.props.cards;
+    return Object.keys(cardData).map(key => {
+      return <Card key={key} name={cardData[key].name} />;
+    });
+  }
+
+  render() {
     return this.props.connectDropTarget(
       <div className="column">
-        <h2>{this.props.data.name}</h2>
-        <ul>{cardItems}</ul>
-        <div className="add-card-placeholder">
-          <a href="#">Add a card...</a>
-        </div>
+        <h2>{this.props.name}</h2>
+        <ul>{this.props.cards ? this.cardItems() : "nope"}</ul>
       </div>
     );
   }
