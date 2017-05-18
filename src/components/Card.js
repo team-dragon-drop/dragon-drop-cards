@@ -37,7 +37,7 @@ function collect(connect, monitor) {
 class Card extends React.Component {
   render() {
     return this.props.connectDragSource(
-      <li key={this.props.key}>{this.props.name}</li>
+      <li key={this.props.key} id={this.props.id}>{this.props.name}</li>
     );
   }
 }

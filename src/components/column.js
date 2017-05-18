@@ -3,6 +3,8 @@ import { DropTarget } from 'react-dnd';
 
 import Card from './Card';
 
+let canDropYN = true;
+
 const cardTarget = {
   drop(props) {
     return {
@@ -10,13 +12,22 @@ const cardTarget = {
       name: props.name
     };
   },
+  hover(props, monitor) {
+    const item = monitor.getItem();
+    canDropYN = (item.parentId === props.id) ? false : true;
+    if(canDropYN)
+    document.getElementById(item.id).style.display = 'none';
+  },
+  canDrop() {
+    return canDropYN;
+  },
 };
 
 function collect(connect, monitor) {
   return {
     connectDropTarget: connect.dropTarget(),
     isOver: monitor.isOver(),
-    //canDrop: monitor.canDrop()
+    canDrop: monitor.canDrop()
   };
 }
 
@@ -32,27 +43,30 @@ class Column extends React.Component {
     return this.props.connectDropTarget(
       <div className="column">
         <h2>{this.props.name}</h2>
-        <ul>{this.props.cards ? this.cardItems() : "nope"}</ul>
-        <button onClick={()=>this.props.addCard()} style={{margin:'20px 0'}}>
+        <ul>
+          {this.props.cards ? this.cardItems() : "nope"}
+          {this.props.isOver && this.props.canDrop && this.renderPlaceholder()}
+        </ul>
+        <button onClick={()=>this.props.addCard()} style={{
+            margin:'20px 0',
+            padding:'10px',
+            fontSize:'14px',
+            background:'#000',
+            color:'#fff',
+            border:'none'}}>
           Add a card
         </button>
-        {this.props.isOver && this.renderOverlay('black')}
       </div>
     );
   }
 
-  renderOverlay(color) {
+  renderPlaceholder() {
     return (
-      <div style={{
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        height: '100%',
-        width: '100%',
-        zIndex: 1,
+      <li style={{
+        height:"40px",
         opacity: 0.5,
-        backgroundColor: color,
-      }} />
+        backgroundColor: "green",
+      }} ></li>
     );
   }
 };
