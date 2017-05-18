@@ -1,46 +1,23 @@
 import React, { Component } from 'react';
 import Column from './components/Column.js';
+import { database } from 'firebase';
 import { DragDropContextProvider } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 
 class App extends Component {
+  componentDidMount(){
+    let ref = database().ref('/-KkOZOdWvt73GuEUCYum/columns').on('value', snapshot => {
+      console.log("Stuff", snapshot.val());
+      this.setState({
+        columns: snapshot.val()
+      });
+    });
+
+  }
   constructor() {
     super();
-    this.state = {
-        columns: [
-          {
-            name: "The Good",
-            cards: [
-              { name: "We shipped stuff" },
-              { name: "Lots of cake!" },
-              { name: "New team members" },
-              { name: "Game of Thrones session" },
-              { name: "We made lots of money" }
-            ]
-          },
-          {
-            name: "The Bad",
-            cards: [
-              { name: "STEVE O" },
-              { name: "Refactoring the whole app is hard" },
-              { name: "Finding time for pairing is hard with meetings, etc." },
-              { name: "Build keeps breaking" },
-              { name: "VC quality is not great" },
-              { name: "VC quality is not great" },
-              { name: "VC quality is not great" },
-              { name: "VC quality is not great" }
-            ]
-          },
-          {
-            name: "The Questions",
-            cards: [
-              { name: "What is next for the project?" },
-              { name: "How often should we do retros?" },
-              { name: "Are there going to be anymore team changes before EOFY?" }
-            ]
-          }
-        ]
-      };
+    this.state = {columns:[]};
+
   }
 
   render() {
