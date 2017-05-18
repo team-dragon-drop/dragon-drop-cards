@@ -6,14 +6,11 @@ import { DragDropContext } from 'react-dnd';
 
 class App extends Component {
   componentDidMount(){
-    var that = this;
     database().ref('/-KkOZOdWvt73GuEUCYum/columns').on('value', snapshot => {
       this.setState({
         columns: snapshot.val()
       });
-      console.log(that.state);
     });
-
   }
   constructor() {
     super();
