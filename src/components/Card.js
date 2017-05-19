@@ -21,8 +21,8 @@ const cardSource = {
         name: item.name
       });
 
-      const refRemove = database().ref(`/-KkOZOdWvt73GuEUCYum/columns/${item.parentId}/cards`);
-      refRemove.child(item.id).remove();
+      const ref = database().ref(`/-KkOZOdWvt73GuEUCYum/columns/${item.parentId}/cards`);
+      ref.child(item.id).remove();
     }
   },
 };
@@ -36,10 +36,10 @@ function collect(connect, monitor) {
 
 class Card extends React.Component {
   editCard(columnId,id,content){
-    const newContent = prompt('Edit content',content);
+    const newContent = prompt('Edit Card',content);
     if(newContent){
-      const refEdit = database().ref(`/-KkOZOdWvt73GuEUCYum/columns/${columnId}/cards`);
-      refEdit.child(id).set({
+      const ref = database().ref(`/-KkOZOdWvt73GuEUCYum/columns/${columnId}/cards`);
+      ref.child(id).set({
         name: newContent
       });
     }
@@ -48,8 +48,8 @@ class Card extends React.Component {
   removeCard(columnId,id){
     const ok = confirm("You sure about this?");
     if(ok){
-      const refRemove = database().ref(`/-KkOZOdWvt73GuEUCYum/columns/${columnId}/cards`);
-      refRemove.child(id).remove();
+      const ref = database().ref(`/-KkOZOdWvt73GuEUCYum/columns/${columnId}/cards`);
+      ref.child(id).remove();
     }
   }
 
