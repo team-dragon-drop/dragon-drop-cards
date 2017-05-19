@@ -19,10 +19,13 @@ class App extends Component {
   }
 
   handleAddCard(id){
-    let ref = database().ref(`/-KkOZOdWvt73GuEUCYum/columns/${id}/cards/`).push();
-    ref.set({
-      name: "Michael Jobs"
-    });
+    const content = prompt('Add a card');
+    if(content){
+      let ref = database().ref(`/-KkOZOdWvt73GuEUCYum/columns/${id}/cards/`).push();
+      ref.set({
+        name: content
+      });
+    }
   }
 
   render() {
