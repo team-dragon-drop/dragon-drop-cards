@@ -1,6 +1,7 @@
 import React from 'react';
 import { DragSource } from 'react-dnd';
 import { database } from 'firebase';
+import CloseIcon from 'material-ui/svg-icons/navigation/close';
 
 const cardSource = {
   beginDrag(props) {
@@ -57,7 +58,7 @@ class Card extends React.Component {
     return this.props.connectDragSource(
       <li key={this.props.key} id={this.props.id} className="clearfix"  onDoubleClick={()=>this.editCard(this.props.parentId,this.props.id,this.props.name)}>
         <span style={{float:"left"}}>{this.props.name}</span>
-        <span style={{float:"right"}} onClick={()=>this.removeCard(this.props.parentId,this.props.id)}>X</span>
+        <span style={{float:"right"}} onClick={()=>this.removeCard(this.props.parentId,this.props.id)}><CloseIcon /></span>
       </li>
     );
   }
