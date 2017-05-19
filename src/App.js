@@ -21,7 +21,7 @@ class App extends Component {
   handleAddCard(id){
     const content = prompt('Add a card');
     if(content){
-      let ref = database().ref(`/-KkOZOdWvt73GuEUCYum/columns/${id}/cards/`).push();
+      const ref = database().ref(`/-KkOZOdWvt73GuEUCYum/columns/${id}/cards/`).push();
       ref.set({
         name: content
       });
@@ -29,8 +29,8 @@ class App extends Component {
   }
 
   render() {
-    let columnData = this.state.columns;
-    let columns = Object.keys(columnData).map(key => {
+    const columnData = this.state.columns;
+    const columns = Object.keys(columnData).map(key => {
       return <Column
         key={key}
         id={key}

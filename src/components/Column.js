@@ -32,7 +32,7 @@ function collect(connect, monitor) {
 
 class Column extends React.Component {
   cardItems() {
-    let cardData = this.props.cards;
+    const cardData = this.props.cards;
     return Object.keys(cardData).map(key => {
       return <Card key={key} name={cardData[key].name} id={key} parentId={this.props.id} />;
     });
