@@ -41,21 +41,23 @@ class App extends Component {
   }
 
   render() {
+    let columns = null;
     const columnData = this.state.columns;
-    const columns = Object.keys(columnData).map(key => {
-      return <Column
-        key={key}
-        id={key}
-        cards={columnData[key].cards}
-        name={columnData[key].name}
-        addCard={()=>this.handleAddCard(key)}
-      />;
+    if(columnData)
+      columns = Object.keys(columnData).map(key => {
+        return <Column
+          key={key}
+          id={key}
+          cards={columnData[key].cards}
+          name={columnData[key].name}
+          addCard={()=>this.handleAddCard(key)}
+        />;
     });
 
     return (
         <div className="App">
-        <AppBar 
-          title="Dragon Drop" 
+        <AppBar
+          title="Dragon Drop"
           showMenuIconButton={false}
           iconElementRight={
             <FlatButton onTouchTap={()=>this.addColumn()} label="Add Column" />
