@@ -1,5 +1,6 @@
 import React from 'react';
 import { DropTarget } from 'react-dnd';
+import { database } from 'firebase';
 
 import Card from './Card';
 
@@ -38,12 +39,41 @@ class Column extends React.Component {
     });
   }
 
+  renderPlaceholder() {
+    return (
+      <li style={{
+        height:"40px",
+        opacity: 0.5,
+        backgroundColor: "green",
+      }} ></li>
+    );
+  }
+
+  removeColumn(id){
+    const ok = confirm("You sure about this?");
+    if(ok){
+      const ref = database().ref(`/-KkOZOdWvt73GuEUCYum/columns`);
+      ref.child(id).remove();
+    }
+  }
+
+  editColumn(id,content){
+    const newContent = prompt('Edit Column',content);
+    if(newContent){
+      const ref = database().ref(`/-KkOZOdWvt73GuEUCYum/columns`);
+      ref.child(id).child("name").set(newContent);
+    }
+  }
+
   render() {
     return this.props.connectDropTarget(
       <div className="column">
-        <h2>{this.props.name}</h2>
+        <h2 className="clearfix" onDoubleClick={()=>this.editColumn(this.props.id,this.props.name)}>
+          <span style={{float:"left"}}>{this.props.name}</span>
+          <span style={{float:"right"}} onClick={()=>this.removeColumn(this.props.id)}>X</span>
+        </h2>
         <ul>
-          {this.props.cards ? this.cardItems() : "nope"}
+          {this.props.cards ? this.cardItems() : ""}
           {this.props.isOver && this.props.canDrop && this.renderPlaceholder()}
         </ul>
         <button onClick={()=>this.props.addCard()} style={{
@@ -53,19 +83,9 @@ class Column extends React.Component {
             background:'#000',
             color:'#fff',
             border:'none'}}>
-          Add a card
+          + Add Card
         </button>
       </div>
-    );
-  }
-
-  renderPlaceholder() {
-    return (
-      <li style={{
-        height:"40px",
-        opacity: 0.5,
-        backgroundColor: "green",
-      }} ></li>
     );
   }
 };

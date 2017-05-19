@@ -19,9 +19,19 @@ class App extends Component {
   }
 
   handleAddCard(id){
-    const content = prompt('Add a card');
+    const content = prompt('Add Card');
     if(content){
       const ref = database().ref(`/-KkOZOdWvt73GuEUCYum/columns/${id}/cards/`).push();
+      ref.set({
+        name: content
+      });
+    }
+  }
+
+  addColumn(){
+    const content = prompt('Add Column');
+    if(content){
+      const ref = database().ref(`/-KkOZOdWvt73GuEUCYum/columns`).push();
       ref.set({
         name: content
       });
@@ -43,7 +53,16 @@ class App extends Component {
     return (
         <div className="App">
           <header>
-            <h1>Idea Boardz</h1>
+            <h1 style={{float:"left"}}>Idea Boardz</h1>
+            <button onClick={()=>this.addColumn()} style={{
+                padding:"15px",
+                fontSize:"14px",
+                background:"#000",
+                color:"#fff",
+                border:"none",
+                float:"right"}}>
+              + Add Column
+            </button>
           </header>
           <main>
             {columns}
