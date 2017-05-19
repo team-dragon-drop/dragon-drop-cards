@@ -16,12 +16,12 @@ const cardSource = {
     const dropResult = monitor.getDropResult();
 
     if (dropResult) {
-      let refAdd = database().ref(`/-KkOZOdWvt73GuEUCYum/columns/${dropResult.id}/cards`).push();
+      const refAdd = database().ref(`/-KkOZOdWvt73GuEUCYum/columns/${dropResult.id}/cards`).push();
       refAdd.set({
         name: item.name
       });
 
-      let refRemove = database().ref(`/-KkOZOdWvt73GuEUCYum/columns/${item.parentId}/cards`);
+      const refRemove = database().ref(`/-KkOZOdWvt73GuEUCYum/columns/${item.parentId}/cards`);
       refRemove.child(item.id).remove();
     }
   },
@@ -35,9 +35,30 @@ function collect(connect, monitor) {
 }
 
 class Card extends React.Component {
+  editCard(columnId,id,content){
+    const newContent = prompt('Edit content',content);
+    if(newContent){
+      const refEdit = database().ref(`/-KkOZOdWvt73GuEUCYum/columns/${columnId}/cards`);
+      refEdit.child(id).set({
+        name: newContent
+      });
+    }
+  }
+
+  removeCard(columnId,id){
+    const ok = confirm("You sure about this?");
+    if(ok){
+      const refRemove = database().ref(`/-KkOZOdWvt73GuEUCYum/columns/${columnId}/cards`);
+      refRemove.child(id).remove();
+    }
+  }
+
   render() {
     return this.props.connectDragSource(
-      <li key={this.props.key} id={this.props.id}>{this.props.name}</li>
+      <li key={this.props.key} id={this.props.id} className="clearfix"  onDoubleClick={()=>this.editCard(this.props.parentId,this.props.id,this.props.name)}>
+        <span style={{float:"left"}}>{this.props.name}</span>
+        <span style={{float:"right"}} onClick={()=>this.removeCard(this.props.parentId,this.props.id)}>X</span>
+      </li>
     );
   }
 }
