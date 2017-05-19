@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import Column from './components/Column';
 import { database } from 'firebase';
 import HTML5Backend from 'react-dnd-html5-backend';
+import AppBar from 'material-ui/AppBar';
+import FlatButton from 'material-ui/FlatButton';
 import { DragDropContext } from 'react-dnd';
 
 class App extends Component {
@@ -52,19 +54,14 @@ class App extends Component {
 
     return (
         <div className="App">
-          <header>
-            <h1 style={{float:"left"}}>Idea Boardz</h1>
-            <button onClick={()=>this.addColumn()} style={{
-                padding:"15px",
-                fontSize:"14px",
-                background:"#000",
-                color:"#fff",
-                border:"none",
-                float:"right"}}>
-              + Add Column
-            </button>
-          </header>
-          <main>
+        <AppBar 
+          title="Dragon Drop" 
+          showMenuIconButton={false}
+          iconElementRight={
+            <FlatButton onTouchTap={()=>this.addColumn()} label="Add Column" />
+          }
+          />
+         <main>
             {columns}
           </main>
         </div>

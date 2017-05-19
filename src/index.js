@@ -3,7 +3,10 @@ import ReactDOM from 'react-dom';
 import App from './App';
 import './index.css';
 import firebase from 'firebase';
+import injectTapEventPlugin from 'react-tap-event-plugin';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
+injectTapEventPlugin();
 firebase.initializeApp({
     apiKey: "AIzaSyBBr4MtU0FtuhIks-G7WFclCWghiQKi_VA",
     authDomain: "dragon-drop-1845b.firebaseapp.com",
@@ -14,6 +17,8 @@ firebase.initializeApp({
  });
 
 ReactDOM.render(
-    <App />,
+  <MuiThemeProvider>
+    <App />
+  </MuiThemeProvider>,
   document.getElementById('root')
 );
