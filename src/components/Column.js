@@ -1,8 +1,10 @@
 import React from 'react';
 import { DropTarget } from 'react-dnd';
 import { database } from 'firebase';
-
+import Paper from 'material-ui/Paper';
 import Card from './Card';
+import RaisedButton from 'material-ui/RaisedButton';
+import CloseIcon from 'material-ui/svg-icons/navigation/close';
 
 let canDropYN = true;
 
@@ -44,7 +46,7 @@ class Column extends React.Component {
       <li style={{
         height:"40px",
         opacity: 0.5,
-        backgroundColor: "green",
+        backgroundColor: "grey",
       }} ></li>
     );
   }
@@ -68,23 +70,20 @@ class Column extends React.Component {
   render() {
     return this.props.connectDropTarget(
       <div className="column">
+        <Paper>
         <h2 className="clearfix" onDoubleClick={()=>this.editColumn(this.props.id,this.props.name)}>
           <span style={{float:"left"}}>{this.props.name}</span>
-          <span style={{float:"right"}} onClick={()=>this.removeColumn(this.props.id)}>X</span>
+          <span style={{float:"right"}} onClick={()=>this.removeColumn(this.props.id)}><CloseIcon /></span>
         </h2>
         <ul>
           {this.props.cards ? this.cardItems() : ""}
           {this.props.isOver && this.props.canDrop && this.renderPlaceholder()}
         </ul>
-        <button onClick={()=>this.props.addCard()} style={{
-            margin:'20px 0',
-            padding:'10px',
-            fontSize:'14px',
-            background:'#000',
-            color:'#fff',
-            border:'none'}}>
+        <RaisedButton onTouchTap={()=>this.props.addCard()}
+          style={{padding:'10px', width:'100%'}}>
           + Add Card
-        </button>
+        </RaisedButton>
+        </Paper>
       </div>
     );
   }
