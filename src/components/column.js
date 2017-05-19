@@ -15,8 +15,7 @@ const cardTarget = {
   hover(props, monitor) {
     const item = monitor.getItem();
     canDropYN = (item.parentId === props.id) ? false : true;
-    if(canDropYN)
-    document.getElementById(item.id).style.display = 'none';
+    document.getElementById(item.id).style.display = canDropYN ? 'none' : 'block';
   },
   canDrop() {
     return canDropYN;
