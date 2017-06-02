@@ -70,12 +70,12 @@ class Column extends React.Component {
   render() {
     return this.props.connectDropTarget(
       <div className="column">
-        <Paper>
-        <h2 className="clearfix" onDoubleClick={()=>this.editColumn(this.props.id,this.props.name)}>
+        <Paper className="column-container">
+        <h2 className="clearfix"  onDoubleClick={()=>this.editColumn(this.props.id,this.props.name)}>
           <span style={{float:"left"}}>{this.props.name}</span>
-          <span style={{float:"right"}} onClick={()=>this.removeColumn(this.props.id)}><CloseIcon /></span>
+          <span className="column__close" style={{float:"right"}} onClick={()=>this.removeColumn(this.props.id)}><CloseIcon /></span>
         </h2>
-        <ul>
+        <ul className="column">
           {this.props.cards ? this.cardItems() : ""}
           {this.props.isOver && this.props.canDrop && this.renderPlaceholder()}
         </ul>
