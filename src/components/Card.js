@@ -56,9 +56,10 @@ class Card extends React.Component {
 
   render() {
     return this.props.connectDragSource(
-      <li key={this.props.key} id={this.props.id} className="clearfix"  onDoubleClick={()=>this.editCard(this.props.parentId,this.props.id,this.props.name)}>
+      <li key={this.props.key} id={this.props.id} className="card clearfix"  onDoubleClick={()=>this.editCard(this.props.parentId,this.props.id,this.props.name)}>
         <span style={{float:"left"}}>{this.props.name}</span>
-        <span style={{float:"right"}} onClick={()=>this.removeCard(this.props.parentId,this.props.id)}><CloseIcon /></span>
+        <span style={{float:"right"}} onClick={()=>this.removeCard(this.props.parentId,this.props.id)}>
+          <CloseIcon className="card__close" /></span>
       </li>
     );
   }
