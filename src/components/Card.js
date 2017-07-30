@@ -47,7 +47,7 @@ class Card extends React.Component {
   }
 
   removeCard(columnId,id){
-    const ok = confirm("You sure about this?");
+    const ok = confirm("You sure about this?");  // eslint-disable-line
     if(ok){
       const ref = database().ref(`/-KkOZOdWvt73GuEUCYum/columns/${columnId}/cards`);
       ref.child(id).remove();
