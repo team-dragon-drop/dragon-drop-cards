@@ -29,7 +29,7 @@ h1 {
   font-size: 20px;
 }
 
-main {
+.columns {
   margin: 55px 0 20px 8px;
   display: flex;
   flex-wrap: wrap;
