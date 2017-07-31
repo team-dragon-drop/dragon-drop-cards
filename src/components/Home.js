@@ -1,16 +1,31 @@
-import React from 'react';
+import React, { Component } from 'react';
+import { database } from 'firebase';
+import { Redirect } from 'react-router';
 
-export default () => (
-  <main>
-    <h1>Welcome to Dragon Drop Cards</h1>
+export default class Home extends Component {
+  constructor() {
+    super();
+    this.state = {};
+  }
 
-    <pre>
-      TODO: Make this page look sexy
-    </pre>
+  newBoard() {
+    this.setState({
+      newUrl: `/b/${database().ref('/').push().key}`
+    });
+  }
 
-    <pre>
-      TODO: Put a "new" button here that will call firebases `.push()` to
-            generate a new ID and then redirect to board URL with that ID
-    </pre>
-  </main>
-)
+  render() {
+    return (
+      <main>
+        <h1>Welcome to Dragon Drop Cards</h1>
+
+        <pre>
+          TODO: Make this page look sexy
+        </pre>
+
+        <button onClick={() => this.newBoard()}>New Board</button>
+        { this.state.newUrl && <Redirect push to={this.state.newUrl} /> }
+      </main>
+    )
+  }
+}
