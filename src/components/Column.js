@@ -1,6 +1,5 @@
 import React from 'react';
 import { DropTarget } from 'react-dnd';
-import { database } from 'firebase';
 import Paper from 'material-ui/Paper';
 import Card from './Card';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -37,7 +36,14 @@ class Column extends React.Component {
   cardItems() {
     const cardData = this.props.cards;
     return Object.keys(cardData).map(key => {
-      return <Card key={key} name={cardData[key].name} id={key} parentId={this.props.id} />;
+      return <Card
+        key={key}
+        name={cardData[key].name}
+        id={key}
+        parentId={this.props.id}
+        editCard={this.props.editCard}
+        removeCard={this.props.removeCard}
+      />;
     });
   }
 
@@ -51,38 +57,37 @@ class Column extends React.Component {
     );
   }
 
-  removeColumn(id){
-    const ok = confirm("You sure about this?");
-    if(ok){
-      const ref = database().ref(`/-KkOZOdWvt73GuEUCYum/columns`);
-      ref.child(id).remove();
-    }
-  }
-
-  editColumn(id,content){
-    const newContent = prompt('Edit Column',content);
-    if(newContent){
-      const ref = database().ref(`/-KkOZOdWvt73GuEUCYum/columns`);
-      ref.child(id).child("name").set(newContent);
-    }
-  }
-
   render() {
     return this.props.connectDropTarget(
       <div className="column">
         <Paper className="column-container">
-        <h2 className="clearfix"  onDoubleClick={()=>this.editColumn(this.props.id,this.props.name)}>
-          <span style={{float:"left"}}>{this.props.name}</span>
-          <span className="column__close" style={{float:"right"}} onClick={()=>this.removeColumn(this.props.id)}><CloseIcon /></span>
-        </h2>
-        <ul className="column">
-          {this.props.cards ? this.cardItems() : ""}
-          {this.props.isOver && this.props.canDrop && this.renderPlaceholder()}
-        </ul>
-        <RaisedButton onTouchTap={()=>this.props.addCard()}
-          style={{padding:'10px', width:'100%'}}>
-          + Add Card
-        </RaisedButton>
+          <h2 className="clearfix" onDoubleClick={() => {
+            this.props.editColumn(this.props.id, this.props.name)
+          }}>
+            <span style={{ float: "left" }}>
+              {this.props.name}
+            </span>
+
+            <span
+              className="column__close"
+              style={{ float: "right" }}
+              onClick={() => this.props.removeColumn(this.props.id)}
+            >
+              <CloseIcon />
+            </span>
+          </h2>
+
+          <ul className="column">
+            {this.props.cards ? this.cardItems() : ""}
+            {this.props.isOver && this.props.canDrop && this.renderPlaceholder()}
+          </ul>
+
+          <RaisedButton
+            onTouchTap={() => this.props.addCard()}
+            style={{ padding: "10px", width: "100%" }}
+          >
+            + Add Card
+          </RaisedButton>
         </Paper>
       </div>
     );
