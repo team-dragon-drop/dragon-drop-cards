@@ -1,3 +1,8 @@
+@font-face {
+  font-family:"Sheeping-Dogs";
+  src: url('assets/fonts/Sheeping-Dogs.ttf');
+}
+
 html {
   padding-bottom: 50px;
   min-height: 100%;

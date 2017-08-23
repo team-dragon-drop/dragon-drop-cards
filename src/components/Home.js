@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { database } from 'firebase';
 import { Redirect } from 'react-router';
-
+import RaisedButton from 'material-ui/RaisedButton';
+import "../styles/homepage.css";
+import logo from "../assets/dragon-drop-logo.svg";
 export default class Home extends Component {
   constructor() {
     super();
@@ -16,15 +18,15 @@ export default class Home extends Component {
 
   render() {
     return (
-      <main>
-        <h1>Welcome to Dragon Drop Cards</h1>
-
-        <pre>
-          TODO: Make this page look sexy
-        </pre>
-
-        <button onClick={() => this.newBoard()}>New Board</button>
-        { this.state.newUrl && <Redirect push to={this.state.newUrl} /> }
+      <main className="homepage-container">
+        <div className="homepage">
+          <h1 className="homepage-title">Dragon Drop Cards</h1>
+          <img className="logo" src={logo} alt="Drop it like it's hot"/>
+          <RaisedButton className="create-board" onClick={() => this.newBoard()}>
+           Create New Board
+          </RaisedButton>
+          { this.state.newUrl && <Redirect push to={this.state.newUrl} /> }
+        </div>
       </main>
     )
   }
