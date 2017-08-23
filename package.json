@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "devDependencies": {
-    "react-scripts": "0.2.2"
+    "react-scripts": "^1.0.10"
   },
   "dependencies": {
     "firebase": "^4.0.0",
@@ -12,6 +12,7 @@
     "react-dnd": "^2.4.0",
     "react-dnd-html5-backend": "^2.4.1",
     "react-dom": "^15.3.1",
+    "react-router-dom": "^4.1.2",
     "react-tap-event-plugin": "^2.0.1"
   },
   "scripts": {
