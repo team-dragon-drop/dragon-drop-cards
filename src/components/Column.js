@@ -43,6 +43,7 @@ class Column extends React.Component {
         parentId={this.props.id}
         editCard={this.props.editCard}
         removeCard={this.props.removeCard}
+        moveCard={this.props.moveCard}
       />;
     });
   }

@@ -1,6 +1,5 @@
 import React from 'react';
 import { DragSource } from 'react-dnd';
-import { database } from 'firebase';
 import CloseIcon from 'material-ui/svg-icons/navigation/close';
 
 const cardSource = {
@@ -15,16 +14,7 @@ const cardSource = {
   endDrag(props, monitor) {
     const item = monitor.getItem();
     const dropResult = monitor.getDropResult();
-
-    if (dropResult) {
-      const refAdd = database().ref(`/-KkOZOdWvt73GuEUCYum/columns/${dropResult.id}/cards`).push();
-      refAdd.set({
-        name: item.name
-      });
-
-      const ref = database().ref(`/-KkOZOdWvt73GuEUCYum/columns/${item.parentId}/cards`);
-      ref.child(item.id).remove();
-    }
+    if (dropResult) props.moveCard(item.parentId, dropResult.id, item.id);
   },
 };
 
