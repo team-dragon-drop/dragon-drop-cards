@@ -72,14 +72,27 @@ class Board extends Component {
 
   removeCard(columnId, id) {
     if (confirm("You sure about this?")) { // eslint-disable-line
-      database().ref(`/${this.props.boardId}/columns/${columnId}/cards`)
+      database()
+        .ref(`/${this.props.boardId}/columns/${columnId}/cards`)
         .child(id)
         .remove();
     }
   }
 
   moveCard(oldColumnId, newColumnId, id) {
-    // TODO
+    let newRef = database()
+      .ref(`/${this.props.boardId}/columns/${newColumnId}/cards`)
+      .push()
+
+    let oldRef = database()
+      .ref(`/${this.props.boardId}/columns/${oldColumnId}/cards`)
+      .child(id)
+
+    oldRef.once("value", function(snap) {
+      newRef.set(snap.val(), function(error) {
+        !error ? oldRef.remove() : console.error(error);
+      });
+    });
   }
 
   render() {
@@ -94,10 +107,11 @@ class Board extends Component {
             cards={columnData[key].cards}
             name={columnData[key].name}
             addCard={() => this.addCard(key)}
-            editColumn={(id, name) => this.editColumn(id, name)}
-            removeColumn={(id) => this.removeColumn(id)}
             editCard={(columnId, id, name) => this.editCard(columnId, id, name)}
             removeCard={(columnId, id) => this.removeCard(columnId, id)}
+            moveCard={(oldColumnId, newColumnId, id) => this.moveCard(oldColumnId, newColumnId, id)}
+            editColumn={(id, name) => this.editColumn(id, name)}
+            removeColumn={(id) => this.removeColumn(id)}
           />
         );
       });
