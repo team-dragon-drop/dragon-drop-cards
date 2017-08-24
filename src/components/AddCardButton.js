@@ -1,18 +1,18 @@
 import React, { Component } from "react";
-import Dialog from 'material-ui/Dialog';
+import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
+import Dialog from 'material-ui/Dialog';
 import TextField from 'material-ui/TextField';
-import MuiAppBar from "material-ui/AppBar";
 
-export default class AppBar extends Component {
+export default class AddCardButton extends Component {
   state = {
     open: false,
-    newColumnName: ""
+    newCardName: ""
   };
 
   handleOpen = () => {
     this.setState({open: true}, () => {
-      this.refs.newColumn.focus();
+      this.refs.newCard.focus();
     });
   };
 
@@ -21,7 +21,7 @@ export default class AppBar extends Component {
   };
 
   handleChange = (e) => {
-    this.setState({newColumnName: e.target.value});
+    this.setState({newCardName: e.target.value});
   };
 
   render() {
@@ -35,8 +35,8 @@ export default class AppBar extends Component {
         label="Add"
         primary={true}
         onTouchTap={() => {
-          this.props.onButtonTouchTap(this.state.newColumnName);
-          this.setState({newColumnName: ""});
+          this.props.addCard(this.state.newCardName);
+          this.setState({newCardName: ""});
           this.handleClose();
         }}
       />
@@ -44,24 +44,19 @@ export default class AppBar extends Component {
 
     return (
       <div>
-        <MuiAppBar
-          title="Dragon Drop"
-          showMenuIconButton={false}
-          iconElementRight={
-            <FlatButton
-              onTouchTap={() => this.handleOpen()}
-              label={this.props.buttonLabel}
-            />
-          }
-        />
+        <RaisedButton onTouchTap={() => this.handleOpen()}
+          style={{ padding: "10px", width: "100%" }}
+        >
+          + Add Card
+        </RaisedButton>
         <Dialog
-          title="Add A New Column"
+          title="Add A New Card"
           actions={actions}
           modal={false}
           open={this.state.open}
           onRequestClose={this.handleClose}
         >
-          <TextField onChange={this.handleChange} name="newColumn" ref="newColumn" />
+          <TextField onChange={this.handleChange} name="newCard" ref="newCard" />
         </Dialog>
       </div>
     );

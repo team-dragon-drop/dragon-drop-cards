@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { Component } from "react";
 import { DropTarget } from 'react-dnd';
 import Paper from 'material-ui/Paper';
-import Card from './Card';
-import RaisedButton from 'material-ui/RaisedButton';
 import CloseIcon from 'material-ui/svg-icons/navigation/close';
+import Card from './Card';
+import AddCardButton from './AddCardButton';
 
 let canDropYN = true;
 
@@ -32,7 +32,7 @@ function collect(connect, monitor) {
   };
 }
 
-class Column extends React.Component {
+class Column extends Component {
   cardItems() {
     const cardData = this.props.cards;
     return Object.keys(cardData).map(key => {
@@ -83,12 +83,7 @@ class Column extends React.Component {
             {this.props.isOver && this.props.canDrop && this.renderPlaceholder()}
           </ul>
 
-          <RaisedButton
-            onTouchTap={() => this.props.addCard()}
-            style={{ padding: "10px", width: "100%" }}
-          >
-            + Add Card
-          </RaisedButton>
+          <AddCardButton addCard={this.props.addCard}/>
         </Paper>
       </div>
     );
