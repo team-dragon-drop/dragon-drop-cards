@@ -17,6 +17,10 @@
 
 .logo {
   max-height: 40%;
+  animation-iteration-count: infinite;
+  animation: slidein 1s cubic-bezier(0, 0, 0.35, 1);
+  animation-iteration-count:1;
+  animation-direction: alternate;
 }
 
 .create-board {
@@ -24,3 +28,11 @@
   max-width: 400px;
   margin: 0 30px;
 }
+
+@keyframes slidein {
+   0% { transform: translateY(-900px); }
+   100% { transform: translateY(0px); }
+}
+
+
+
