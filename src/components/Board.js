@@ -2,8 +2,7 @@ import React, { Component } from "react";
 import Column from "./Column";
 import { database } from "firebase";
 import HTML5Backend from "react-dnd-html5-backend";
-import AppBar from "material-ui/AppBar";
-import FlatButton from "material-ui/FlatButton";
+import AppBar from "./AppBar";
 import { DragDropContext } from "react-dnd";
 
 class Board extends Component {
@@ -30,13 +29,12 @@ class Board extends Component {
     }
   }
 
-  addColumn() {
-    const content = prompt("Add Column");
-    if (content) {
+  addColumn(columnName) {
+    if (columnName) {
       database()
         .ref(`/${this.props.boardId}/columns`)
         .push()
-        .set({ name: content });
+        .set({ name: columnName });
     }
   }
 
@@ -119,14 +117,8 @@ class Board extends Component {
     return (
       <div className="App">
         <AppBar
-          title="Dragon Drop"
-          showMenuIconButton={false}
-          iconElementRight={
-            <FlatButton
-              onTouchTap={() => this.addColumn()}
-              label="Add Column"
-            />
-          }
+          buttonLabel="Add Column"
+          onButtonTouchTap={(columnName) => this.addColumn(columnName)}
         />
         <div className="columns">
           {columns}
