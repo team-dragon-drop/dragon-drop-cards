@@ -10,6 +10,7 @@ export default class App extends Component {
         <Route path="/" exact={true} render={() => (
           <Home />
         )} />
+
         <Route path="/b/:boardId" render={({ match }) => (
           <Board boardId={match.params.boardId} />
         )} />
