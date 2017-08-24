@@ -1,0 +1,24 @@
+.homepage-container {
+  /* ref: http://www.designbolts.com/2012/11/26/25-free-simple-black-seamless-patterns-for-website-backgrounds/ */
+  background: url('../assets/black_scales.png');
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  height:100vh;
+  width:100wh;
+ }
+
+.homepage-title {
+  font-family: "Sheeping-Dogs";
+  font-size: 60px;
+  text-align: center;
+}
+
+.logo {
+  max-height: 40%;
+}
+
+.create-board {
+  width: 400px;
+}
