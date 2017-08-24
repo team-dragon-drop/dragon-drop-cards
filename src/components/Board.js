@@ -19,13 +19,12 @@ class Board extends Component {
     this.state = { columns: [] };
   }
 
-  addCard(id) {
-    const content = prompt("Add Card");
-    if (content) {
+  addCard(columnName, cardName) {
+    if (columnName && cardName) {
       database()
-        .ref(`/${this.props.boardId}/columns/${id}/cards/`)
+        .ref(`/${this.props.boardId}/columns/${columnName}/cards/`)
         .push()
-        .set({ name: content });
+        .set({ name: cardName });
     }
   }
 
@@ -104,7 +103,7 @@ class Board extends Component {
             id={key}
             cards={columnData[key].cards}
             name={columnData[key].name}
-            addCard={() => this.addCard(key)}
+            addCard={(name) => this.addCard(key, name)}
             editCard={(columnId, id, name) => this.editCard(columnId, id, name)}
             removeCard={(columnId, id) => this.removeCard(columnId, id)}
             moveCard={(oldColumnId, newColumnId, id) => this.moveCard(oldColumnId, newColumnId, id)}
