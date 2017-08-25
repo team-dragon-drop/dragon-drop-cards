@@ -4,6 +4,7 @@ import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
 import MuiAppBar from "material-ui/AppBar";
 import LinearProgress from "material-ui/LinearProgress";
+import KeyDetector from "./KeyDetector";
 
 export default class AppBar extends Component {
   state = {
@@ -79,6 +80,9 @@ export default class AppBar extends Component {
             <TextField onChange={this.handleChange} name="newColumn" ref="newColumn" />
           </form>
         </Dialog>
+        <KeyDetector keys={{
+          67: () => this.handleOpen()   // c
+        }}/>
       </div>
     );
   }

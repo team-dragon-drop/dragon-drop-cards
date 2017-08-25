@@ -3,6 +3,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
 import Dialog from 'material-ui/Dialog';
 import TextField from 'material-ui/TextField';
+import KeyDetector from "./KeyDetector";
 
 export default class AddCardButton extends Component {
   state = {
@@ -45,6 +46,10 @@ export default class AddCardButton extends Component {
       />
     ];
 
+    let keyboardShortcuts = <KeyDetector keys={{
+      65: () => this.handleOpen()  // a
+    }}/>
+
     return (
       <div>
         <RaisedButton onTouchTap={() => this.handleOpen()}
@@ -52,17 +57,18 @@ export default class AddCardButton extends Component {
         >
           + Add Card
         </RaisedButton>
-          <Dialog
-            title="Add A New Card"
-            actions={actions}
-            modal={false}
-            open={this.state.open}
-            onRequestClose={this.handleClose}
-          >
+        <Dialog
+          title="Add A New Card"
+          actions={actions}
+          modal={false}
+          open={this.state.open}
+          onRequestClose={this.handleClose}
+        >
           <form id="addCardForm" onSubmit={this.handleSubmit}>
             <TextField onChange={this.handleChange} name="newCard" ref="newCard" />
           </form>
         </Dialog>
+        { this.props.keyboardShortcutsActive && keyboardShortcuts }
       </div>
     );
   }
