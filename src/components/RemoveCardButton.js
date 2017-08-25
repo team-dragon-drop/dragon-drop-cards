@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import CloseIcon from 'material-ui/svg-icons/navigation/close';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
+import KeyDetector from "./KeyDetector";
 
 export default class RemoveCardButton extends Component {
   state = {
@@ -16,20 +17,22 @@ export default class RemoveCardButton extends Component {
     this.setState({open: false});
   };
 
+  handleRemoveCard = () => {
+    this.handleClose();
+    this.props.removeCard();
+  }
+
   render() {
     const actions = [
       <FlatButton
         label="No"
         primary={true}
-        onTouchTap={this.handleClose}
+        onTouchTap={() => this.handleClose() }
       />,
       <FlatButton
         label="Yes"
         primary={true}
-        onTouchTap={() => {
-          this.props.removeCard()
-          this.handleClose();
-        }}
+        onTouchTap={() => this.handleRemoveCard() }
       />
     ];
 
@@ -47,7 +50,11 @@ export default class RemoveCardButton extends Component {
           modal={false}
           open={this.state.open}
           onRequestClose={this.handleClose}
-        />
+        >
+          <KeyDetector keys={{
+            13: () => this.handleRemoveCard()
+          }}/>
+        </Dialog>
       </div>
     );
   }
