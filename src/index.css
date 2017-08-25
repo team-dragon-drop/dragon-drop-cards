@@ -11,7 +11,8 @@ html {
 }
 body {
   height: 100%;
-  background-color: #282828;
+  /* ref: http://www.designbolts.com/2012/11/26/25-free-simple-black-seamless-patterns-for-website-backgrounds/ */
+  background: url('assets/black_scales.png');
   color: #fff;
   margin: 0;
   font-family: sans-serif;
