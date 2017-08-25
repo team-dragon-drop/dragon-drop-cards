@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import CloseIcon from 'material-ui/svg-icons/navigation/close';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
+import KeyDetector from "./KeyDetector";
 
 export default class RemoveColumnButton extends Component {
   state = {
@@ -16,20 +17,22 @@ export default class RemoveColumnButton extends Component {
     this.setState({open: false});
   };
 
+  handleRemoveColumn = () => {
+    this.handleClose();
+    this.props.removeColumn();
+  };
+
   render() {
     const actions = [
       <FlatButton
         label="No"
         primary={true}
-        onTouchTap={this.handleClose}
+        onTouchTap={() => this.handleClose() }
       />,
       <FlatButton
         label="Yes"
         primary={true}
-        onTouchTap={() => {
-          this.props.removeColumn()
-          this.handleClose();
-        }}
+        onTouchTap={() => this.handleRemoveColumn() }
       />
     ];
 
@@ -48,7 +51,11 @@ export default class RemoveColumnButton extends Component {
           modal={false}
           open={this.state.open}
           onRequestClose={this.handleClose}
-        />
+        >
+          <KeyDetector keys={{
+            13: () => this.handleRemoveColumn()
+          }}/>
+        </Dialog>
       </div>
     );
   }
