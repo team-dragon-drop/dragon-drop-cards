@@ -19,10 +19,10 @@ class Board extends Component {
     this.state = { columns: [] };
   }
 
-  addCard(columnName, cardName) {
-    if (columnName && cardName) {
+  addCard(columnId, cardName) {
+    if (columnId && cardName) {
       database()
-        .ref(`/${this.props.boardId}/columns/${columnName}/cards/`)
+        .ref(`/${this.props.boardId}/columns/${columnId}/cards/`)
         .push()
         .set({ name: cardName });
     }
@@ -67,11 +67,11 @@ class Board extends Component {
     }
   }
 
-  removeCard(columnId, id) {
-    if (confirm("You sure about this?")) { // eslint-disable-line
+  removeCard(columnId, cardId) {
+    if (columnId && cardId) {
       database()
         .ref(`/${this.props.boardId}/columns/${columnId}/cards`)
-        .child(id)
+        .child(cardId)
         .remove();
     }
   }
