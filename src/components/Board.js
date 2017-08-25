@@ -37,11 +37,11 @@ class Board extends Component {
     }
   }
 
-  removeColumn(id) {
-    if (confirm("You sure about this?")) {  // eslint-disable-line
+  removeColumn(columnId) {
+    if (columnId) {
       database()
         .ref(`/${this.props.boardId}/columns`)
-        .child(id)
+        .child(columnId)
         .remove();
     }
   }

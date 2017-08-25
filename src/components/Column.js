@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import { DropTarget } from 'react-dnd';
 import Paper from 'material-ui/Paper';
-import CloseIcon from 'material-ui/svg-icons/navigation/close';
 import Card from './Card';
 import AddCardButton from './AddCardButton';
+import RemoveColumnButton from './RemoveColumnButton';
 
 let canDropYN = true;
 
@@ -69,13 +69,9 @@ class Column extends Component {
               {this.props.name}
             </span>
 
-            <span
-              className="column__close"
-              style={{ float: "right" }}
-              onClick={() => this.props.removeColumn(this.props.id)}
-            >
-              <CloseIcon />
-            </span>
+            <RemoveColumnButton 
+              removeColumn={() => this.props.removeColumn(this.props.id)}
+            />
           </h2>
 
           <ul className="column">
