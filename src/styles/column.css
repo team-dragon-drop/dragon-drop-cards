@@ -5,8 +5,14 @@
 .column {
   padding-top:0;
   margin-right: 0 !important;
+  min-width: 300px;
 }
 
 .column__close {
   cursor: pointer;
+}
+
+.column__selected-indicator {
+  position: absolute;
+  top: -25px;
 }

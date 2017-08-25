@@ -4,6 +4,7 @@ import Paper from 'material-ui/Paper';
 import Card from './Card';
 import AddCardButton from './AddCardButton';
 import RemoveColumnButton from './RemoveColumnButton';
+import KeyboardArrowDown from 'material-ui/svg-icons/hardware/keyboard-arrow-down';
 
 let canDropYN = true;
 
@@ -58,9 +59,19 @@ class Column extends Component {
     );
   }
 
+  selectedIndicator() {
+    if (this.props.selected) {
+      return <KeyboardArrowDown
+        color="#fff"
+        className="column__selected-indicator"
+      />;
+    }
+  }
+
   render() {
     return this.props.connectDropTarget(
       <div className="column">
+        { this.selectedIndicator() }
         <Paper className="column-container">
           <h2 className="clearfix" onDoubleClick={() => {
             this.props.editColumn(this.props.id, this.props.name)
@@ -79,7 +90,10 @@ class Column extends Component {
             {this.props.isOver && this.props.canDrop && this.renderPlaceholder()}
           </ul>
 
-          <AddCardButton addCard={this.props.addCard}/>
+          <AddCardButton
+            keyboardShortcutsActive={this.props.selected}
+            addCard={this.props.addCard}
+          />
         </Paper>
       </div>
     );

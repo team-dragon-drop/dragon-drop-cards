@@ -4,11 +4,17 @@ import HTML5Backend from "react-dnd-html5-backend";
 import AppBar from "./AppBar";
 import { DragDropContext } from "react-dnd";
 import backend from "../backend";
+import KeyDetector from "./KeyDetector";
+import { clamp } from "../utils";
 
 class Board extends Component {
   constructor() {
     super();
-    this.state = { loading: true, columns: [] };
+    this.state = {
+      loading: true,
+      columns: [],
+      selectedColumn: null
+    };
   }
 
   componentDidMount() {
@@ -20,26 +26,41 @@ class Board extends Component {
     });
   }
 
+  incrementSelectedColumn() {
+    const range = [0, Object.keys(this.state.columns).length - 1];
+    const target = this.state.selectedColumn === null ? 0 : this.state.selectedColumn + 1;
+    this.setState({selectedColumn: clamp(target, range)});
+  }
+
+  decrementSelectedColumn() {
+    const range = [0, Object.keys(this.state.columns).length - 1];
+    const target = this.state.selectedColumn - 1;
+    this.setState({selectedColumn: clamp(target, range)});
+  }
+
+  clearSelectedColumn() {
+    this.setState({selectedColumn: null})
+  }
+
   render() {
-    let columns = null;
-    const columnData = this.state.columns;
-    if (columnData)
-      columns = Object.keys(columnData).map(key => {
-        return (
-          <Column
-            key={key}
-            id={key}
-            cards={columnData[key].cards}
-            name={columnData[key].name}
-            addCard={(name) => backend.addCard(key, name)}
-            editCard={(columnId, id, name) => backend.editCard(columnId, id, name)}
-            removeCard={(columnId, id) => backend.removeCard(columnId, id)}
-            moveCard={(oldColumnId, newColumnId, id) => backend.moveCard(oldColumnId, newColumnId, id)}
-            editColumn={(id, name) => backend.editColumn(id, name)}
-            removeColumn={(id) => backend.removeColumn(id)}
-          />
-        );
-      });
+    let columnData = this.state.columns || [];
+    let columns = Object.keys(columnData).map((key, index) => {
+      return (
+        <Column
+          key={key}
+          id={key}
+          cards={columnData[key].cards}
+          name={columnData[key].name}
+          addCard={(name) => backend.addCard(key, name)}
+          editCard={(columnId, id, name) => backend.editCard(columnId, id, name)}
+          removeCard={(columnId, id) => backend.removeCard(columnId, id)}
+          moveCard={(oldColumnId, newColumnId, id) => backend.moveCard(oldColumnId, newColumnId, id)}
+          editColumn={(id, name) => backend.editColumn(id, name)}
+          removeColumn={(id) => backend.removeColumn(id)}
+          selected={index === this.state.selectedColumn}
+        />
+      );
+    });
 
     return (
       <div className="App">
@@ -51,6 +72,13 @@ class Board extends Component {
         <div className="columns">
           {columns}
         </div>
+        <KeyDetector keys={{
+          27: () => this.clearSelectedColumn(),       // ESC
+          37: () => this.decrementSelectedColumn(),   // Left
+          39: () => this.incrementSelectedColumn(),   // Right
+          72: () => this.decrementSelectedColumn(),   // h
+          76: () => this.incrementSelectedColumn()    // l
+        }}/>
       </div>
     );
   }
