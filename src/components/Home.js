@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { database } from 'firebase';
 import { Redirect } from 'react-router';
 import RaisedButton from 'material-ui/RaisedButton';
 import "../styles/homepage.css";
 import logo from "../assets/dragon-drop-logo.svg";
+import backend from "../backend";
 
 export default class Home extends Component {
   constructor() {
@@ -13,7 +13,7 @@ export default class Home extends Component {
 
   newBoard() {
     this.setState({
-      newUrl: `/b/${database().ref('/').push().key}`
+      newUrl: `/b/${backend.newBoardId()}`
     });
   }
 
