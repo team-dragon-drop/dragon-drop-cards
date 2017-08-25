@@ -1,6 +1,6 @@
 import React from 'react';
 import { DragSource } from 'react-dnd';
-import CloseIcon from 'material-ui/svg-icons/navigation/close';
+import RemoveCardButton from './RemoveCardButton';
 
 const cardSource = {
   beginDrag(props) {
@@ -45,12 +45,9 @@ class Card extends React.Component {
           {this.props.name}
         </span>
 
-        <span
-          style={{ float: "right" }}
-          onClick={() => this.props.removeCard(this.props.parentId, this.props.id)}
-        >
-          <CloseIcon className="card__close" />
-        </span>
+        <RemoveCardButton
+          removeCard={() => this.props.removeCard(this.props.parentId, this.props.id)}
+        />
       </li>
     );
   }
