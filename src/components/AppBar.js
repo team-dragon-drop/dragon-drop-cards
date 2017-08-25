@@ -25,6 +25,12 @@ export default class AppBar extends Component {
     this.setState({newColumnName: e.target.value});
   };
 
+  handleSubmit = (e) => {
+    this.props.onButtonTouchTap(this.state.newColumnName);
+    this.setState({newColumnName: "", open: false});
+    e.preventDefault();
+  }
+
   loadingIndicator() {
     if (this.props.loading) {
       return <LinearProgress mode="indeterminate" />;
@@ -39,16 +45,13 @@ export default class AppBar extends Component {
       <FlatButton
         label="Cancel"
         primary={true}
-        onTouchTap={this.handleClose}
+        onTouchTap={() => this.handleClose()}
       />,
       <FlatButton
         label="Add"
         primary={true}
-        onTouchTap={() => {
-          this.props.onButtonTouchTap(this.state.newColumnName);
-          this.setState({newColumnName: ""});
-          this.handleClose();
-        }}
+        form="addColumnForm"
+        type="submit"
       />
     ];
 
@@ -72,7 +75,9 @@ export default class AppBar extends Component {
           open={this.state.open}
           onRequestClose={this.handleClose}
         >
-          <TextField onChange={this.handleChange} name="newColumn" ref="newColumn" />
+          <form id="addColumnForm" onSubmit={this.handleSubmit}>
+            <TextField onChange={this.handleChange} name="newColumn" ref="newColumn" />
+          </form>
         </Dialog>
       </div>
     );

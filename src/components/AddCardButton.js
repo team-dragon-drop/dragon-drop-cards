@@ -24,21 +24,24 @@ export default class AddCardButton extends Component {
     this.setState({newCardName: e.target.value});
   };
 
+  handleSubmit = (e) => {
+    this.props.addCard(this.state.newCardName);
+    this.setState({newCardName: "", open: false});
+    e.preventDefault();
+  }
+
   render() {
     const actions = [
       <FlatButton
         label="Cancel"
         primary={true}
-        onTouchTap={this.handleClose}
+        onTouchTap={() => this.handleClose()}
       />,
       <FlatButton
         label="Add"
         primary={true}
-        onTouchTap={() => {
-          this.props.addCard(this.state.newCardName);
-          this.setState({newCardName: ""});
-          this.handleClose();
-        }}
+        form="addCardForm"
+        type="submit"
       />
     ];
 
@@ -49,14 +52,16 @@ export default class AddCardButton extends Component {
         >
           + Add Card
         </RaisedButton>
-        <Dialog
-          title="Add A New Card"
-          actions={actions}
-          modal={false}
-          open={this.state.open}
-          onRequestClose={this.handleClose}
-        >
-          <TextField onChange={this.handleChange} name="newCard" ref="newCard" />
+          <Dialog
+            title="Add A New Card"
+            actions={actions}
+            modal={false}
+            open={this.state.open}
+            onRequestClose={this.handleClose}
+          >
+          <form id="addCardForm" onSubmit={this.handleSubmit}>
+            <TextField onChange={this.handleChange} name="newCard" ref="newCard" />
+          </form>
         </Dialog>
       </div>
     );
