@@ -3,6 +3,7 @@ import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
 import MuiAppBar from "material-ui/AppBar";
+import LinearProgress from "material-ui/LinearProgress";
 
 export default class AppBar extends Component {
   state = {
@@ -23,6 +24,15 @@ export default class AppBar extends Component {
   handleChange = (e) => {
     this.setState({newColumnName: e.target.value});
   };
+
+  loadingIndicator() {
+    if (this.props.loading) {
+      return <LinearProgress mode="indeterminate" />;
+    } else {
+      // This keeps the height consistent instead of jumping by 4 pixels
+      return <div style={{ height: "4px" }} />;
+    }
+  }
 
   render() {
     const actions = [
@@ -54,6 +64,7 @@ export default class AppBar extends Component {
             />
           }
         />
+        { this.loadingIndicator() }
         <Dialog
           title="Add A New Column"
           actions={actions}

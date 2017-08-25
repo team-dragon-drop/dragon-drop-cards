@@ -9,6 +9,7 @@ class Board extends Component {
   componentDidMount() {
     database().ref(`/${this.props.boardId}/columns`).on("value", snapshot => {
       this.setState({
+        loading: false,
         columns: snapshot.val()
       });
     });
@@ -16,7 +17,7 @@ class Board extends Component {
 
   constructor() {
     super();
-    this.state = { columns: [] };
+    this.state = { loading: true, columns: [] };
   }
 
   addCard(columnId, cardName) {
@@ -47,6 +48,7 @@ class Board extends Component {
   }
 
   editColumn(id,content) {
+    // TODO: Replace the prompt with with Material-UI
     const newContent = prompt('Edit Column', content);
     if (newContent) {
       database()
@@ -58,6 +60,7 @@ class Board extends Component {
   }
 
   editCard(columnId, id, content) {
+    // TODO: Replace the prompt with with Material-UI
     const newContent = prompt("Edit Card", content);
     if (newContent) {
       database()
@@ -118,6 +121,7 @@ class Board extends Component {
         <AppBar
           buttonLabel="Add Column"
           onButtonTouchTap={(columnName) => this.addColumn(columnName)}
+          loading={this.state.loading}
         />
         <div className="columns">
           {columns}
