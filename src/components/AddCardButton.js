@@ -3,7 +3,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
 import Dialog from 'material-ui/Dialog';
 import TextField from 'material-ui/TextField';
-import KeyDetector from "./KeyDetector";
+import { KeyboardShortcuts, KeyboardShortcutInhibitor } from "./KeyboardShortcuts";
 
 export default class AddCardButton extends Component {
   state = {
@@ -27,7 +27,8 @@ export default class AddCardButton extends Component {
 
   handleSubmit = (e) => {
     this.props.addCard(this.state.newCardName);
-    this.setState({newCardName: "", open: false});
+    this.handleClose();
+    this.setState({newCardName: ""});
     e.preventDefault();
   }
 
@@ -46,7 +47,7 @@ export default class AddCardButton extends Component {
       />
     ];
 
-    let keyboardShortcuts = <KeyDetector keys={{
+    let keyboardShortcuts = <KeyboardShortcuts keys={{
       65: () => this.handleOpen()  // a
     }}/>
 
@@ -67,6 +68,7 @@ export default class AddCardButton extends Component {
           <form id="addCardForm" onSubmit={this.handleSubmit}>
             <TextField onChange={this.handleChange} name="newCard" ref="newCard" />
           </form>
+          <KeyboardShortcutInhibitor />
         </Dialog>
         { this.props.keyboardShortcutsActive && keyboardShortcuts }
       </div>

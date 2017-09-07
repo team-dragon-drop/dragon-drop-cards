@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import CloseIcon from 'material-ui/svg-icons/navigation/close';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
-import KeyDetector from "./KeyDetector";
+import { KeyboardShortcuts } from "./KeyboardShortcuts";
 
 export default class RemoveColumnButton extends Component {
   state = {
@@ -52,7 +52,7 @@ export default class RemoveColumnButton extends Component {
           open={this.state.open}
           onRequestClose={this.handleClose}
         >
-          <KeyDetector keys={{
+          <KeyboardShortcuts keys={{
             13: () => this.handleRemoveColumn()
           }}/>
         </Dialog>
