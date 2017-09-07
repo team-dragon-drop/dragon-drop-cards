@@ -4,7 +4,7 @@ import HTML5Backend from "react-dnd-html5-backend";
 import AppBar from "./AppBar";
 import { DragDropContext } from "react-dnd";
 import backend from "../backend";
-import KeyDetector from "./KeyDetector";
+import { KeyboardShortcuts } from "./KeyboardShortcuts";
 import { clamp } from "../utils";
 
 class Board extends Component {
@@ -72,7 +72,7 @@ class Board extends Component {
         <div className="columns">
           {columns}
         </div>
-        <KeyDetector keys={{
+        <KeyboardShortcuts keys={{
           27: () => this.clearSelectedColumn(),       // ESC
           37: () => this.decrementSelectedColumn(),   // Left
           39: () => this.incrementSelectedColumn(),   // Right

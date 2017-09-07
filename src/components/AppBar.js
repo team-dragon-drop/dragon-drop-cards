@@ -4,7 +4,7 @@ import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
 import MuiAppBar from "material-ui/AppBar";
 import LinearProgress from "material-ui/LinearProgress";
-import KeyDetector from "./KeyDetector";
+import { KeyboardShortcuts, KeyboardShortcutInhibitor } from "./KeyboardShortcuts";
 
 export default class AppBar extends Component {
   state = {
@@ -79,8 +79,9 @@ export default class AppBar extends Component {
           <form id="addColumnForm" onSubmit={this.handleSubmit}>
             <TextField onChange={this.handleChange} name="newColumn" ref="newColumn" />
           </form>
+          <KeyboardShortcutInhibitor />
         </Dialog>
-        <KeyDetector keys={{
+        <KeyboardShortcuts keys={{
           67: () => this.handleOpen()   // c
         }}/>
       </div>
