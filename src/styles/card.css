@@ -1,4 +1,5 @@
 .card {
+  border-bottom: 1px solid #ccc;
   position: relative;
   padding-right: 30px;
 }
