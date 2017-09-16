@@ -4,8 +4,12 @@
 
 .column {
   padding-top:0;
-  margin-right: 0 !important;
   min-width: 300px;
+}
+
+.column__card-list {
+  padding-top:0;
+  margin: 8px 8px 20px;
 }
 
 .column__close {

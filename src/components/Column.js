@@ -85,7 +85,7 @@ class Column extends Component {
             />
           </h2>
 
-          <ul className="column">
+          <ul className="column__card-list">
             {this.props.cards ? this.cardItems() : ""}
             {this.props.isOver && this.props.canDrop && this.renderPlaceholder()}
           </ul>
