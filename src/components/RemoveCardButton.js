@@ -39,10 +39,10 @@ export default class RemoveCardButton extends Component {
     return (
       <div>
         <span
-          style={{ float: "right" }}
+          className="card__close" 
           onClick={() => this.handleOpen()}
         >
-          <CloseIcon className="card__close" />
+          <CloseIcon className="card__close-icon" />
         </span>
         <Dialog
           title="Are you sure you want to delete this?"

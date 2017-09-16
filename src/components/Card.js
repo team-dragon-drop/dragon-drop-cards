@@ -41,7 +41,7 @@ class Card extends React.Component {
         }}
       >
 
-        <span style={{ float: "left" }}>
+        <span>
           {this.props.name}
         </span>
 

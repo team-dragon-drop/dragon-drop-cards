@@ -1,4 +1,13 @@
+.card {
+  position: relative;
+  padding-right: 30px;
+}
 .card__close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+.card__close-icon {
   width: 15px !important;
   height: 15px !important;
   color: lightgrey !important;
