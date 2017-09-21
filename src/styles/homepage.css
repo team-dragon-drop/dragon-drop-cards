@@ -6,6 +6,10 @@
   height:100vh;
   width:100wh;
  }
+ 
+.homepage-container * {
+  margin-bottom: 20px;
+}
 
 .homepage-title {
   font-family: "Sheeping-Dogs";
