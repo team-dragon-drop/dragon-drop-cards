@@ -2,23 +2,27 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-evenly;
+  justify-content: center;
   height:100vh;
   width:100wh;
  }
 
 .homepage-title {
   font-family: "Sheeping-Dogs";
-  font-size: 60px;
+  font-size: 50px;
   text-align: center;
 }
-
+.logo-container {
+  margin: 0 auto;
+  width: 270px;
+}
 .logo {
-  max-height: 40%;
+  /*
   animation-iteration-count: infinite;
   animation: slidein 1s cubic-bezier(0, 0, 0.35, 1);
   animation-iteration-count:1;
   animation-direction: alternate;
+  */
 }
 
 .create-board {
