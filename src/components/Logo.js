@@ -7,11 +7,12 @@ export default class Logo extends Component {
 
   componentDidMount() {
    const duration = 1;
-   TweenLite.set('.logo', {y:-9999});
+/*   TweenLite.set('.logo', {y:-9999});
    TweenLite.to('.logo', duration / 2, {y:-500, ease:Power2.easeOut});
    TweenLite.to('.logo', duration / 2, {y:0, ease:Bounce.easeOut, delay:duration / 4});
    TweenLite.to('.logo', duration / 4, {y:-50, ease:Power2.easeOut});
    TweenLite.to('.logo', duration / 2, {y:0, ease:Bounce.easeOut, delay:duration / 4});
+    */
   }
 
   bounce() {
