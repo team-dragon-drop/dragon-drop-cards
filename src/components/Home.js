@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Redirect } from 'react-router';
 import RaisedButton from 'material-ui/RaisedButton';
 import "../styles/homepage.css";
-import logo from "../assets/dragon-drop-logo.svg";
+import Logo from "./Logo";
 import backend from "../backend";
 
 export default class Home extends Component {
@@ -21,7 +21,7 @@ export default class Home extends Component {
     return (
       <div className="homepage-container">
         <h1 className="homepage-title">Dragon Drop Cards</h1>
-        <img className="logo" src={logo} alt="Drop it like it's hot"/>
+        <Logo />
         <RaisedButton className="create-board" onClick={() => this.newBoard()}>
           Create New Board
         </RaisedButton>
