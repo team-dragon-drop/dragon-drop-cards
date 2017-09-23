@@ -30,19 +30,30 @@ function collect(connect, monitor) {
 
 class Card extends React.Component {
   state = {
-    expanded: false
+    expanded: false,
+    votes: 0
   };
 
   render() {
     return this.props.connectDragSource(
       <li key={this.props.key} id={this.props.id} className="card" >
         <div
-          className="card__text"
+          className="card__head"
           onClick={() => {
             this.setState({...this.state, expanded: !this.state.expanded})
           }}
         >
-          {this.props.name}
+          <div>
+            <span>{this.props.name}</span>
+          </div>
+          <div>
+            <span
+              className="card__votes"
+              style={{ display: this.state.votes === 0 ? "none" : "inline-block"}}
+            >
+              { this.state.votes > 0 ? `+${this.state.votes}` : `${this.state.votes}` }
+            </span>
+          </div>
         </div>
 
         <div
@@ -50,11 +61,11 @@ class Card extends React.Component {
           className="card__actions"
         >
           <span
-            onClick={(e) => { console.log("UP vote") }}
+            onClick={(e) => { this.setState({...this.state, votes: this.state.votes + 1 }) }}
           ><ThumbsUpIcon /></span>
 
           <span
-            onClick={(e) => { console.log("DOWN vote") }}
+            onClick={(e) => { this.setState({...this.state, votes: this.state.votes - 1 }) }}
           ><ThumbsDownIcon /></span>
 
           <span
