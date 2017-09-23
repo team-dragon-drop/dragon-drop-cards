@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import CloseIcon from 'material-ui/svg-icons/navigation/close';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
+import DeleteIcon from 'material-ui/svg-icons/action/delete';
 import { KeyboardShortcuts } from "./KeyboardShortcuts";
 
 export default class RemoveCardButton extends Component {
@@ -37,13 +37,8 @@ export default class RemoveCardButton extends Component {
     ];
 
     return (
-      <div>
-        <span
-          className="card__close" 
-          onClick={() => this.handleOpen()}
-        >
-          <CloseIcon className="card__close-icon" />
-        </span>
+      <span onClick={() => this.handleOpen()} >
+        <DeleteIcon />
         <Dialog
           title="Are you sure you want to delete this?"
           actions={actions}
@@ -55,7 +50,7 @@ export default class RemoveCardButton extends Component {
             13: () => this.handleRemoveCard()
           }}/>
         </Dialog>
-      </div>
+      </span>
     );
   }
 }
