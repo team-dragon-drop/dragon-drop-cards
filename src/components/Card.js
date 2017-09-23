@@ -35,12 +35,7 @@ class Card extends React.Component {
 
   render() {
     return this.props.connectDragSource(
-      <li
-        key={this.props.key}
-        id={this.props.id}
-        className={`card clearfix ${this.state.expanded && "card--expanded"}`}
-      >
-
+      <li key={this.props.key} id={this.props.id} className="card" >
         <div
           className="card__text"
           onClick={() => {
