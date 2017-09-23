@@ -3,8 +3,18 @@
   position: relative;
   padding: 0;
 }
-.card__text {
+.card__head {
+  display: inline-flex;
+  justify-content: space-between;
   padding: 10px;
+  width: 100%;
+}
+.card__votes {
+  display: inline-block;
+  font-size: 14px;
+  font-family: monospace;
+  margin-left: 10px;
+  color: #999;
 }
 .card__actions {
   width: 100%;
