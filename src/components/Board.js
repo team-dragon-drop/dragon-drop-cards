@@ -67,7 +67,6 @@ class Board extends Component {
     return (
       <div className="App">
         <AppBar
-          buttonLabel="Add Column"
           onButtonTouchTap={(columnName) => backend.addColumn(columnName)}
           loading={this.state.loading}
         />
