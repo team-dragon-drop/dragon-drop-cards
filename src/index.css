@@ -34,8 +34,12 @@ h1 {
   font-size: 20px;
 }
 
+.board-title {
+  margin: 10px 0;
+}
+
 .columns {
-  margin: 55px 0 20px 8px;
+  margin-bottom: 20px;
   display: flex;
   flex-wrap: wrap;
 }
