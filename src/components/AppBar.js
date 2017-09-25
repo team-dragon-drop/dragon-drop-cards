@@ -4,6 +4,8 @@ import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
 import MuiAppBar from "material-ui/AppBar";
 import LinearProgress from "material-ui/LinearProgress";
+import AddIcon from 'material-ui/svg-icons/content/add';
+import IconButton from 'material-ui/IconButton';
 import { KeyboardShortcuts, KeyboardShortcutInhibitor } from "./KeyboardShortcuts";
 
 export default class AppBar extends Component {
@@ -60,12 +62,13 @@ export default class AppBar extends Component {
       <div>
         <MuiAppBar
           title="Dragon Drop"
+          titleStyle={{textAlign: "center"}}
           showMenuIconButton={false}
           iconElementRight={
-            <FlatButton
+            <IconButton><AddIcon
               onTouchTap={() => this.handleOpen()}
               label={this.props.buttonLabel}
-            />
+            /></IconButton>
           }
         />
         { this.loadingIndicator() }
