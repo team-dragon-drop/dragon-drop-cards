@@ -59,7 +59,7 @@ export default class AppBar extends Component {
     ];
 
     return (
-      <div>
+      <div className="app-bar">
         <MuiAppBar
           title="Dragon Drop"
           titleStyle={{textAlign: "center"}}
