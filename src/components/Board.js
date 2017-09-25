@@ -71,6 +71,7 @@ class Board extends Component {
           onButtonTouchTap={(columnName) => backend.addColumn(columnName)}
           loading={this.state.loading}
         />
+        <h2 className="board-title">{this.state.name}</h2>
         <div className="columns">
           {columns}
         </div>
