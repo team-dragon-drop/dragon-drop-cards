@@ -43,7 +43,7 @@ export default class RemoveColumnButton extends Component {
           style={{ float: "right" }}
           onClick={() => this.handleOpen()}
         >
-          <CloseIcon />
+          <CloseIcon color="#ccc" />
         </span>
         <Dialog
           title="Are you sure you want to delete this?"
