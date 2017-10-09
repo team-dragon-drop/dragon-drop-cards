@@ -12,5 +12,4 @@ A simple card board app that allows you to:
 Why Dragon Drop?
 ----------------
 
-For those times where you just need a quick board, requires no logins just a
-URL.
+🐲 Because it has a great name 🐲
