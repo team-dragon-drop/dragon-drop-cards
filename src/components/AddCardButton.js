@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
 import Dialog from 'material-ui/Dialog';
 import TextField from 'material-ui/TextField';
@@ -53,11 +52,15 @@ export default class AddCardButton extends Component {
 
     return (
       <div>
-        <RaisedButton onTouchTap={() => this.handleOpen()}
-          style={{ padding: "10px", width: "100%" }}
+        <FlatButton
+          onTouchTap={() => this.handleOpen()}
+          fullWidth={true}
+          backgroundColor="#fff"
+          hoverColor="#f6f6f6"
+          style={{ height: 50 }}
         >
-          + Add Card
-        </RaisedButton>
+          Add Card
+        </FlatButton>
         <Dialog
           title="Add A New Card"
           actions={actions}
