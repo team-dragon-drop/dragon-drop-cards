@@ -30,11 +30,12 @@ function collect(connect, monitor) {
 
 class Card extends React.Component {
   state = {
-    expanded: false,
-    votes: 0
+    expanded: false
   };
 
   render() {
+    const hasVotes = Number.isInteger(this.props.votes) && this.props.votes !== 0;
+
     return this.props.connectDragSource(
       <li key={this.props.key} id={this.props.id} className="card" >
         <div
@@ -49,9 +50,9 @@ class Card extends React.Component {
           <div>
             <span
               className="card__votes"
-              style={{ display: this.state.votes === 0 ? "none" : "inline-block"}}
+              style={{ display: hasVotes ? "inline-block" : "none" }}
             >
-              { this.state.votes > 0 ? `+${this.state.votes}` : `${this.state.votes}` }
+              { this.props.votes > 0 ? `+${this.props.votes}` : `${this.props.votes}` }
             </span>
           </div>
         </div>
@@ -61,11 +62,11 @@ class Card extends React.Component {
           className="card__actions"
         >
           <span
-            onClick={(e) => { this.setState({...this.state, votes: this.state.votes + 1 }) }}
+            onClick={(e) => { this.props.voteUp(this.props.parentId, this.props.id) }}
           ><ThumbsUpIcon /></span>
 
           <span
-            onClick={(e) => { this.setState({...this.state, votes: this.state.votes - 1 }) }}
+            onClick={(e) => { this.props.voteDown(this.props.parentId, this.props.id) }}
           ><ThumbsDownIcon /></span>
 
           <span
