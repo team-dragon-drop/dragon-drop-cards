@@ -85,5 +85,26 @@ export default {
         .child("name")
         .set(newContent);
     }
-  }
+  },
+
+  voteUpCard: (columnId, cardId) => {
+    if (columnId && cardId) {
+      database()
+        .ref(`/${this.boardId}/columns/${columnId}/cards/${cardId}/votes`)
+        .transaction(currentVotes => {
+          return Number.isInteger(currentVotes) ? currentVotes + 1 : 0;
+        })
+    }
+  },
+
+  voteDownCard: (columnId, cardId) => {
+    if (columnId && cardId) {
+      database()
+        .ref(`/${this.boardId}/columns/${columnId}/cards/${cardId}/votes`)
+        .transaction(currentVotes => {
+          return Number.isInteger(currentVotes) ? currentVotes - 1 : 0;
+        })
+    }
+  },
+
 }
