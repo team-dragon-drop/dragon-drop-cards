@@ -40,11 +40,14 @@ class Column extends Component {
       return <Card
         key={key}
         name={cardData[key].name}
+        votes={cardData[key].votes}
         id={key}
         parentId={this.props.id}
         editCard={this.props.editCard}
         removeCard={this.props.removeCard}
         moveCard={this.props.moveCard}
+        voteUp={this.props.voteUpCard}
+        voteDown={this.props.voteDownCard}
       />;
     });
   }
