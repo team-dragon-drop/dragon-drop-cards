@@ -5,7 +5,7 @@ export default {
 
   init: (boardId, onChangeCallback) => {
     this.boardId = boardId;
-    database().ref(`/${boardId}/columns`).on("value", snapshot => {
+    database().ref(`/${boardId}`).on("value", snapshot => {
       onChangeCallback(snapshot.val());
     });
   },

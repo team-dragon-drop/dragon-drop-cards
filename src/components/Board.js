@@ -18,10 +18,11 @@ class Board extends Component {
   }
 
   componentDidMount() {
-    backend.init(this.props.boardId, (val) => {
+    backend.init(this.props.boardId, val => {
       this.setState({
         loading: false,
-        columns: val
+        columns: val ? val.columns : [],
+        name: val ? val.name : ""
       });
     });
   }
