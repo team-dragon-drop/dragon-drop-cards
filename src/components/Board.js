@@ -55,6 +55,8 @@ class Board extends Component {
           editCard={(columnId, id, name) => backend.editCard(columnId, id, name)}
           removeCard={(columnId, id) => backend.removeCard(columnId, id)}
           moveCard={(oldColumnId, newColumnId, id) => backend.moveCard(oldColumnId, newColumnId, id)}
+          voteUpCard={(columnId, id) => backend.voteUpCard(columnId, id)}
+          voteDownCard={(columnId, id) => backend.voteDownCard(columnId, id)}
           editColumn={(id, name) => backend.editColumn(id, name)}
           removeColumn={(id) => backend.removeColumn(id)}
           selected={index === this.state.selectedColumn}
