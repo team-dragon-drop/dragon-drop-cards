@@ -3,11 +3,12 @@
   "version": "0.0.1",
   "private": true,
   "devDependencies": {
-    "react-scripts": "^1.0.10",
-    "firebase-tools": "^3.9.2"
+    "firebase-tools": "^3.9.2",
+    "react-scripts": "^1.0.10"
   },
   "dependencies": {
     "firebase": "^4.0.0",
+    "gsap": "^1.20.3",
     "material-ui": "^0.18.1",
     "react": "^15.3.1",
     "react-dnd": "^2.4.0",
