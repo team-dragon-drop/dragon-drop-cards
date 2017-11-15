@@ -34,8 +34,19 @@ h1 {
   font-size: 20px;
 }
 
+.app-bar {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 10;
+}
+
+.board-title {
+  margin: 80px 0 15px;
+}
+
 .columns {
-  margin: 55px 0 20px 8px;
+  margin-bottom: 20px;
   display: flex;
   flex-wrap: wrap;
 }

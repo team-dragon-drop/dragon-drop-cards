@@ -18,10 +18,11 @@ class Board extends Component {
   }
 
   componentDidMount() {
-    backend.init(this.props.boardId, (val) => {
+    backend.init(this.props.boardId, val => {
       this.setState({
         loading: false,
-        columns: val
+        columns: val ? val.columns : [],
+        name: val ? val.name : ""
       });
     });
   }
@@ -67,10 +68,10 @@ class Board extends Component {
     return (
       <div className="App">
         <AppBar
-          buttonLabel="Add Column"
           onButtonTouchTap={(columnName) => backend.addColumn(columnName)}
           loading={this.state.loading}
         />
+        <h2 className="board-title">{this.state.name}</h2>
         <div className="columns">
           {columns}
         </div>
