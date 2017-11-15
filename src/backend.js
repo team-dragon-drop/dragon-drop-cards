@@ -5,12 +5,23 @@ export default {
 
   init: (boardId, onChangeCallback) => {
     this.boardId = boardId;
-    database().ref(`/${boardId}/columns`).on("value", snapshot => {
+    database().ref(`/${boardId}`).on("value", snapshot => {
       onChangeCallback(snapshot.val());
     });
   },
 
-  newBoardId: () => database().ref('/').push().key,
+  newBoard: (boardName) => {
+    const ref = database().ref('/').push();
+    ref.set({
+      name: boardName,
+      columns: [
+        {name: "Good"},
+        {name: "Bad"},
+        {name: "Questions"}
+      ]
+    });
+    return ref.key;
+  },
 
   addCard: (columnId, cardName) => {
     if (columnId && cardName) {

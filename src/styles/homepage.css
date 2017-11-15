@@ -30,6 +30,8 @@
 }
 
 .create-board {
+  display: flex;
+  flex-direction: column;
   width: 90%;
   max-width: 400px;
   margin: 0 30px;
