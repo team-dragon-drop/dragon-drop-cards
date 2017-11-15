@@ -10,7 +10,18 @@ export default {
     });
   },
 
-  newBoardId: () => database().ref('/').push().key,
+  newBoard: (boardName) => {
+    const ref = database().ref('/').push();
+    ref.set({
+      name: boardName,
+      columns: [
+        {name: "Good"},
+        {name: "Bad"},
+        {name: "Questions"}
+      ]
+    });
+    return ref.key;
+  },
 
   addCard: (columnId, cardName) => {
     if (columnId && cardName) {
