@@ -5,12 +5,13 @@ import TextField from 'material-ui/TextField';
 import "../styles/homepage.css";
 import Logo from "./Logo";
 import backend from "../backend";
+import { generateDragonName } from "../dragonGenerator";
 
 export default class Home extends Component {
   constructor() {
     super();
     this.state = {
-      boardName: ""
+      boardName: generateDragonName()
     };
   }
 
@@ -35,6 +36,7 @@ export default class Home extends Component {
             fullWidth={true}
             inputStyle={{ color: "white" }}
             floatingLabelStyle={{ color: "white" }}
+            value={ this.state.boardName }
             onChange={ event => this.handleChange(event) }
           />
           <RaisedButton onClick={() => this.newBoard()}>

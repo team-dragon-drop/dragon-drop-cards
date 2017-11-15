@@ -1,0 +1,51 @@
+const dragonNames = [
+  "Smaug",
+  "Maleficent",
+  "Draco",
+  "Falkor",
+  "Ryūnosuke Akutagawa",
+  "Ancalagon",
+  "Kalessin",
+  "Rhuagh",
+  "Ryath",
+  "Shuruga",
+  "Flamestrike",
+  "Morkeleb",
+  "Villentretenmerth",
+  "Balerion",
+  "Samaranth",
+  "Pendragon",
+  "Mushu",
+  "Toothless",
+  "Drogon",
+  "Viserion",
+  "Rhaegal",
+  "Druk",
+  "Granymyr",
+  "Charizard",
+  "Mandragora",
+  "Nidhogg",
+  "Rorix Bladewing",
+  "Blue-Eyes White Dragon",
+  "Apalala",
+  "Ryūjin",
+  "Zirnitra",
+  "Grand King Ghidorah",
+  "Dulcy",
+  "Porunga",
+  "Fafnir",
+  "Shenron",
+  "Trogdor the Burninator",
+  "Bahamut",
+  "Spyro",
+  "Volvagia",
+  "Mnementh",
+  "Fantus",
+  "🐉💧"
+];
+
+const generateDragonName = () => {
+  return dragonNames[Math.floor(Math.random() * dragonNames.length)]
+}
+
+export { dragonNames, generateDragonName }
