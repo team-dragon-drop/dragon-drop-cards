@@ -7,6 +7,8 @@ import backend from "../backend";
 import { KeyboardShortcuts } from "./KeyboardShortcuts";
 import { clamp } from "../utils";
 
+import Dialog from 'material-ui/Dialog';
+
 class Board extends Component {
   constructor() {
     super();
@@ -15,6 +17,33 @@ class Board extends Component {
       columns: [],
       selectedColumn: null
     };
+  }
+
+  foo() {
+    let columnData = this.state.columns[0] || [];
+    return (
+      <Dialog
+        bodyStyle={{backgroundColor: 'transparent'}}
+        contentStyle={{backgroundColor: 'transparent'}}
+        titleStyle={{backgroundColor: 'transparent'}}
+        style={{backgroundColor: 'transparent'}}
+        open={true}
+      >
+        <Column
+          cards={columnData.cards}
+          name={columnData.name}
+          addCard={(name) => this.backend.addCard(0, name)}
+          editCard={(columnId, id, name) => this.backend.editCard(columnId, id, name)}
+          removeCard={(columnId, id) => this.backend.removeCard(columnId, id)}
+          moveCard={(oldColumnId, newColumnId, id) => this.backend.moveCard(oldColumnId, newColumnId, id)}
+          mergeCard={(sourceCard, destinationCard) => this.backend.mergeCard(sourceCard, destinationCard)}
+          voteUpCard={(columnId, id) => this.backend.voteUpCard(columnId, id)}
+          voteDownCard={(columnId, id) => this.backend.voteDownCard(columnId, id)}
+          editColumn={(id, name) => this.backend.editColumn(id, name)}
+          removeColumn={(id) => this.backend.removeColumn(id)}
+        />
+      </Dialog>
+    );
   }
 
   componentDidMount() {
@@ -67,6 +96,7 @@ class Board extends Component {
 
     return (
       <div className="App">
+        { this.foo() }
         <AppBar
           onButtonTouchTap={(columnName) => backend.addColumn(columnName)}
           loading={this.state.loading}
