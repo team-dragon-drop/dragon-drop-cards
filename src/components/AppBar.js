@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import Dialog from 'material-ui/Dialog';
-import FlatButton from 'material-ui/FlatButton';
+import Button from 'material-ui/Button';
 import TextField from 'material-ui/TextField';
 import MuiAppBar from "material-ui/AppBar";
 import LinearProgress from "material-ui/LinearProgress";
@@ -45,12 +45,12 @@ export default class AppBar extends Component {
 
   render() {
     const actions = [
-      <FlatButton
+      <Button
         label="Cancel"
         primary={true}
         onTouchTap={() => this.handleClose()}
       />,
-      <FlatButton
+      <Button
         label="Add"
         primary={true}
         form="addColumnForm"

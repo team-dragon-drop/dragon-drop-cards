@@ -1,7 +1,8 @@
 import React, { Component } from "react";
-import FlatButton from 'material-ui/FlatButton';
+import Button from 'material-ui/Button';
 import Dialog from 'material-ui/Dialog';
 import TextField from 'material-ui/TextField';
+import { withStyles } from 'material-ui/styles';
 import { KeyboardShortcuts, KeyboardShortcutInhibitor } from "./KeyboardShortcuts";
 
 export default class AddCardButton extends Component {
@@ -33,12 +34,12 @@ export default class AddCardButton extends Component {
 
   render() {
     const actions = [
-      <FlatButton
+      <Button
         label="Cancel"
         primary={true}
         onTouchTap={() => this.handleClose()}
       />,
-      <FlatButton
+      <Button
         label="Add"
         primary={true}
         form="addCardForm"
@@ -52,7 +53,7 @@ export default class AddCardButton extends Component {
 
     return (
       <div>
-        <FlatButton
+        <Button
           onTouchTap={() => this.handleOpen()}
           fullWidth={true}
           backgroundColor="#fff"
@@ -60,7 +61,7 @@ export default class AddCardButton extends Component {
           style={{ height: 50 }}
         >
           Add Card
-        </FlatButton>
+        </Button>
         <Dialog
           title="Add A New Card"
           actions={actions}

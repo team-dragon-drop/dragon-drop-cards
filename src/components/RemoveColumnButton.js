@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import CloseIcon from 'material-ui/svg-icons/navigation/close';
 import Dialog from 'material-ui/Dialog';
-import FlatButton from 'material-ui/FlatButton';
+import Button from 'material-ui/Button';
 import { KeyboardShortcuts } from "./KeyboardShortcuts";
 
 export default class RemoveColumnButton extends Component {
@@ -24,12 +24,12 @@ export default class RemoveColumnButton extends Component {
 
   render() {
     const actions = [
-      <FlatButton
+      <Button
         label="No"
         primary={true}
         onTouchTap={() => this.handleClose() }
       />,
-      <FlatButton
+      <Button
         label="Yes"
         primary={true}
         onTouchTap={() => this.handleRemoveColumn() }

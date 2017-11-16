@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router';
-import RaisedButton from 'material-ui/RaisedButton';
+import Button from 'material-ui/Button';
 import TextField from 'material-ui/TextField';
 import "../styles/homepage.css";
 import Logo from "./Logo";
@@ -39,9 +39,9 @@ export default class Home extends Component {
             value={ this.state.boardName }
             onChange={ event => this.handleChange(event) }
           />
-          <RaisedButton onClick={() => this.newBoard()}>
+          <Button raised onClick={() => this.newBoard()}>
             Create New Board
-          </RaisedButton>
+          </Button>
         </div>
         { this.state.newUrl && <Redirect push to={this.state.newUrl} /> }
       </div>
