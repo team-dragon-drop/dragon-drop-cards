@@ -1,18 +1,16 @@
 import {database} from 'firebase'
 
-export default {
-  boardId: null,
-
-  init: (boardId, onChangeCallback) => {
+export default class Backend {
+  constructor(boardId, onChangeCallback) {
     this.boardId = boardId
-    database()
-      .ref(`/${boardId}`)
-      .on('value', snapshot => {
-        onChangeCallback(snapshot.val())
-      })
-  },
+    this.database = database()
 
-  newBoard: boardName => {
+    this.database.ref(`/${boardId}`).on('value', snapshot => {
+      onChangeCallback(snapshot.val())
+    })
+  }
+
+  newBoard(boardName) {
     const ref = database()
       .ref('/')
       .push()
@@ -21,27 +19,27 @@ export default {
       columns: [{name: 'Good'}, {name: 'Bad'}, {name: 'Questions'}],
     })
     return ref.key
-  },
+  }
 
-  addCard: (columnId, cardName) => {
+  addCard(columnId, cardName) {
     if (columnId && cardName) {
       database()
         .ref(`/${this.boardId}/columns/${columnId}/cards/`)
         .push()
         .set({name: cardName})
     }
-  },
+  }
 
-  removeCard: (columnId, cardId) => {
+  removeCard(columnId, cardId) {
     if (columnId && cardId) {
       database()
         .ref(`/${this.boardId}/columns/${columnId}/cards`)
         .child(cardId)
         .remove()
     }
-  },
+  }
 
-  editCard: (columnId, id, content) => {
+  editCard(columnId, id, content) {
     // TODO: Replace the prompt with with Material-UI
     const newContent = prompt('Edit Card', content)
     if (newContent) {
@@ -50,9 +48,9 @@ export default {
         .child(id)
         .set({name: newContent})
     }
-  },
+  }
 
-  moveCard: (oldColumnId, newColumnId, id) => {
+  moveCard(oldColumnId, newColumnId, id) {
     let newRef = database()
       .ref(`/${this.boardId}/columns/${newColumnId}/cards`)
       .push()
@@ -66,27 +64,36 @@ export default {
         !error ? oldRef.remove() : console.error(error)
       })
     })
-  },
+  }
 
-  addColumn: columnName => {
+  mergeCard(sourceCard, destinationCard) {
+    debugger
+    database()
+      .ref(`/${this.boardId}/columns/${destinationCard.parentId}/cards`)
+      .child(destinationCard.id)
+      .set({name: `${destinationCard.name} --- ${sourceCard.name}`})
+    this.removeCard(sourceCard.parentId, sourceCard.id)
+  }
+
+  addColumn(columnName) {
     if (columnName) {
       database()
         .ref(`/${this.boardId}/columns`)
         .push()
         .set({name: columnName})
     }
-  },
+  }
 
-  removeColumn: columnId => {
+  removeColumn(columnId) {
     if (columnId) {
       database()
         .ref(`/${this.boardId}/columns`)
         .child(columnId)
         .remove()
     }
-  },
+  }
 
-  editColumn: (id, content) => {
+  editColumn(id, content) {
     // TODO: Replace the prompt with with Material-UI
     const newContent = prompt('Edit Column', content)
     if (newContent) {
@@ -96,9 +103,9 @@ export default {
         .child('name')
         .set(newContent)
     }
-  },
+  }
 
-  voteUpCard: (columnId, cardId) => {
+  voteUpCard(columnId, cardId) {
     if (columnId && cardId) {
       database()
         .ref(`/${this.boardId}/columns/${columnId}/cards/${cardId}/votes`)
@@ -106,9 +113,9 @@ export default {
           return Number.isInteger(currentVotes) ? currentVotes + 1 : 1
         })
     }
-  },
+  }
 
-  voteDownCard: (columnId, cardId) => {
+  voteDownCard(columnId, cardId) {
     if (columnId && cardId) {
       database()
         .ref(`/${this.boardId}/columns/${columnId}/cards/${cardId}/votes`)
@@ -116,5 +123,5 @@ export default {
           return Number.isInteger(currentVotes) ? currentVotes - 1 : -1
         })
     }
-  },
+  }
 }

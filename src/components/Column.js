@@ -13,14 +13,12 @@ const cardTarget = {
     return {
       id: props.id,
       name: props.name,
+      type: 'column',
     }
   },
   hover(props, monitor) {
     const item = monitor.getItem()
-    canDropYN = item.parentId === props.id ? false : true
-    document.getElementById(item.id).style.display = canDropYN
-      ? 'none'
-      : 'block'
+    canDropYN = item.parentId !== props.id
   },
   canDrop() {
     return canDropYN
@@ -46,11 +44,13 @@ class Column extends Component {
           key={card.key}
           name={card.name}
           votes={card.votes}
+          subCards={card.subCards}
           id={card.key}
           parentId={this.props.id}
           editCard={this.props.editCard}
           removeCard={this.props.removeCard}
           moveCard={this.props.moveCard}
+          mergeCard={this.props.mergeCard}
           voteUp={this.props.voteUpCard}
           voteDown={this.props.voteDownCard}
         />
@@ -80,23 +80,29 @@ class Column extends Component {
     }
   }
 
-  render() {
+  header() {
     return this.props.connectDropTarget(
+      <h2
+        className="clearfix"
+        onDoubleClick={() => {
+          this.props.editColumn(this.props.id, this.props.name)
+        }}
+      >
+        <span style={{float: 'left'}}>{this.props.name}</span>
+
+        <RemoveColumnButton
+          removeColumn={() => this.props.removeColumn(this.props.id)}
+        />
+      </h2>,
+    )
+  }
+
+  render() {
+    return (
       <div className="column">
         {this.selectedIndicator()}
         <Paper className="column-container">
-          <h2
-            className="clearfix"
-            onDoubleClick={() => {
-              this.props.editColumn(this.props.id, this.props.name)
-            }}
-          >
-            <span style={{float: 'left'}}>{this.props.name}</span>
-
-            <RemoveColumnButton
-              removeColumn={() => this.props.removeColumn(this.props.id)}
-            />
-          </h2>
+          {this.header()}
 
           <ul className="column__card-list">
             {this.props.cards ? this.cardItems() : ''}
@@ -110,7 +116,7 @@ class Column extends Component {
             addCard={this.props.addCard}
           />
         </Paper>
-      </div>,
+      </div>
     )
   }
 }
