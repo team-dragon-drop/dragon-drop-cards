@@ -7,7 +7,7 @@ import backend from "../backend";
 import { KeyboardShortcuts } from "./KeyboardShortcuts";
 import { clamp } from "../utils";
 
-import Dialog from 'material-ui/Dialog';
+import Modal from 'material-ui/Modal';
 
 class Board extends Component {
   constructor() {
@@ -22,13 +22,7 @@ class Board extends Component {
   foo() {
     let columnData = this.state.columns[0] || [];
     return (
-      <Dialog
-        bodyStyle={{backgroundColor: 'transparent'}}
-        contentStyle={{backgroundColor: 'transparent'}}
-        titleStyle={{backgroundColor: 'transparent'}}
-        style={{backgroundColor: 'transparent'}}
-        open={true}
-      >
+      <Modal show={true} >
         <Column
           cards={columnData.cards}
           name={columnData.name}
@@ -42,7 +36,7 @@ class Board extends Component {
           editColumn={(id, name) => this.backend.editColumn(id, name)}
           removeColumn={(id) => this.backend.removeColumn(id)}
         />
-      </Dialog>
+      </Modal>
     );
   }
 
@@ -96,7 +90,7 @@ class Board extends Component {
 
     return (
       <div className="App">
-        { this.foo() }
+        { /*this.foo()*/ }
         <AppBar
           onButtonTouchTap={(columnName) => backend.addColumn(columnName)}
           loading={this.state.loading}

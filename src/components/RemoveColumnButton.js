@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import CloseIcon from 'material-ui/svg-icons/navigation/close';
+import CloseIcon from 'material-ui-icons/Close';
 import Dialog from 'material-ui/Dialog';
 import Button from 'material-ui/Button';
 import { KeyboardShortcuts } from "./KeyboardShortcuts";

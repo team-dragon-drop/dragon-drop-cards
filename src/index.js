@@ -6,7 +6,6 @@ import './styles/card.css';
 import './styles/column.css';
 import firebase from 'firebase';
 import injectTapEventPlugin from 'react-tap-event-plugin';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import { BrowserRouter as Router } from 'react-router-dom';
 
 injectTapEventPlugin();
@@ -20,10 +19,8 @@ firebase.initializeApp({
  });
 
 ReactDOM.render(
-  <MuiThemeProvider>
-    <Router>
-      <App />
-    </Router>
-  </MuiThemeProvider>,
+  <Router>
+    <App />
+  </Router>,
   document.getElementById('root')
 );

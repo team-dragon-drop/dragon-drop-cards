@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import Button from 'material-ui/Button';
 import Dialog from 'material-ui/Dialog';
 import TextField from 'material-ui/TextField';
-import { withStyles } from 'material-ui/styles';
 import { KeyboardShortcuts, KeyboardShortcutInhibitor } from "./KeyboardShortcuts";
 
 export default class AddCardButton extends Component {

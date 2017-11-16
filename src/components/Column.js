@@ -4,7 +4,7 @@ import Paper from 'material-ui/Paper';
 import Card from './Card';
 import AddCardButton from './AddCardButton';
 import RemoveColumnButton from './RemoveColumnButton';
-import KeyboardArrowDown from 'material-ui/svg-icons/hardware/keyboard-arrow-down';
+import KeyboardArrowDown from 'material-ui-icons/KeyboardArrowDown';
 
 let canDropYN = true;
 

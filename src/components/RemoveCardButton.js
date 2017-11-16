@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Dialog from 'material-ui/Dialog';
 import Button from 'material-ui/Button';
-import DeleteIcon from 'material-ui/svg-icons/action/delete';
+import DeleteIcon from 'material-ui-icons/Delete';
 import { KeyboardShortcuts } from "./KeyboardShortcuts";
 
 export default class RemoveCardButton extends Component {

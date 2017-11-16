@@ -2,13 +2,33 @@ import React, { Component } from "react";
 import Dialog from 'material-ui/Dialog';
 import Button from 'material-ui/Button';
 import TextField from 'material-ui/TextField';
-import MuiAppBar from "material-ui/AppBar";
-import LinearProgress from "material-ui/LinearProgress";
-import AddIcon from 'material-ui/svg-icons/content/add';
+import { LinearProgress } from "material-ui/Progress";
+import AddIcon from 'material-ui-icons/Add';
 import IconButton from 'material-ui/IconButton';
 import { KeyboardShortcuts, KeyboardShortcutInhibitor } from "./KeyboardShortcuts";
 
-export default class AppBar extends Component {
+import MuiAppBar from "material-ui/AppBar";
+import PropTypes from 'prop-types';
+import { withStyles } from 'material-ui/styles';
+import Toolbar from 'material-ui/Toolbar';
+import Typography from 'material-ui/Typography';
+
+
+const styles = theme => ({
+  root: {
+    marginTop: theme.spacing.unit * 3,
+    width: '100%',
+  },
+  title: {
+    flex: 1
+  },
+  menuButton: {
+    marginLeft: -12,
+    marginRight: 20,
+  },
+});
+
+class AppBar extends Component {
   state = {
     open: false,
     newColumnName: ""
@@ -58,19 +78,36 @@ export default class AppBar extends Component {
       />
     ];
 
+          // <MuiAppBar
+          //   title="Dragon Drop"
+          //   titleStyle={{textAlign: "center"}}
+          //   showMenuIconButton={false}
+          //   iconElementRight={
+          //     <IconButton><AddIcon
+          //       onTouchTap={() => this.handleOpen()}
+          //       label={this.props.buttonLabel}
+          //     /></IconButton>
+          //   }
+
+    const { classes } = this.props;
+
     return (
       <div className="app-bar">
-        <MuiAppBar
-          title="Dragon Drop"
-          titleStyle={{textAlign: "center"}}
-          showMenuIconButton={false}
-          iconElementRight={
-            <IconButton><AddIcon
-              onTouchTap={() => this.handleOpen()}
-              label={this.props.buttonLabel}
-            /></IconButton>
-          }
-        />
+        <MuiAppBar position="static">
+          <Toolbar>
+            <Typography type="title" color="inherit" align="center" className={classes.title}>
+              Dragon Drop
+            </Typography>
+            <IconButton className={classes.menuButton} color="contrast" aria-label="Menu">
+              <IconButton>
+                <AddIcon
+                  onTouchTap={() => this.handleOpen()}
+                  label={this.props.buttonLabel}
+                />
+                </IconButton>
+            </IconButton>
+          </Toolbar>
+        </MuiAppBar>
         { this.loadingIndicator() }
         <Dialog
           title="Add A New Column"
@@ -91,3 +128,9 @@ export default class AppBar extends Component {
     );
   }
 }
+
+AppBar.propTypes = {
+  classes: PropTypes.object.isRequired,
+};
+
+export default withStyles(styles)(AppBar);

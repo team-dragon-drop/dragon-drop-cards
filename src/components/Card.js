@@ -1,9 +1,10 @@
 import React from 'react';
 import { DragSource } from 'react-dnd';
 import RemoveCardButton from './RemoveCardButton';
-import ThumbsUpIcon from 'material-ui/svg-icons/action/thumb-up';
-import ThumbsDownIcon from 'material-ui/svg-icons/action/thumb-down';
-import EditIcon from 'material-ui/svg-icons/image/edit';
+import ThumbsUpIcon from 'material-ui-icons/ThumbUp';
+import ThumbsDownIcon from 'material-ui-icons/ThumbDown';
+import EditIcon from 'material-ui-icons/Edit';
+import CollectionIcon from 'material-ui-icons/Folder';
 
 const cardSource = {
   beginDrag(props) {
