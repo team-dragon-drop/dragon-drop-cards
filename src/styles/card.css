@@ -16,6 +16,27 @@
   margin-left: 10px;
   color: #999;
 }
+.card__drawer {
+  display: flex;
+  flex-direction: column;
+}
+.card__subcard {
+  background-color: white;
+  border-radius: 3px;
+  border-bottom: 1px solid #ccc;
+  margin-bottom: 5px;
+}
+.card__subcard:last-child {
+  margin: 0;
+}
+.card__subcards {
+  display: flex;
+  flex-direction: column;
+  background-color: #ebebeb;
+  border-left: 1px solid #ccc;
+  border-right: 1px solid #ccc;
+  padding: 15px;
+}
 .card__actions {
   width: 100%;
   display: inline-flex;
@@ -31,4 +52,17 @@
   width: 15px !important;
   height: 15px !important;
   color: lightgrey !important;
+}
+.card__info {
+  display: flex;
+}
+.card__icon {
+  display: inline-flex;
+  align-items: center;
+  margin-right: 5px;
+}
+.card__icon svg {
+  width: 15px !important;
+  height: 15px !important;
+  color: #999 !important;
 }

@@ -3,7 +3,7 @@ import Column from './Column'
 import HTML5Backend from 'react-dnd-html5-backend'
 import AppBar from './AppBar'
 import {DragDropContext} from 'react-dnd'
-import backend from '../backend'
+import Backend from '../backend'
 import {KeyboardShortcuts} from './KeyboardShortcuts'
 import {clamp} from '../utils'
 
@@ -18,7 +18,7 @@ class Board extends Component {
   }
 
   componentDidMount() {
-    backend.init(this.props.boardId, val => {
+    this.backend = new Backend(this.props.boardId, val => {
       this.setState({
         loading: false,
         columns: val ? val.columns : [],
@@ -53,18 +53,23 @@ class Board extends Component {
           id={key}
           cards={columnData[key].cards}
           name={columnData[key].name}
-          addCard={name => backend.addCard(key, name)}
+          addCard={name => this.backend.addCard(key, name)}
           editCard={(columnId, id, name) =>
-            backend.editCard(columnId, id, name)
+            this.backend.editCard(columnId, id, name)
           }
-          removeCard={(columnId, id) => backend.removeCard(columnId, id)}
+          removeCard={(columnId, id) => this.backend.removeCard(columnId, id)}
           moveCard={(oldColumnId, newColumnId, id) =>
-            backend.moveCard(oldColumnId, newColumnId, id)
+            this.backend.moveCard(oldColumnId, newColumnId, id)
           }
-          voteUpCard={(columnId, id) => backend.voteUpCard(columnId, id)}
-          voteDownCard={(columnId, id) => backend.voteDownCard(columnId, id)}
-          editColumn={(id, name) => backend.editColumn(id, name)}
-          removeColumn={id => backend.removeColumn(id)}
+          mergeCard={(sourceCard, destinationCard) =>
+            this.backend.mergeCard(sourceCard, destinationCard)
+          }
+          voteUpCard={(columnId, id) => this.backend.voteUpCard(columnId, id)}
+          voteDownCard={(columnId, id) =>
+            this.backend.voteDownCard(columnId, id)
+          }
+          editColumn={(id, name) => this.backend.editColumn(id, name)}
+          removeColumn={id => this.backend.removeColumn(id)}
           selected={index === this.state.selectedColumn}
         />
       )
@@ -73,7 +78,7 @@ class Board extends Component {
     return (
       <div className="App">
         <AppBar
-          onButtonTouchTap={columnName => backend.addColumn(columnName)}
+          onButtonTouchTap={columnName => this.backend.addColumn(columnName)}
           loading={this.state.loading}
         />
         <h2 className="board-title">{this.state.name}</h2>
