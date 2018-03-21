@@ -46,7 +46,7 @@ export default class Backend {
       database()
         .ref(`/${this.boardId}/columns/${columnId}/cards`)
         .child(id)
-        .set({name: newContent})
+        .update({name: newContent})
     }
   }
 
@@ -67,11 +67,27 @@ export default class Backend {
   }
 
   mergeCard(sourceCard, destinationCard) {
-    debugger
-    database()
+    console.log(sourceCard)
+    console.log(destinationCard)
+    const cardRef = database()
       .ref(`/${this.boardId}/columns/${destinationCard.parentId}/cards`)
       .child(destinationCard.id)
-      .set({name: `${destinationCard.name} --- ${sourceCard.name}`})
+
+    if (!destinationCard.subCards) {
+      cardRef
+        .child('subCards')
+        .push()
+        .set({
+          name: destinationCard.name,
+          votes: destinationCard.votes,
+        })
+    }
+
+    cardRef.update({name: destinationCard.name.replace(/\.*$/, '...')})
+    cardRef
+      .child('subCards')
+      .push()
+      .set(sourceCard)
     this.removeCard(sourceCard.parentId, sourceCard.id)
   }
 

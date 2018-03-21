@@ -12,7 +12,10 @@ const cardSource = {
     return {
       id: props.id,
       name: props.name,
+      votes: props.votes || 0,
       parentId: props.parentId,
+      subCards: props.subCards || [], // FIXME: Not actually an array
+      type: 'card',
     }
   },
 
@@ -44,7 +47,9 @@ const cardTarget = {
     return {
       id: props.id,
       name: props.name,
+      votes: props.votes || 0,
       parentId: props.parentId,
+      subCards: props.subCards || [], // FIXME: Not actually an array
       type: 'card',
     }
   },
@@ -85,9 +90,30 @@ class Card extends React.Component {
     ))
   }
 
+  votes() {
+    const {votes, subCards} = this.props
+    if (!subCards) return votes
+
+    let total = votes || 0
+
+    Object.keys(subCards).forEach(x => {
+      total += subCards[x].votes
+    })
+
+    return total > 0 ? `+${total}` : `${total}`
+
+    // if (total > 0) ......
+
+    // return (
+    //   <span
+    //     className="card__votes"
+    //     style={{display: hasVotes ? 'inline-block' : 'none'}}
+    //   />
+    // )
+  }
+
   render() {
-    const hasVotes =
-      Number.isInteger(this.props.votes) && this.props.votes !== 0
+    // const hasVotes = Number.isInteger(this.votes()) && votes !== 0
 
     return this.props.connectDropTarget(
       this.props.connectDragSource(
@@ -106,23 +132,19 @@ class Card extends React.Component {
               )}
               <span>{this.props.name}</span>
             </div>
-            <div>
-              <span
-                className="card__votes"
-                style={{display: hasVotes ? 'inline-block' : 'none'}}
-              >
-                {this.props.votes > 0
-                  ? `+${this.props.votes}`
-                  : `${this.props.votes}`}
-              </span>
-            </div>
+            <div>{this.votes()}</div>
           </div>
 
           <div
             className="card__drawer"
             style={{display: this.state.expanded ? 'flex' : 'none'}}
           >
-            <div className="card__subcards">{this.subCards()}</div>
+            <div
+              style={{display: this.subCards() ? 'flex' : 'none'}}
+              className="card__subcards"
+            >
+              {this.subCards()}
+            </div>
 
             <div className="card__actions">
               <span
