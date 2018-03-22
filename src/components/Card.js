@@ -92,24 +92,22 @@ class Card extends React.Component {
 
   votes() {
     const {votes, subCards} = this.props
-    if (!subCards) return votes
-
     let total = votes || 0
 
-    Object.keys(subCards).forEach(x => {
-      total += subCards[x].votes
-    })
+    if (subCards) {
+      Object.keys(subCards).forEach(x => {
+        total += subCards[x].votes
+      })
+    }
 
-    return total > 0 ? `+${total}` : `${total}`
-
-    // if (total > 0) ......
-
-    // return (
-    //   <span
-    //     className="card__votes"
-    //     style={{display: hasVotes ? 'inline-block' : 'none'}}
-    //   />
-    // )
+    return (
+      <span
+        className="card__votes"
+        style={{display: total !== 0 ? 'inline-block' : 'none'}}
+      >
+        {total > 0 ? `+${total}` : `${total}`}
+      </span>
+    )
   }
 
   render() {
