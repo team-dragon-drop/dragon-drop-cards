@@ -59,8 +59,6 @@ class FirebaseBackend {
   }
 
   mergeCard(sourceCard, destinationCard) {
-    console.log(sourceCard)
-    console.log(destinationCard)
     const cardRef = database()
       .ref(`/${this.boardId}/columns/${destinationCard.parentId}/cards`)
       .child(destinationCard.id)

@@ -6,6 +6,7 @@ import ThumbsDownIcon from 'material-ui/svg-icons/action/thumb-down'
 import EditIcon from 'material-ui/svg-icons/image/edit'
 import CollectionIcon from 'material-ui/svg-icons/file/folder'
 import SubCard from './SubCard'
+import {BackendActions} from '../backend'
 
 const cardSource = {
   beginDrag(props) {
@@ -24,9 +25,9 @@ const cardSource = {
     const dropResult = monitor.getDropResult()
     if (!dropResult) return
     if (dropResult.type === 'card') {
-      props.mergeCard(item, dropResult)
+      props.onMergeCard(item, dropResult)
     } else if (dropResult.type === 'column') {
-      props.moveCard(item.parentId, dropResult.id, item.id)
+      props.onMoveCard(item.parentId, dropResult.id, item.id)
     }
   },
 }
@@ -111,77 +112,69 @@ class Card extends React.Component {
   }
 
   render() {
-    // const hasVotes = Number.isInteger(this.votes()) && votes !== 0
+    const {connectDropTarget, connectDragSource} = this.props
+    const {key, id, subCards, name, parentId} = this.props
 
-    return this.props.connectDropTarget(
-      this.props.connectDragSource(
-        <li key={this.props.key} id={this.props.id} className="card">
-          <div
-            className="card__head"
-            onClick={() => {
-              this.setState({...this.state, expanded: !this.state.expanded})
-            }}
-          >
-            <div className="card__info">
-              {this.props.subCards && (
-                <span className="card__icon">
-                  <CollectionIcon />
-                </span>
-              )}
-              <span>{this.props.name}</span>
-            </div>
-            <div>{this.votes()}</div>
-          </div>
+    return (
+      <BackendActions>
+        {backend =>
+          connectDropTarget(
+            connectDragSource(
+              <li key={key} id={id} className="card">
+                <div
+                  className="card__head"
+                  onClick={() => {
+                    this.setState({
+                      ...this.state,
+                      expanded: !this.state.expanded,
+                    })
+                  }}
+                >
+                  <div className="card__info">
+                    {subCards && (
+                      <span className="card__icon">
+                        <CollectionIcon />
+                      </span>
+                    )}
+                    <span>{name}</span>
+                  </div>
+                  <div>{this.votes()}</div>
+                </div>
 
-          <div
-            className="card__drawer"
-            style={{display: this.state.expanded ? 'flex' : 'none'}}
-          >
-            <div
-              style={{display: this.subCards() ? 'flex' : 'none'}}
-              className="card__subcards"
-            >
-              {this.subCards()}
-            </div>
+                <div
+                  className="card__drawer"
+                  style={{display: this.state.expanded ? 'flex' : 'none'}}
+                >
+                  <div
+                    style={{display: this.subCards() ? 'flex' : 'none'}}
+                    className="card__subcards"
+                  >
+                    {this.subCards()}
+                  </div>
 
-            <div className="card__actions">
-              <span
-                onClick={e => {
-                  this.props.voteUp(this.props.parentId, this.props.id)
-                }}
-              >
-                <ThumbsUpIcon />
-              </span>
+                  <div className="card__actions">
+                    <span onClick={e => backend.voteUpCard(parentId, id)}>
+                      <ThumbsUpIcon />
+                    </span>
 
-              <span
-                onClick={e => {
-                  this.props.voteDown(this.props.parentId, this.props.id)
-                }}
-              >
-                <ThumbsDownIcon />
-              </span>
+                    <span onClick={e => backend.voteDownCard(parentId, id)}>
+                      <ThumbsDownIcon />
+                    </span>
 
-              <span
-                onClick={e => {
-                  this.props.editCard(
-                    this.props.parentId,
-                    this.props.id,
-                    this.props.name,
-                  )
-                }}
-              >
-                <EditIcon />
-              </span>
+                    <span onClick={e => backend.editCard(parentId, id, name)}>
+                      <EditIcon />
+                    </span>
 
-              <RemoveCardButton
-                removeCard={() =>
-                  this.props.removeCard(this.props.parentId, this.props.id)
-                }
-              />
-            </div>
-          </div>
-        </li>,
-      ),
+                    <RemoveCardButton
+                      removeCard={() => backend.removeCard(parentId, id)}
+                    />
+                  </div>
+                </div>
+              </li>,
+            ),
+          )
+        }
+      </BackendActions>
     )
   }
 }

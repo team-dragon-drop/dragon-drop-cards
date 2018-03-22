@@ -27,30 +27,6 @@ class Board extends Component {
     this.setState({selectedColumn: null})
   }
 
-  columnElements(columnData) {
-    return Object.keys(columnData).map((key, index) => (
-      <Column
-        key={key}
-        id={key}
-        cards={columnData[key].cards}
-        name={columnData[key].name}
-        editCard={(columnId, id, name) =>
-          this.backend.editCard(columnId, id, name)
-        }
-        removeCard={(columnId, id) => this.backend.removeCard(columnId, id)}
-        moveCard={(oldColumnId, newColumnId, id) =>
-          this.backend.moveCard(oldColumnId, newColumnId, id)
-        }
-        mergeCard={(sourceCard, destinationCard) =>
-          this.backend.mergeCard(sourceCard, destinationCard)
-        }
-        voteUpCard={(columnId, id) => this.backend.voteUpCard(columnId, id)}
-        voteDownCard={(columnId, id) => this.backend.voteDownCard(columnId, id)}
-        selected={index === this.state.selectedColumn}
-      />
-    ))
-  }
-
   render() {
     return (
       <FirebaseProvider firebaseKey={this.props.boardId}>
@@ -65,7 +41,17 @@ class Board extends Component {
 
             <h2 className="board-title">{state.name}</h2>
 
-            <div className="columns">{this.columnElements(state.columns)}</div>
+            <div className="columns">
+              {Object.keys(state.columns).map((key, index) => (
+                <Column
+                  key={key}
+                  id={key}
+                  cards={state.columns[key].cards}
+                  name={state.columns[key].name}
+                  selected={index === this.state.selectedColumn}
+                />
+              ))}
+            </div>
 
             <KeyboardShortcuts
               keys={{
