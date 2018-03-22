@@ -37,14 +37,16 @@ function collect(connect, monitor) {
 
 class Column extends Component {
   cardItems() {
-    const cardData = this.props.cards
-    return Object.keys(cardData).map(key => {
-      return (
+    const cardsObject = this.props.cards
+    return Object.keys(cardsObject)
+      .map(key => ({...cardsObject[key], key}))
+      .sort((a, b) => (a.votes ? a.votes < b.votes : 1))
+      .map(card => (
         <Card
-          key={key}
-          name={cardData[key].name}
-          votes={cardData[key].votes}
-          id={key}
+          key={card.key}
+          name={card.name}
+          votes={card.votes}
+          id={card.key}
           parentId={this.props.id}
           editCard={this.props.editCard}
           removeCard={this.props.removeCard}
@@ -52,8 +54,7 @@ class Column extends Component {
           voteUp={this.props.voteUpCard}
           voteDown={this.props.voteDownCard}
         />
-      )
-    })
+      ))
   }
 
   renderPlaceholder() {
