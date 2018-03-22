@@ -40,7 +40,7 @@ class Column extends Component {
     const cardsObject = this.props.cards
     return Object.keys(cardsObject)
       .map(key => ({...cardsObject[key], key}))
-      .sort((a, b) => (a.votes ? a.votes < b.votes : 1))
+      .sort((a, b) => (a.votes || 0) < (b.votes || 0))
       .map(card => (
         <Card
           key={card.key}
