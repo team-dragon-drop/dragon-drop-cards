@@ -35,29 +35,6 @@ function collect(connect, monitor) {
 }
 
 class Column extends Component {
-  cardItems() {
-    const cardsObject = this.props.cards
-    return Object.keys(cardsObject)
-      .map(key => ({...cardsObject[key], key}))
-      .sort((a, b) => (a.votes || 0) < (b.votes || 0))
-      .map(card => (
-        <Card
-          key={card.key}
-          name={card.name}
-          votes={card.votes}
-          subCards={card.subCards}
-          id={card.key}
-          parentId={this.props.id}
-          editCard={this.props.editCard}
-          removeCard={this.props.removeCard}
-          moveCard={this.props.moveCard}
-          mergeCard={this.props.mergeCard}
-          voteUp={this.props.voteUpCard}
-          voteDown={this.props.voteDownCard}
-        />
-      ))
-  }
-
   renderPlaceholder() {
     return (
       <li
@@ -105,7 +82,26 @@ class Column extends Component {
               )}
 
               <ul className="column__card-list">
-                {cards ? this.cardItems() : ''}
+                {cards &&
+                  Object.keys(cards)
+                    .map(key => ({...cards[key], key}))
+                    .sort((a, b) => (a.votes || 0) < (b.votes || 0))
+                    .map(card => (
+                      <Card
+                        key={card.key}
+                        name={card.name}
+                        votes={card.votes}
+                        subCards={card.subCards}
+                        id={card.key}
+                        parentId={this.props.id}
+                        onMergeCard={(item, dropResult) =>
+                          backend.mergeCard(item, dropResult)
+                        }
+                        onMoveCard={(oldColumnId, newColumnId, id) =>
+                          backend.moveCard(oldColumnId, newColumnId, id)
+                        }
+                      />
+                    ))}
                 {isOver && canDrop && this.renderPlaceholder()}
               </ul>
 
