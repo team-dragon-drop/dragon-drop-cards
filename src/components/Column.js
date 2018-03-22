@@ -1,10 +1,11 @@
 import React, {Component} from 'react'
 import {DropTarget} from 'react-dnd'
 import Paper from 'material-ui/Paper'
+import KeyboardArrowDown from 'material-ui/svg-icons/hardware/keyboard-arrow-down'
 import Card from './Card'
 import AddCardButton from './AddCardButton'
 import RemoveColumnButton from './RemoveColumnButton'
-import KeyboardArrowDown from 'material-ui/svg-icons/hardware/keyboard-arrow-down'
+import {BackendActions} from '../backend'
 
 let canDropYN = true
 
@@ -80,43 +81,42 @@ class Column extends Component {
     }
   }
 
-  header() {
-    return this.props.connectDropTarget(
-      <h2
-        className="clearfix"
-        onDoubleClick={() => {
-          this.props.editColumn(this.props.id, this.props.name)
-        }}
-      >
-        <span style={{float: 'left'}}>{this.props.name}</span>
-
-        <RemoveColumnButton
-          removeColumn={() => this.props.removeColumn(this.props.id)}
-        />
-      </h2>,
-    )
-  }
-
   render() {
+    const {id, name, cards} = this.props
+    const {connectDropTarget, isOver, canDrop, selected} = this.props
+
     return (
-      <div className="column">
-        {this.selectedIndicator()}
-        <Paper className="column-container">
-          {this.header()}
+      <BackendActions>
+        {backend => (
+          <div className="column">
+            {this.selectedIndicator()}
 
-          <ul className="column__card-list">
-            {this.props.cards ? this.cardItems() : ''}
-            {this.props.isOver &&
-              this.props.canDrop &&
-              this.renderPlaceholder()}
-          </ul>
+            <Paper className="column-container">
+              {connectDropTarget(
+                <h2
+                  className="clearfix"
+                  onDoubleClick={() => backend.editColumn(id, name)}
+                >
+                  <span style={{float: 'left'}}>{name}</span>
+                  <RemoveColumnButton
+                    onClick={() => backend.removeColumn(id)}
+                  />
+                </h2>,
+              )}
 
-          <AddCardButton
-            keyboardShortcutsActive={this.props.selected}
-            addCard={this.props.addCard}
-          />
-        </Paper>
-      </div>
+              <ul className="column__card-list">
+                {cards ? this.cardItems() : ''}
+                {isOver && canDrop && this.renderPlaceholder()}
+              </ul>
+
+              <AddCardButton
+                keyboardShortcutsActive={selected}
+                onSubmit={newCardName => backend.addCard(id, newCardName)}
+              />
+            </Paper>
+          </div>
+        )}
+      </BackendActions>
     )
   }
 }

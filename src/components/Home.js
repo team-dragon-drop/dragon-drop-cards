@@ -1,28 +1,26 @@
-import React, { Component } from 'react';
-import { Redirect } from 'react-router';
-import RaisedButton from 'material-ui/RaisedButton';
-import TextField from 'material-ui/TextField';
-import "../styles/homepage.css";
-import Logo from "./Logo";
-import backend from "../backend";
-import { generateDragonName } from "../dragonGenerator";
+import React, {Component} from 'react'
+import {Redirect} from 'react-router'
+import RaisedButton from 'material-ui/RaisedButton'
+import TextField from 'material-ui/TextField'
+import '../styles/homepage.css'
+import Logo from './Logo'
+import {newBoardKey} from '../backend'
+import {generateDragonName} from '../dragonGenerator'
 
 export default class Home extends Component {
   constructor() {
-    super();
+    super()
     this.state = {
-      boardName: generateDragonName()
-    };
+      boardName: generateDragonName(),
+    }
   }
 
   handleChange(event) {
-    this.setState({ boardName: event.target.value });
+    this.setState({boardName: event.target.value})
   }
 
   newBoard() {
-    this.setState({
-      newUrl: `/b/${backend.newBoard(this.state.boardName)}`
-    });
+    this.setState({newUrl: `/b/${newBoardKey(this.state.boardName)}`})
   }
 
   render() {
@@ -34,16 +32,16 @@ export default class Home extends Component {
           <TextField
             floatingLabelText="Board Name"
             fullWidth={true}
-            inputStyle={{ color: "white" }}
-            floatingLabelStyle={{ color: "white" }}
-            value={ this.state.boardName }
-            onChange={ event => this.handleChange(event) }
+            inputStyle={{color: 'white'}}
+            floatingLabelStyle={{color: 'white'}}
+            value={this.state.boardName}
+            onChange={event => this.handleChange(event)}
           />
           <RaisedButton onClick={() => this.newBoard()}>
             Create New Board
           </RaisedButton>
         </div>
-        { this.state.newUrl && <Redirect push to={this.state.newUrl} /> }
+        {this.state.newUrl && <Redirect push to={this.state.newUrl} />}
       </div>
     )
   }
