@@ -1,26 +1,26 @@
-import { database } from "firebase";
+import {database} from 'firebase'
 
 export default {
   boardId: null,
 
   init: (boardId, onChangeCallback) => {
-    this.boardId = boardId;
-    database().ref(`/${boardId}`).on("value", snapshot => {
-      onChangeCallback(snapshot.val());
-    });
+    this.boardId = boardId
+    database()
+      .ref(`/${boardId}`)
+      .on('value', snapshot => {
+        onChangeCallback(snapshot.val())
+      })
   },
 
-  newBoard: (boardName) => {
-    const ref = database().ref('/').push();
+  newBoard: boardName => {
+    const ref = database()
+      .ref('/')
+      .push()
     ref.set({
       name: boardName,
-      columns: [
-        {name: "Good"},
-        {name: "Bad"},
-        {name: "Questions"}
-      ]
-    });
-    return ref.key;
+      columns: [{name: 'Good'}, {name: 'Bad'}, {name: 'Questions'}],
+    })
+    return ref.key
   },
 
   addCard: (columnId, cardName) => {
@@ -28,7 +28,7 @@ export default {
       database()
         .ref(`/${this.boardId}/columns/${columnId}/cards/`)
         .push()
-        .set({ name: cardName });
+        .set({name: cardName})
     }
   },
 
@@ -37,18 +37,18 @@ export default {
       database()
         .ref(`/${this.boardId}/columns/${columnId}/cards`)
         .child(cardId)
-        .remove();
+        .remove()
     }
   },
 
   editCard: (columnId, id, content) => {
     // TODO: Replace the prompt with with Material-UI
-    const newContent = prompt("Edit Card", content);
+    const newContent = prompt('Edit Card', content)
     if (newContent) {
       database()
         .ref(`/${this.boardId}/columns/${columnId}/cards`)
         .child(id)
-        .set({ name: newContent });
+        .set({name: newContent})
     }
   },
 
@@ -61,40 +61,40 @@ export default {
       .ref(`/${this.boardId}/columns/${oldColumnId}/cards`)
       .child(id)
 
-    oldRef.once("value", function(snap) {
+    oldRef.once('value', function(snap) {
       newRef.set(snap.val(), function(error) {
-        !error ? oldRef.remove() : console.error(error);
-      });
-    });
+        !error ? oldRef.remove() : console.error(error)
+      })
+    })
   },
 
-  addColumn: (columnName) => {
+  addColumn: columnName => {
     if (columnName) {
       database()
         .ref(`/${this.boardId}/columns`)
         .push()
-        .set({ name: columnName });
+        .set({name: columnName})
     }
   },
 
-  removeColumn: (columnId) => {
+  removeColumn: columnId => {
     if (columnId) {
       database()
         .ref(`/${this.boardId}/columns`)
         .child(columnId)
-        .remove();
+        .remove()
     }
   },
 
   editColumn: (id, content) => {
     // TODO: Replace the prompt with with Material-UI
-    const newContent = prompt('Edit Column', content);
+    const newContent = prompt('Edit Column', content)
     if (newContent) {
       database()
         .ref(`/${this.boardId}/columns`)
         .child(id)
-        .child("name")
-        .set(newContent);
+        .child('name')
+        .set(newContent)
     }
   },
 
@@ -103,7 +103,7 @@ export default {
       database()
         .ref(`/${this.boardId}/columns/${columnId}/cards/${cardId}/votes`)
         .transaction(currentVotes => {
-          return Number.isInteger(currentVotes) ? currentVotes + 1 : 0;
+          return Number.isInteger(currentVotes) ? currentVotes + 1 : 0
         })
     }
   },
@@ -113,9 +113,8 @@ export default {
       database()
         .ref(`/${this.boardId}/columns/${columnId}/cards/${cardId}/votes`)
         .transaction(currentVotes => {
-          return Number.isInteger(currentVotes) ? currentVotes - 1 : 0;
+          return Number.isInteger(currentVotes) ? currentVotes - 1 : 0
         })
     }
   },
-
 }
