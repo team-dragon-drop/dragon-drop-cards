@@ -103,7 +103,7 @@ export default {
       database()
         .ref(`/${this.boardId}/columns/${columnId}/cards/${cardId}/votes`)
         .transaction(currentVotes => {
-          return Number.isInteger(currentVotes) ? currentVotes + 1 : 0
+          return Number.isInteger(currentVotes) ? currentVotes + 1 : 1
         })
     }
   },
@@ -113,7 +113,7 @@ export default {
       database()
         .ref(`/${this.boardId}/columns/${columnId}/cards/${cardId}/votes`)
         .transaction(currentVotes => {
-          return Number.isInteger(currentVotes) ? currentVotes - 1 : 0
+          return Number.isInteger(currentVotes) ? currentVotes - 1 : -1
         })
     }
   },
