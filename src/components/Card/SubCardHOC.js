@@ -9,7 +9,13 @@ const cardSource = {
       id: props.id,
       name: props.name,
       votes: props.votes || 0,
-      parentId: props.parentId,
+      columnId: props.columnId,
+      parentCardId: props.parentCardId,
+      refSpec: {
+        columnId: props.parentId,
+        parentCardId: props.parentCardId,
+        cardId: props.id,
+      },
       subCards: props.subCards || [], // FIXME: Not actually an array
       type: 'card',
     }

@@ -42,14 +42,12 @@ class FirebaseBackend {
     }
   }
 
-  moveCard(oldColumnId, newColumnId, id) {
+  moveCard(oldRefSpec, newRefSpec) {
     let newRef = database()
-      .ref(`/${this.boardId}/columns/${newColumnId}/cards`)
+      .ref(`${this._buildRef(newRefSpec)}/cards`)
       .push()
 
-    let oldRef = database()
-      .ref(`/${this.boardId}/columns/${oldColumnId}/cards`)
-      .child(id)
+    let oldRef = database().ref(this._buildRef(oldRefSpec))
 
     oldRef.once('value', function(snap) {
       newRef.set(snap.val(), function(error) {
@@ -59,12 +57,12 @@ class FirebaseBackend {
   }
 
   mergeCard(sourceCard, destinationCard) {
-    const cardRef = database()
-      .ref(`/${this.boardId}/columns/${destinationCard.parentId}/cards`)
+    const parentCardRef = database()
+      .ref(`/${this.boardId}/columns/${destinationCard.columnId}/cards`)
       .child(destinationCard.id)
 
     if (!destinationCard.subCards) {
-      cardRef
+      parentCardRef
         .child('subCards')
         .push()
         .set({
@@ -73,12 +71,12 @@ class FirebaseBackend {
         })
     }
 
-    cardRef.update({name: destinationCard.name.replace(/\.*$/, '...')})
-    cardRef
+    parentCardRef.update({name: destinationCard.name.replace(/\.*$/, '...')})
+    parentCardRef
       .child('subCards')
       .push()
-      .set(sourceCard)
-    this.removeCard(sourceCard.parentId, sourceCard.id)
+      .set({name: sourceCard.name, votes: sourceCard.votes})
+    this.removeCard(sourceCard.columnId, sourceCard.id)
   }
 
   addColumn(columnName) {
@@ -111,23 +109,26 @@ class FirebaseBackend {
     }
   }
 
-  voteCard(votes, columnId, cardId, subCardId) {
-    const ref = this._buildCardRef(columnId, cardId, subCardId)
+  voteCard(refSpec, votes) {
     database()
-      .ref(`${ref}/votes`)
+      .ref(`${this._buildRef(refSpec)}/votes`)
       .transaction(currentVotes => {
         return Number.isInteger(currentVotes) ? currentVotes + votes : votes
       })
   }
 
-  _buildCardRef(columnId, cardId, subCardId) {
-    let cardRef
-    if (columnId && cardId && subCardId) {
-      cardRef = `/columns/${columnId}/cards/${cardId}/subCards/${subCardId}`
-    } else if (columnId && cardId) {
-      cardRef = `/columns/${columnId}/cards/${cardId}`
+  _buildRef(refSpec) {
+    let ref = this.boardId
+    if (refSpec.columnId) {
+      ref += `/columns/${refSpec.columnId}`
+      if (refSpec.cardId) {
+        ref += `/cards/${refSpec.cardId}`
+        if (refSpec.subCardId) {
+          ref += `/subCards/${refSpec.subCardId}`
+        }
+      }
     }
-    return `${this.boardId}/${cardRef}`
+    return ref
   }
 }
 
@@ -161,7 +162,7 @@ export class FirebaseProvider extends Component {
     const {backend} = this.state
     return (
       <Broadcast channel="backend" value={backend}>
-        {render(this.state)}
+        {render(this.state, backend)}
       </Broadcast>
     )
   }

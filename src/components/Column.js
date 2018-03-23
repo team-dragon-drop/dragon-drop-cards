@@ -14,12 +14,14 @@ const cardTarget = {
     return {
       id: props.id,
       name: props.name,
+      columnId: props.id,
+      refSpec: {columnId: props.id},
       type: 'column',
     }
   },
   hover(props, monitor) {
     const item = monitor.getItem()
-    canDropYN = item.parentId !== props.id
+    canDropYN = item.columnId !== props.id
   },
   canDrop() {
     return canDropYN
@@ -79,24 +81,27 @@ class Column extends Component {
                   Object.keys(cards)
                     .map(id => ({...cards[id], id}))
                     .sort((a, b) => (a.votes || 0) < (b.votes || 0))
-                    .map(card => (
-                      <Card
-                        key={card.id}
-                        id={card.id}
-                        name={card.name}
-                        votes={card.votes}
-                        subCards={card.subCards}
-                        parentId={id}
-                        onMergeCard={(card, targetCard) =>
-                          backend.mergeCard(card, targetCard)
-                        }
-                        onMoveCard={(oldColumnId, newColumnId, id) =>
-                          backend.moveCard(oldColumnId, newColumnId, id)
-                        }
-                        onVoteUp={() => backend.voteCard(+1, id, card.id)}
-                        onVoteDown={() => backend.voteCard(-1, id, card.id)}
-                      />
-                    ))}
+                    .map(card => {
+                      const refSpec = {columnId: id, cardId: card.id}
+                      return (
+                        <Card
+                          key={card.id}
+                          id={card.id}
+                          name={card.name}
+                          votes={card.votes}
+                          subCards={card.subCards}
+                          columnId={id}
+                          onMergeCard={(card, targetCard) =>
+                            backend.mergeCard(card, targetCard)
+                          }
+                          onMoveCard={(oldRefSpec, newRefSpec) =>
+                            backend.moveCard(oldRefSpec, newRefSpec)
+                          }
+                          onVoteUp={() => backend.voteCard(refSpec, +1)}
+                          onVoteDown={() => backend.voteCard(refSpec, -1)}
+                        />
+                      )
+                    })}
                 {isOver && canDrop && this.renderPlaceholder()}
               </ul>
 
