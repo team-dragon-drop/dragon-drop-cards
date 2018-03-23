@@ -10,16 +10,10 @@ import {clamp} from '../utils'
 class Board extends Component {
   state = {selectedColumn: null}
 
-  incrementSelectedColumn() {
-    const range = [0, Object.keys(this.state.columns).length - 1]
-    const target =
-      this.state.selectedColumn === null ? 0 : this.state.selectedColumn + 1
-    this.setState({selectedColumn: clamp(target, range)})
-  }
-
-  decrementSelectedColumn() {
-    const range = [0, Object.keys(this.state.columns).length - 1]
-    const target = this.state.selectedColumn - 1
+  incrementColumn(columns, increment) {
+    const {selectedColumn} = this.state
+    const target = selectedColumn === null ? 0 : selectedColumn + increment
+    const range = [0, Object.keys(columns).length - 1]
     this.setState({selectedColumn: clamp(target, range)})
   }
 
@@ -42,12 +36,12 @@ class Board extends Component {
             <h2 className="board-title">{state.name}</h2>
 
             <div className="columns">
-              {Object.keys(state.columns).map((key, index) => (
+              {Object.keys(state.columns).map((id, index) => (
                 <Column
-                  key={key}
-                  id={key}
-                  cards={state.columns[key].cards}
-                  name={state.columns[key].name}
+                  key={id}
+                  id={id}
+                  cards={state.columns[id].cards}
+                  name={state.columns[id].name}
                   selected={index === this.state.selectedColumn}
                 />
               ))}
@@ -55,11 +49,11 @@ class Board extends Component {
 
             <KeyboardShortcuts
               keys={{
-                27: () => this.clearSelectedColumn(), // ESC
-                37: () => this.decrementSelectedColumn(), // Left
-                39: () => this.incrementSelectedColumn(), // Right
-                72: () => this.decrementSelectedColumn(), // h
-                76: () => this.incrementSelectedColumn(), // l
+                27: () => this.clearSelectedColumn(null), // ESC
+                37: () => this.incrementColumn(state.columns, -1), // Left
+                39: () => this.incrementColumn(state.columns, +1), // Right
+                72: () => this.incrementColumn(state.columns, -1), // h
+                76: () => this.incrementColumn(state.columns, +1), // l
               }}
             />
           </div>

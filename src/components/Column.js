@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import {DropTarget} from 'react-dnd'
 import Paper from 'material-ui/Paper'
 import KeyboardArrowDown from 'material-ui/svg-icons/hardware/keyboard-arrow-down'
-import Card from './Card'
+import {Card} from './Card'
 import AddCardButton from './AddCardButton'
 import RemoveColumnButton from './RemoveColumnButton'
 import {BackendActions} from '../backend'
@@ -34,6 +34,10 @@ function collect(connect, monitor) {
   }
 }
 
+const SelectedIndicator = () => (
+  <KeyboardArrowDown color="#fff" className="column__selected-indicator" />
+)
+
 class Column extends Component {
   renderPlaceholder() {
     return (
@@ -47,26 +51,15 @@ class Column extends Component {
     )
   }
 
-  selectedIndicator() {
-    if (this.props.selected) {
-      return (
-        <KeyboardArrowDown
-          color="#fff"
-          className="column__selected-indicator"
-        />
-      )
-    }
-  }
-
   render() {
-    const {id, name, cards} = this.props
-    const {connectDropTarget, isOver, canDrop, selected} = this.props
+    const {id, name, cards, selected} = this.props
+    const {connectDropTarget, isOver, canDrop} = this.props
 
     return (
       <BackendActions>
         {backend => (
           <div className="column">
-            {this.selectedIndicator()}
+            {selected && <SelectedIndicator />}
 
             <Paper className="column-container">
               {connectDropTarget(
@@ -84,16 +77,16 @@ class Column extends Component {
               <ul className="column__card-list">
                 {cards &&
                   Object.keys(cards)
-                    .map(key => ({...cards[key], key}))
+                    .map(id => ({...cards[id], id}))
                     .sort((a, b) => (a.votes || 0) < (b.votes || 0))
                     .map(card => (
                       <Card
-                        key={card.key}
+                        key={card.id}
+                        id={card.id}
                         name={card.name}
                         votes={card.votes}
                         subCards={card.subCards}
-                        id={card.key}
-                        parentId={this.props.id}
+                        parentId={id}
                         onMergeCard={(item, dropResult) =>
                           backend.mergeCard(item, dropResult)
                         }
