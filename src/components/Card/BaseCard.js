@@ -35,6 +35,7 @@ export default class BaseCard extends React.Component {
   render() {
     const {connectDropTarget, connectDragSource} = this.props
     const {key, id, subCards, name, parentId} = this.props
+    const {onVoteUp, onVoteDown} = this.props
 
     return (
       <BackendActions>
@@ -71,23 +72,29 @@ export default class BaseCard extends React.Component {
                     className="card__subcards"
                   >
                     {subCards &&
-                      Object.keys(subCards).map(key => (
+                      Object.keys(subCards).map(subCardId => (
                         <SubCard
-                          key={key}
-                          id={key}
-                          name={subCards[key].name}
-                          votes={subCards[key].votes}
-                          parentId={this.props.id}
+                          key={subCardId}
+                          id={subCardId}
+                          name={subCards[subCardId].name}
+                          votes={subCards[subCardId].votes}
+                          parentId={id}
+                          onVoteUp={() =>
+                            backend.voteSubCard(parentId, id, subCardId, +1)
+                          }
+                          onVoteDown={() =>
+                            backend.voteSubCard(parentId, id, subCardId, -1)
+                          }
                         />
                       ))}
                   </ul>
 
                   <div className="card__actions">
-                    <span onClick={e => backend.voteUpCard(parentId, id)}>
+                    <span onClick={e => onVoteUp()}>
                       <ThumbsUpIcon />
                     </span>
 
-                    <span onClick={e => backend.voteDownCard(parentId, id)}>
+                    <span onClick={e => onVoteDown()}>
                       <ThumbsDownIcon />
                     </span>
 
