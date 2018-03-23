@@ -111,29 +111,23 @@ class FirebaseBackend {
     }
   }
 
-  voteCard(columnId, cardId, votes) {
-    if (!columnId || !cardId) return
-    this._voteCardRef(
-      `/${this.boardId}/columns/${columnId}/cards/${cardId}/votes`,
-      votes,
-    )
-  }
-
-  voteSubCard(columnId, cardId, subCardId, votes) {
-    if (!columnId || !cardId || !subCardId) return
-    this._voteCardRef(
-      this.boardId +
-        `/columns/${columnId}/cards/${cardId}/subCards/${subCardId}/votes`,
-      votes,
-    )
-  }
-
-  _voteCardRef(ref, votes) {
+  voteCard(votes, columnId, cardId, subCardId) {
+    const ref = this._buildCardRef(columnId, cardId, subCardId)
     database()
-      .ref(ref)
+      .ref(`${ref}/votes`)
       .transaction(currentVotes => {
         return Number.isInteger(currentVotes) ? currentVotes + votes : votes
       })
+  }
+
+  _buildCardRef(columnId, cardId, subCardId) {
+    let cardRef
+    if (columnId && cardId && subCardId) {
+      cardRef = `/columns/${columnId}/cards/${cardId}/subCards/${subCardId}`
+    } else if (columnId && cardId) {
+      cardRef = `/columns/${columnId}/cards/${cardId}`
+    }
+    return `${this.boardId}/${cardRef}`
   }
 }
 

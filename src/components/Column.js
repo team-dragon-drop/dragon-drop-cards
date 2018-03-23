@@ -87,14 +87,14 @@ class Column extends Component {
                         votes={card.votes}
                         subCards={card.subCards}
                         parentId={id}
-                        onMergeCard={(item, dropResult) =>
-                          backend.mergeCard(item, dropResult)
+                        onMergeCard={(card, targetCard) =>
+                          backend.mergeCard(card, targetCard)
                         }
                         onMoveCard={(oldColumnId, newColumnId, id) =>
                           backend.moveCard(oldColumnId, newColumnId, id)
                         }
-                        onVoteUp={() => backend.voteCard(id, card.id, +1)}
-                        onVoteDown={() => backend.voteCard(id, card.id, -1)}
+                        onVoteUp={() => backend.voteCard(+1, id, card.id)}
+                        onVoteDown={() => backend.voteCard(-1, id, card.id)}
                       />
                     ))}
                 {isOver && canDrop && this.renderPlaceholder()}

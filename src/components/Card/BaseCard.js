@@ -80,11 +80,12 @@ export default class BaseCard extends React.Component {
                           votes={subCards[subCardId].votes}
                           parentId={id}
                           onVoteUp={() =>
-                            backend.voteSubCard(parentId, id, subCardId, +1)
+                            backend.voteCard(+1, parentId, id, subCardId)
                           }
                           onVoteDown={() =>
-                            backend.voteSubCard(parentId, id, subCardId, -1)
+                            backend.voteCard(-1, parentId, id, subCardId)
                           }
+                          onMoveCard={() => console.log('moving subcard')}
                         />
                       ))}
                   </ul>
