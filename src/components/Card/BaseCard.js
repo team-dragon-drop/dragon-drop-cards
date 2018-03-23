@@ -34,7 +34,7 @@ export default class BaseCard extends React.Component {
 
   render() {
     const {connectDropTarget, connectDragSource} = this.props
-    const {key, id, subCards, name, parentId} = this.props
+    const {key, id, subCards, name, columnId} = this.props
     const {onVoteUp, onVoteDown} = this.props
 
     return (
@@ -72,22 +72,28 @@ export default class BaseCard extends React.Component {
                     className="card__subcards"
                   >
                     {subCards &&
-                      Object.keys(subCards).map(subCardId => (
-                        <SubCard
-                          key={subCardId}
-                          id={subCardId}
-                          name={subCards[subCardId].name}
-                          votes={subCards[subCardId].votes}
-                          parentId={id}
-                          onVoteUp={() =>
-                            backend.voteCard(+1, parentId, id, subCardId)
-                          }
-                          onVoteDown={() =>
-                            backend.voteCard(-1, parentId, id, subCardId)
-                          }
-                          onMoveCard={() => console.log('moving subcard')}
-                        />
-                      ))}
+                      Object.keys(subCards).map(subCardId => {
+                        const refSpec = {
+                          columnId: columnId,
+                          cardId: id,
+                          subCardId: subCardId,
+                        }
+                        return (
+                          <SubCard
+                            key={subCardId}
+                            id={subCardId}
+                            name={subCards[subCardId].name}
+                            votes={subCards[subCardId].votes}
+                            columnId={columnId}
+                            parentCardId={id}
+                            onVoteUp={() => backend.voteCard(refSpec, +1)}
+                            onVoteDown={() => backend.voteCard(refSpec, -1)}
+                            onMoveCard={(oldRefSpec, newRefSpec) =>
+                              backend.moveCard(oldRefSpec, newRefSpec)
+                            }
+                          />
+                        )
+                      })}
                   </ul>
 
                   <div className="card__actions">
@@ -99,12 +105,12 @@ export default class BaseCard extends React.Component {
                       <ThumbsDownIcon />
                     </span>
 
-                    <span onClick={e => backend.editCard(parentId, id, name)}>
+                    <span onClick={e => backend.editCard(columnId, id, name)}>
                       <EditIcon />
                     </span>
 
                     <RemoveCardButton
-                      removeCard={() => backend.removeCard(parentId, id)}
+                      removeCard={() => backend.removeCard(columnId, id)}
                     />
                   </div>
                 </div>

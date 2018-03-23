@@ -9,9 +9,10 @@ const cardSource = {
       id: props.id,
       name: props.name,
       votes: props.votes || 0,
-      parentId: props.parentId,
-      subCards: props.subCards || [], // FIXME: Not actually an array
-      type: 'card',
+      columnId: props.columnId,
+      refSpec: {columnId: props.columnId, cardId: props.id},
+      subCards: props.subCards,
+      type: props.subCards ? 'group' : 'card',
     }
   },
 
@@ -19,10 +20,10 @@ const cardSource = {
     const item = monitor.getItem()
     const dropResult = monitor.getDropResult()
     if (!dropResult) return
-    if (dropResult.type === 'card') {
+    if (dropResult.type === 'card' || dropResult.type === 'group') {
       props.onMergeCard(item, dropResult)
     } else if (dropResult.type === 'column') {
-      props.onMoveCard(item.parentId, dropResult.id, item.id)
+      props.onMoveCard(item.refSpec, dropResult.refSpec)
     }
   },
 }
@@ -45,9 +46,9 @@ const cardTarget = {
       id: props.id,
       name: props.name,
       votes: props.votes || 0,
-      parentId: props.parentId,
-      subCards: props.subCards || [], // FIXME: Not actually an array
-      type: 'card',
+      columnId: props.columnId,
+      subCards: props.subCards,
+      type: props.subCards ? 'group' : 'card',
     }
   },
   hover(props, monitor) {

@@ -24,12 +24,10 @@ class Board extends Component {
   render() {
     return (
       <FirebaseProvider firebaseKey={this.props.boardId}>
-        {state => (
+        {(state, backend) => (
           <div className="App">
             <AppBar
-              onButtonTouchTap={columnName =>
-                this.backend.addColumn(columnName)
-              }
+              onButtonTouchTap={columnName => backend.addColumn(columnName)}
               loading={state.loading}
             />
 
