@@ -1,10 +1,11 @@
 import React, {Component} from 'react'
 import {DropTarget} from 'react-dnd'
 import Paper from 'material-ui/Paper'
-import Card from './Card'
+import KeyboardArrowDown from 'material-ui/svg-icons/hardware/keyboard-arrow-down'
+import {Card} from './Card'
 import AddCardButton from './AddCardButton'
 import RemoveColumnButton from './RemoveColumnButton'
-import KeyboardArrowDown from 'material-ui/svg-icons/hardware/keyboard-arrow-down'
+import {BackendActions} from '../backend'
 
 let canDropYN = true
 
@@ -33,30 +34,11 @@ function collect(connect, monitor) {
   }
 }
 
-class Column extends Component {
-  cardItems() {
-    const cardsObject = this.props.cards
-    return Object.keys(cardsObject)
-      .map(key => ({...cardsObject[key], key}))
-      .sort((a, b) => (a.votes || 0) < (b.votes || 0))
-      .map(card => (
-        <Card
-          key={card.key}
-          name={card.name}
-          votes={card.votes}
-          subCards={card.subCards}
-          id={card.key}
-          parentId={this.props.id}
-          editCard={this.props.editCard}
-          removeCard={this.props.removeCard}
-          moveCard={this.props.moveCard}
-          mergeCard={this.props.mergeCard}
-          voteUp={this.props.voteUpCard}
-          voteDown={this.props.voteDownCard}
-        />
-      ))
-  }
+const SelectedIndicator = () => (
+  <KeyboardArrowDown color="#fff" className="column__selected-indicator" />
+)
 
+class Column extends Component {
   renderPlaceholder() {
     return (
       <li
@@ -69,54 +51,61 @@ class Column extends Component {
     )
   }
 
-  selectedIndicator() {
-    if (this.props.selected) {
-      return (
-        <KeyboardArrowDown
-          color="#fff"
-          className="column__selected-indicator"
-        />
-      )
-    }
-  }
-
-  header() {
-    return this.props.connectDropTarget(
-      <h2
-        className="clearfix"
-        onDoubleClick={() => {
-          this.props.editColumn(this.props.id, this.props.name)
-        }}
-      >
-        <span style={{float: 'left'}}>{this.props.name}</span>
-
-        <RemoveColumnButton
-          removeColumn={() => this.props.removeColumn(this.props.id)}
-        />
-      </h2>,
-    )
-  }
-
   render() {
+    const {id, name, cards, selected} = this.props
+    const {connectDropTarget, isOver, canDrop} = this.props
+
     return (
-      <div className="column">
-        {this.selectedIndicator()}
-        <Paper className="column-container">
-          {this.header()}
+      <BackendActions>
+        {backend => (
+          <div className="column">
+            {selected && <SelectedIndicator />}
 
-          <ul className="column__card-list">
-            {this.props.cards ? this.cardItems() : ''}
-            {this.props.isOver &&
-              this.props.canDrop &&
-              this.renderPlaceholder()}
-          </ul>
+            <Paper className="column-container">
+              {connectDropTarget(
+                <h2
+                  className="clearfix"
+                  onDoubleClick={() => backend.editColumn(id, name)}
+                >
+                  <span style={{float: 'left'}}>{name}</span>
+                  <RemoveColumnButton
+                    onClick={() => backend.removeColumn(id)}
+                  />
+                </h2>,
+              )}
 
-          <AddCardButton
-            keyboardShortcutsActive={this.props.selected}
-            addCard={this.props.addCard}
-          />
-        </Paper>
-      </div>
+              <ul className="column__card-list">
+                {cards &&
+                  Object.keys(cards)
+                    .map(id => ({...cards[id], id}))
+                    .sort((a, b) => (a.votes || 0) < (b.votes || 0))
+                    .map(card => (
+                      <Card
+                        key={card.id}
+                        id={card.id}
+                        name={card.name}
+                        votes={card.votes}
+                        subCards={card.subCards}
+                        parentId={id}
+                        onMergeCard={(item, dropResult) =>
+                          backend.mergeCard(item, dropResult)
+                        }
+                        onMoveCard={(oldColumnId, newColumnId, id) =>
+                          backend.moveCard(oldColumnId, newColumnId, id)
+                        }
+                      />
+                    ))}
+                {isOver && canDrop && this.renderPlaceholder()}
+              </ul>
+
+              <AddCardButton
+                keyboardShortcutsActive={selected}
+                onSubmit={newCardName => backend.addCard(id, newCardName)}
+              />
+            </Paper>
+          </div>
+        )}
+      </BackendActions>
     )
   }
 }

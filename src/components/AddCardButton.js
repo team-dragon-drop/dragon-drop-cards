@@ -1,34 +1,34 @@
-import React, { Component } from "react";
-import FlatButton from 'material-ui/FlatButton';
-import Dialog from 'material-ui/Dialog';
-import TextField from 'material-ui/TextField';
-import { KeyboardShortcuts, KeyboardShortcutInhibitor } from "./KeyboardShortcuts";
+import React, {Component} from 'react'
+import FlatButton from 'material-ui/FlatButton'
+import Dialog from 'material-ui/Dialog'
+import TextField from 'material-ui/TextField'
+import {KeyboardShortcuts, KeyboardShortcutInhibitor} from './KeyboardShortcuts'
 
 export default class AddCardButton extends Component {
   state = {
     open: false,
-    newCardName: ""
-  };
+    newCardName: '',
+  }
 
   handleOpen = () => {
     this.setState({open: true}, () => {
-      this.refs.newCard.focus();
-    });
-  };
+      this.refs.newCard.focus()
+    })
+  }
 
   handleClose = () => {
-    this.setState({open: false});
-  };
+    this.setState({open: false})
+  }
 
-  handleChange = (e) => {
-    this.setState({newCardName: e.target.value});
-  };
+  handleChange = e => {
+    this.setState({newCardName: e.target.value})
+  }
 
-  handleSubmit = (e) => {
-    this.props.addCard(this.state.newCardName);
-    this.handleClose();
-    this.setState({newCardName: ""});
-    e.preventDefault();
+  handleSubmit = e => {
+    this.props.onSubmit(this.state.newCardName)
+    this.handleClose()
+    this.setState({newCardName: ''})
+    e.preventDefault()
   }
 
   render() {
@@ -43,12 +43,16 @@ export default class AddCardButton extends Component {
         primary={true}
         form="addCardForm"
         type="submit"
-      />
-    ];
+      />,
+    ]
 
-    let keyboardShortcuts = <KeyboardShortcuts keys={{
-      65: () => this.handleOpen()  // a
-    }}/>
+    let keyboardShortcuts = (
+      <KeyboardShortcuts
+        keys={{
+          65: () => this.handleOpen(), // a
+        }}
+      />
+    )
 
     return (
       <div>
@@ -57,7 +61,7 @@ export default class AddCardButton extends Component {
           fullWidth={true}
           backgroundColor="#fff"
           hoverColor="#f6f6f6"
-          style={{ height: 50 }}
+          style={{height: 50}}
         >
           Add Card
         </FlatButton>
@@ -69,12 +73,16 @@ export default class AddCardButton extends Component {
           onRequestClose={this.handleClose}
         >
           <form id="addCardForm" onSubmit={this.handleSubmit}>
-            <TextField onChange={this.handleChange} name="newCard" ref="newCard" />
+            <TextField
+              onChange={this.handleChange}
+              name="newCard"
+              ref="newCard"
+            />
           </form>
           <KeyboardShortcutInhibitor />
         </Dialog>
-        { this.props.keyboardShortcutsActive && keyboardShortcuts }
+        {this.props.keyboardShortcutsActive && keyboardShortcuts}
       </div>
-    );
+    )
   }
 }

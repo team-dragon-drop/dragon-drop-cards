@@ -1,24 +1,16 @@
+import React, {Component} from 'react'
+import {Broadcast, Subscriber} from 'react-broadcast'
 import {database} from 'firebase'
 
-export default class Backend {
+class FirebaseBackend {
   constructor(boardId, onChangeCallback) {
     this.boardId = boardId
-    this.database = database()
 
-    this.database.ref(`/${boardId}`).on('value', snapshot => {
-      onChangeCallback(snapshot.val())
-    })
-  }
-
-  newBoard(boardName) {
-    const ref = database()
-      .ref('/')
-      .push()
-    ref.set({
-      name: boardName,
-      columns: [{name: 'Good'}, {name: 'Bad'}, {name: 'Questions'}],
-    })
-    return ref.key
+    database()
+      .ref(`/${boardId}`)
+      .on('value', snapshot => {
+        onChangeCallback(snapshot.val())
+      })
   }
 
   addCard(columnId, cardName) {
@@ -67,8 +59,6 @@ export default class Backend {
   }
 
   mergeCard(sourceCard, destinationCard) {
-    console.log(sourceCard)
-    console.log(destinationCard)
     const cardRef = database()
       .ref(`/${this.boardId}/columns/${destinationCard.parentId}/cards`)
       .child(destinationCard.id)
@@ -139,5 +129,50 @@ export default class Backend {
           return Number.isInteger(currentVotes) ? currentVotes - 1 : -1
         })
     }
+  }
+}
+
+export const newBoardKey = boardName => {
+  const ref = database()
+    .ref('/')
+    .push()
+  ref.set({
+    name: boardName,
+    columns: [{name: 'Good'}, {name: 'Bad'}, {name: 'Questions'}],
+  })
+  return ref.key
+}
+
+export class FirebaseProvider extends Component {
+  state = {backend: {}, loading: true, columns: [], name: ''}
+
+  componentDidMount() {
+    const backend = new FirebaseBackend(this.props.firebaseKey, val => {
+      this.setState({
+        loading: false,
+        columns: val ? val.columns : [],
+        name: val ? val.name : '',
+      })
+    })
+    this.setState({backend})
+  }
+
+  render() {
+    const {children: render} = this.props
+    const {backend} = this.state
+    return (
+      <Broadcast channel="backend" value={backend}>
+        {render(this.state)}
+      </Broadcast>
+    )
+  }
+}
+
+export class BackendActions extends Component {
+  render() {
+    const render = this.props.children
+    return (
+      <Subscriber channel="backend">{backend => render(backend)}</Subscriber>
+    )
   }
 }
