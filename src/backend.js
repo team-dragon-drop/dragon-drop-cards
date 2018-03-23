@@ -43,6 +43,7 @@ class FirebaseBackend {
   }
 
   moveCard(oldRefSpec, newRefSpec) {
+    console.log(oldRefSpec, newRefSpec)
     let newRef = database()
       .ref(`${this._buildRef(newRefSpec)}/cards`)
       .push()

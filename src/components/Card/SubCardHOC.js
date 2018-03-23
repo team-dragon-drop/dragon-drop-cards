@@ -12,12 +12,12 @@ const cardSource = {
       columnId: props.columnId,
       parentCardId: props.parentCardId,
       refSpec: {
-        columnId: props.parentId,
-        parentCardId: props.parentCardId,
-        cardId: props.id,
+        columnId: props.columnId,
+        cardId: props.parentCardId,
+        subCardId: props.id,
       },
-      subCards: props.subCards || [], // FIXME: Not actually an array
-      type: 'card',
+      subCards: props.subCards,
+      type: 'subcard',
     }
   },
 
@@ -25,10 +25,10 @@ const cardSource = {
     const item = monitor.getItem()
     const dropResult = monitor.getDropResult()
     if (!dropResult) return
-    if (dropResult.type === 'card') {
-      props.onMergeCard(item, dropResult)
+    if (dropResult.type === 'card' || dropResult.type === 'group') {
+      // props.onMergeCard(item, dropResult)
     } else if (dropResult.type === 'column') {
-      props.onMoveCard(item.parentId, dropResult.id, item.id)
+      props.onMoveCard(item.refSpec, dropResult.refSpec)
     }
   },
 }
@@ -43,26 +43,20 @@ function sourceCollect(connect, monitor) {
 ////////////////////////////////////////////////////////////////////////////////
 // DROPPABLE
 
-let canDropYN = true
-
 const cardTarget = {
   drop(props) {
     return {
       id: props.id,
       name: props.name,
       votes: props.votes || 0,
-      parentId: props.parentId,
+      columnId: props.columnId,
       subCards: props.subCards || [], // FIXME: Not actually an array
       type: 'subcard',
     }
   },
-  hover(props, monitor) {
-    // Dont drop on your self! (not sure if this is needed)
-    const item = monitor.getItem()
-    canDropYN = item.id !== props.id
-  },
+  hover(props, monitor) {},
   canDrop() {
-    return canDropYN
+    return false
   },
 }
 
