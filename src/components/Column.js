@@ -93,6 +93,8 @@ class Column extends Component {
                         onMoveCard={(oldColumnId, newColumnId, id) =>
                           backend.moveCard(oldColumnId, newColumnId, id)
                         }
+                        onVoteUp={() => backend.voteCard(id, card.id, +1)}
+                        onVoteDown={() => backend.voteCard(id, card.id, -1)}
                       />
                     ))}
                 {isOver && canDrop && this.renderPlaceholder()}

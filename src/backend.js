@@ -111,24 +111,29 @@ class FirebaseBackend {
     }
   }
 
-  voteUpCard(columnId, cardId) {
-    if (columnId && cardId) {
-      database()
-        .ref(`/${this.boardId}/columns/${columnId}/cards/${cardId}/votes`)
-        .transaction(currentVotes => {
-          return Number.isInteger(currentVotes) ? currentVotes + 1 : 1
-        })
-    }
+  voteCard(columnId, cardId, votes) {
+    if (!columnId || !cardId) return
+    this._voteCardRef(
+      `/${this.boardId}/columns/${columnId}/cards/${cardId}/votes`,
+      votes,
+    )
   }
 
-  voteDownCard(columnId, cardId) {
-    if (columnId && cardId) {
-      database()
-        .ref(`/${this.boardId}/columns/${columnId}/cards/${cardId}/votes`)
-        .transaction(currentVotes => {
-          return Number.isInteger(currentVotes) ? currentVotes - 1 : -1
-        })
-    }
+  voteSubCard(columnId, cardId, subCardId, votes) {
+    if (!columnId || !cardId || !subCardId) return
+    this._voteCardRef(
+      this.boardId +
+        `/columns/${columnId}/cards/${cardId}/subCards/${subCardId}/votes`,
+      votes,
+    )
+  }
+
+  _voteCardRef(ref, votes) {
+    database()
+      .ref(ref)
+      .transaction(currentVotes => {
+        return Number.isInteger(currentVotes) ? currentVotes + votes : votes
+      })
   }
 }
 
