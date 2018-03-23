@@ -38,7 +38,7 @@ function sourceCollect(connect, monitor) {
 ////////////////////////////////////////////////////////////////////////////////
 // DROPPABLE
 
-let canDropYN = true
+let canDrop = true
 
 const cardTarget = {
   drop(props) {
@@ -54,10 +54,10 @@ const cardTarget = {
   hover(props, monitor) {
     // Dont drop on your self! (not sure if this is needed)
     const item = monitor.getItem()
-    canDropYN = item.id !== props.id
+    canDrop = item.id !== props.id
   },
   canDrop() {
-    return canDropYN
+    return canDrop
   },
 }
 

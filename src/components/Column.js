@@ -7,7 +7,7 @@ import AddCardButton from './AddCardButton'
 import RemoveColumnButton from './RemoveColumnButton'
 import {BackendActions} from '../backend'
 
-let canDropYN = true
+let canDrop = true
 
 const cardTarget = {
   drop(props) {
@@ -21,10 +21,10 @@ const cardTarget = {
   },
   hover(props, monitor) {
     const item = monitor.getItem()
-    canDropYN = item.columnId !== props.id
+    canDrop = item.type === 'subcard' || item.columnId !== props.id
   },
   canDrop() {
-    return canDropYN
+    return canDrop
   },
 }
 
