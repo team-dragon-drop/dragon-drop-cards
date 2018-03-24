@@ -80,24 +80,27 @@ export default class BaseCard extends React.Component {
                     className="card__subcards"
                   >
                     {subCards &&
-                      Object.keys(subCards).map(subCardId => {
-                        return (
-                          <SubCard
-                            key={subCardId}
-                            id={subCardId}
-                            name={subCards[subCardId].name}
-                            votes={subCards[subCardId].votes}
-                            columnId={columnId}
-                            parentCardId={id}
-                            onMerge={(source, destination) =>
-                              backend.addToOrCreateGroup(source, destination)
-                            }
-                            onMove={(oldRefSpec, newRefSpec) =>
-                              backend.moveCard(oldRefSpec, newRefSpec)
-                            }
-                          />
-                        )
-                      })}
+                      Object.keys(subCards)
+                        .map(id => ({...subCards[id], id}))
+                        .sort((a, b) => (a.votes || 0) < (b.votes || 0))
+                        .map(subCard => {
+                          return (
+                            <SubCard
+                              key={subCard.id}
+                              id={subCard.id}
+                              name={subCard.name}
+                              votes={subCard.votes}
+                              columnId={columnId}
+                              parentCardId={id}
+                              onMerge={(source, destination) =>
+                                backend.addToOrCreateGroup(source, destination)
+                              }
+                              onMove={(oldRefSpec, newRefSpec) =>
+                                backend.moveCard(oldRefSpec, newRefSpec)
+                              }
+                            />
+                          )
+                        })}
                   </ul>
 
                   <div className="card__actions">
