@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import CloseIcon from 'material-ui/svg-icons/navigation/close'
 import Dialog from 'material-ui/Dialog'
 import FlatButton from 'material-ui/FlatButton'
-import {KeyboardShortcuts} from './KeyboardShortcuts'
+import {KeyboardShortcuts} from '../KeyboardShortcuts'
 
 export default class RemoveColumnButton extends Component {
   state = {

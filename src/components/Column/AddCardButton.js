@@ -2,7 +2,10 @@ import React, {Component} from 'react'
 import FlatButton from 'material-ui/FlatButton'
 import Dialog from 'material-ui/Dialog'
 import TextField from 'material-ui/TextField'
-import {KeyboardShortcuts, KeyboardShortcutInhibitor} from './KeyboardShortcuts'
+import {
+  KeyboardShortcuts,
+  KeyboardShortcutInhibitor,
+} from '../KeyboardShortcuts'
 
 export default class AddCardButton extends Component {
   state = {
