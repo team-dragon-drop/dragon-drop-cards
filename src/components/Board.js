@@ -3,40 +3,17 @@ import Column from './Column'
 import HTML5Backend from 'react-dnd-html5-backend'
 import AppBar from './AppBar'
 import {DragDropContext} from 'react-dnd'
-import backend from '../backend'
+import {FirebaseProvider} from '../backend'
 import {KeyboardShortcuts} from './KeyboardShortcuts'
 import {clamp} from '../utils'
 
 class Board extends Component {
-  constructor() {
-    super()
-    this.state = {
-      loading: true,
-      columns: [],
-      selectedColumn: null,
-    }
-  }
+  state = {selectedColumn: null}
 
-  componentDidMount() {
-    backend.init(this.props.boardId, val => {
-      this.setState({
-        loading: false,
-        columns: val ? val.columns : [],
-        name: val ? val.name : '',
-      })
-    })
-  }
-
-  incrementSelectedColumn() {
-    const range = [0, Object.keys(this.state.columns).length - 1]
-    const target =
-      this.state.selectedColumn === null ? 0 : this.state.selectedColumn + 1
-    this.setState({selectedColumn: clamp(target, range)})
-  }
-
-  decrementSelectedColumn() {
-    const range = [0, Object.keys(this.state.columns).length - 1]
-    const target = this.state.selectedColumn - 1
+  incrementColumn(columns, increment) {
+    const {selectedColumn} = this.state
+    const target = selectedColumn === null ? 0 : selectedColumn + increment
+    const range = [0, Object.keys(columns).length - 1]
     this.setState({selectedColumn: clamp(target, range)})
   }
 
@@ -45,49 +22,41 @@ class Board extends Component {
   }
 
   render() {
-    let columnData = this.state.columns || []
-    let columns = Object.keys(columnData).map((key, index) => {
-      return (
-        <Column
-          key={key}
-          id={key}
-          cards={columnData[key].cards}
-          name={columnData[key].name}
-          addCard={name => backend.addCard(key, name)}
-          editCard={(columnId, id, name) =>
-            backend.editCard(columnId, id, name)
-          }
-          removeCard={(columnId, id) => backend.removeCard(columnId, id)}
-          moveCard={(oldColumnId, newColumnId, id) =>
-            backend.moveCard(oldColumnId, newColumnId, id)
-          }
-          voteUpCard={(columnId, id) => backend.voteUpCard(columnId, id)}
-          voteDownCard={(columnId, id) => backend.voteDownCard(columnId, id)}
-          editColumn={(id, name) => backend.editColumn(id, name)}
-          removeColumn={id => backend.removeColumn(id)}
-          selected={index === this.state.selectedColumn}
-        />
-      )
-    })
-
     return (
-      <div className="App">
-        <AppBar
-          onButtonTouchTap={columnName => backend.addColumn(columnName)}
-          loading={this.state.loading}
-        />
-        <h2 className="board-title">{this.state.name}</h2>
-        <div className="columns">{columns}</div>
-        <KeyboardShortcuts
-          keys={{
-            27: () => this.clearSelectedColumn(), // ESC
-            37: () => this.decrementSelectedColumn(), // Left
-            39: () => this.incrementSelectedColumn(), // Right
-            72: () => this.decrementSelectedColumn(), // h
-            76: () => this.incrementSelectedColumn(), // l
-          }}
-        />
-      </div>
+      <FirebaseProvider firebaseKey={this.props.boardId}>
+        {(state, backend) => (
+          <div className="App">
+            <AppBar
+              onButtonTouchTap={columnName => backend.addColumn(columnName)}
+              loading={state.loading}
+            />
+
+            <h2 className="board-title">{state.name}</h2>
+
+            <div className="columns">
+              {Object.keys(state.columns).map((id, index) => (
+                <Column
+                  key={id}
+                  id={id}
+                  cards={state.columns[id].cards}
+                  name={state.columns[id].name}
+                  selected={index === this.state.selectedColumn}
+                />
+              ))}
+            </div>
+
+            <KeyboardShortcuts
+              keys={{
+                27: () => this.clearSelectedColumn(null), // ESC
+                37: () => this.incrementColumn(state.columns, -1), // Left
+                39: () => this.incrementColumn(state.columns, +1), // Right
+                72: () => this.incrementColumn(state.columns, -1), // h
+                76: () => this.incrementColumn(state.columns, +1), // l
+              }}
+            />
+          </div>
+        )}
+      </FirebaseProvider>
     )
   }
 }

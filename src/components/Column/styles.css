@@ -1,0 +1,33 @@
+.column-container {
+  background-color: #e7e7e7 !important;
+}
+
+.column {
+  padding-top: 0;
+  min-width: 300px;
+}
+
+.column__card-list {
+  padding-top: 0;
+  margin: 8px 8px 20px;
+}
+
+.column__close {
+  cursor: pointer;
+}
+
+.column__selected-indicator {
+  position: absolute;
+  top: -25px;
+}
+
+.column__header {
+  border: 1px solid rgba(0, 0, 0, 0); /* To prevent jank */
+}
+.column__header--can-drop {
+  border: 1px solid #00bdd4;
+  box-shadow: 0px 0px 2px #00bdd4 inset;
+}
+.column__header--is-over.column__header--can-drop {
+  background-color: rgba(0, 189, 212, 0.4);
+}
