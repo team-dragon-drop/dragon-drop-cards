@@ -77,6 +77,11 @@ export default class AddCardButton extends Component {
         >
           <form id="addCardForm" onSubmit={this.handleSubmit}>
             <TextField
+              hintText="Markdown is supported"
+              floatingLabelText="Card Text"
+              multiLine={true}
+              rows={1}
+              fullWidth={true}
               onChange={this.handleChange}
               name="newCard"
               ref="newCard"
