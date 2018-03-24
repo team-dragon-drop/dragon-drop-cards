@@ -34,19 +34,23 @@ export default class BaseCard extends React.Component {
   }
 
   render() {
-    const {connectDropTarget, connectDragSource} = this.props
+    const {connectDropTarget, connectDragSource, canDrop, isOver} = this.props
     const {key, id, subCards, name, columnId, parentCardId} = this.props
     const {onVoteUp, onVoteDown} = this.props
     const refSpec = parentCardId
       ? {columnId: columnId, cardId: parentCardId, subCardId: id}
       : {columnId: columnId, cardId: id}
 
+    let className = 'card'
+    if (canDrop) className += ' card--can-drop'
+    if (isOver) className += ' card--is-over'
+
     return (
       <BackendActions>
         {backend =>
           connectDropTarget(
             connectDragSource(
-              <li key={key} id={id} className="card">
+              <li key={key} id={id} className={className}>
                 <div
                   className="card__head"
                   onClick={() => {
