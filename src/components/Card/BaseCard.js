@@ -6,6 +6,7 @@ import CollectionIcon from 'material-ui/svg-icons/file/folder'
 import RemoveCardButton from '../RemoveCardButton'
 import {BackendActions} from '../../backend'
 import {SubCard} from '.'
+import './styles.css'
 
 export default class BaseCard extends React.Component {
   state = {

@@ -6,6 +6,7 @@ import {BackendActions} from '../../backend'
 import Header from './Header'
 import AddCardButton from './AddCardButton'
 import ColumnHOC from './ColumnHOC'
+import './styles.css'
 
 const SelectedIndicator = () => (
   <KeyboardArrowDown color="#fff" className="column__selected-indicator" />
