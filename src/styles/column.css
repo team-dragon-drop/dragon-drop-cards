@@ -3,12 +3,12 @@
 }
 
 .column {
-  padding-top:0;
+  padding-top: 0;
   min-width: 300px;
 }
 
 .column__card-list {
-  padding-top:0;
+  padding-top: 0;
   margin: 8px 8px 20px;
 }
 
@@ -19,4 +19,24 @@
 .column__selected-indicator {
   position: absolute;
   top: -25px;
+}
+
+@keyframes pulse {
+  from {
+    background-color: rgba(0, 189, 212, 0);
+  }
+  to {
+    background-color: rgba(0, 189, 212, 0.4);
+  }
+}
+
+.column .canDrop {
+  animation-duration: 0.5s;
+  animation-name: pulse;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+.column .canDrop.isOver {
+  background-color: rgba(0, 189, 212, 1);
+  animation: unset;
 }
