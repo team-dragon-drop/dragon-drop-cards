@@ -22,13 +22,10 @@ class FirebaseBackend {
     }
   }
 
-  removeCard(columnId, cardId) {
-    if (columnId && cardId) {
-      database()
-        .ref(`/${this.boardId}/columns/${columnId}/cards`)
-        .child(cardId)
-        .remove()
-    }
+  removeCard(refSpec) {
+    database()
+      .ref(this._buildRef(refSpec))
+      .remove()
   }
 
   editCard(columnId, id, content) {
@@ -46,9 +43,7 @@ class FirebaseBackend {
     let newRef = database()
       .ref(`${this._buildRef(newRefSpec)}/cards`)
       .push()
-
     let oldRef = database().ref(this._buildRef(oldRefSpec))
-
     oldRef.once('value', function(snap) {
       newRef.set(snap.val(), function(error) {
         !error ? oldRef.remove() : console.error(error)
@@ -57,9 +52,9 @@ class FirebaseBackend {
   }
 
   mergeCard(sourceCard, destinationCard) {
-    const parentCardRef = database()
-      .ref(`/${this.boardId}/columns/${destinationCard.columnId}/cards`)
-      .child(destinationCard.id)
+    const parentCardRef = database().ref(
+      this._buildRef(destinationCard.refSpec),
+    )
 
     if (!destinationCard.subCards) {
       parentCardRef
@@ -76,7 +71,7 @@ class FirebaseBackend {
       .child('subCards')
       .push()
       .set({name: sourceCard.name, votes: sourceCard.votes})
-    this.removeCard(sourceCard.columnId, sourceCard.id)
+    this.removeCard(sourceCard.refSpec)
   }
 
   addColumn(columnName) {

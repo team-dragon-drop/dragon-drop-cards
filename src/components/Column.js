@@ -91,14 +91,14 @@ class Column extends Component {
                           votes={card.votes}
                           subCards={card.subCards}
                           columnId={id}
+                          onVoteUp={() => backend.voteCard(refSpec, +1)}
+                          onVoteDown={() => backend.voteCard(refSpec, -1)}
                           onMergeCard={(card, targetCard) =>
                             backend.mergeCard(card, targetCard)
                           }
                           onMoveCard={(oldRefSpec, newRefSpec) =>
                             backend.moveCard(oldRefSpec, newRefSpec)
                           }
-                          onVoteUp={() => backend.voteCard(refSpec, +1)}
-                          onVoteDown={() => backend.voteCard(refSpec, -1)}
                         />
                       )
                     })}

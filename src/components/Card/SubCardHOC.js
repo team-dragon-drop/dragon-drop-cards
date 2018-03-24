@@ -25,8 +25,11 @@ const cardSource = {
     const item = monitor.getItem()
     const dropResult = monitor.getDropResult()
     if (!dropResult) return
-    if (dropResult.type === 'card' || dropResult.type === 'group') {
-      // props.onMergeCard(item, dropResult)
+    if (
+      dropResult.type === 'card' ||
+      (dropResult.type === 'group' && dropResult.id !== item.parentCardId)
+    ) {
+      props.onMergeCard(item, dropResult)
     } else if (dropResult.type === 'column') {
       props.onMoveCard(item.refSpec, dropResult.refSpec)
     }

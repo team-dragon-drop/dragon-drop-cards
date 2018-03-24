@@ -47,6 +47,7 @@ const cardTarget = {
       name: props.name,
       votes: props.votes || 0,
       columnId: props.columnId,
+      refSpec: {columnId: props.columnId, cardId: props.id},
       subCards: props.subCards,
       type: props.subCards ? 'group' : 'card',
     }
