@@ -65,12 +65,8 @@
   display: flex;
 }
 
-.card__markdown p {
-  margin: 5px;
-  line-height: 1.1em;
-}
-.card__markdown img {
-  max-width: 100%;
+.card__markdown * {
+  line-height: 1.2em;
 }
 
 .card__icon {

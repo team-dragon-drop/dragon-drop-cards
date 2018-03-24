@@ -8,6 +8,7 @@ import RemoveCardButton from '../RemoveCardButton'
 import {BackendActions} from '../../backend'
 import {SubCard} from '.'
 import './styles.css'
+import 'github-markdown-css'
 
 export default class BaseCard extends React.Component {
   state = {
@@ -67,7 +68,10 @@ export default class BaseCard extends React.Component {
                         <CollectionIcon />
                       </span>
                     )}
-                    <ReactMarkdown source={name} className="card__markdown" />
+                    <ReactMarkdown
+                      source={name}
+                      className="markdown-body card__markdown"
+                    />
                   </div>
                   <div>{this.votes()}</div>
                 </div>
