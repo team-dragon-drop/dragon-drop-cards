@@ -2,10 +2,10 @@ import React, {Component} from 'react'
 import {Redirect} from 'react-router'
 import RaisedButton from 'material-ui/RaisedButton'
 import TextField from 'material-ui/TextField'
-import '../styles/homepage.css'
 import Logo from './Logo'
-import {newBoardKey} from '../backend'
-import {generateDragonName} from '../dragonGenerator'
+import {newBoardKey} from '../../backend'
+import {generateDragonName} from './dragonGenerator'
+import './styles.css'
 
 export default class Home extends Component {
   constructor() {
