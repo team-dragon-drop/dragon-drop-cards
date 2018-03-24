@@ -20,10 +20,7 @@ const cardSource = {
     const item = monitor.getItem()
     const dropResult = monitor.getDropResult()
     if (!dropResult) return
-    if (
-      item.type !== 'group' &&
-      (dropResult.type === 'card' || dropResult.type === 'group')
-    ) {
+    if (dropResult.type === 'card' || dropResult.type === 'group') {
       props.onMerge(item, dropResult)
     } else if (dropResult.type === 'column') {
       props.onMove(item.refSpec, dropResult.refSpec)
@@ -55,9 +52,8 @@ const cardTarget = {
   },
   hover(props, monitor) {},
   canDrop(props, monitor) {
-    // Dont drop on your self! (not sure if this is needed)
     const item = monitor.getItem()
-    return item.id !== props.id
+    return item.type !== 'group' && item.id !== props.id
   },
 }
 

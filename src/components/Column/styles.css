@@ -21,22 +21,13 @@
   top: -25px;
 }
 
-@keyframes pulse {
-  from {
-    background-color: rgba(0, 189, 212, 0);
-  }
-  to {
-    background-color: rgba(0, 189, 212, 0.4);
-  }
+.column__header {
+  border: 1px solid rgba(0, 0, 0, 0); /* To prevent jank */
 }
-
-.column .canDrop {
-  animation-duration: 0.5s;
-  animation-name: pulse;
-  animation-iteration-count: infinite;
-  animation-direction: alternate;
+.column__header--can-drop {
+  border: 1px solid #00bdd4;
+  box-shadow: 0px 0px 2px #00bdd4 inset;
 }
-.column .canDrop.isOver {
-  background-color: rgba(0, 189, 212, 1);
-  animation: unset;
+.column__header--is-over.column__header--can-drop {
+  background-color: rgba(0, 189, 212, 0.4);
 }
