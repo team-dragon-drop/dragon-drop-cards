@@ -50,7 +50,6 @@ const Column = ({
                 .map(id => ({...cards[id], id}))
                 .sort((a, b) => (a.votes || 0) < (b.votes || 0))
                 .map(card => {
-                  const refSpec = {columnId: id, cardId: card.id}
                   return (
                     <Card
                       key={card.id}
@@ -59,8 +58,6 @@ const Column = ({
                       votes={card.votes}
                       subCards={card.subCards}
                       columnId={id}
-                      onVoteUp={() => backend.voteCard(refSpec, +1)}
-                      onVoteDown={() => backend.voteCard(refSpec, -1)}
                       onMerge={(source, destination) =>
                         backend.addToOrCreateGroup(source, destination)
                       }

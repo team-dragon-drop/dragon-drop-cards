@@ -36,7 +36,7 @@ export default class BaseCard extends React.Component {
   render() {
     const {connectDropTarget, connectDragSource, canDrop, isOver} = this.props
     const {key, id, subCards, name, columnId, parentCardId} = this.props
-    const {onVoteUp, onVoteDown} = this.props
+
     const refSpec = parentCardId
       ? {columnId: columnId, cardId: parentCardId, subCardId: id}
       : {columnId: columnId, cardId: id}
@@ -89,8 +89,6 @@ export default class BaseCard extends React.Component {
                             votes={subCards[subCardId].votes}
                             columnId={columnId}
                             parentCardId={id}
-                            onVoteUp={() => backend.voteCard(refSpec, +1)}
-                            onVoteDown={() => backend.voteCard(refSpec, -1)}
                             onMerge={(source, destination) =>
                               backend.addToOrCreateGroup(source, destination)
                             }
@@ -103,11 +101,11 @@ export default class BaseCard extends React.Component {
                   </ul>
 
                   <div className="card__actions">
-                    <span onClick={e => onVoteUp()}>
+                    <span onClick={e => backend.voteCard(refSpec, +1)}>
                       <ThumbsUpIcon />
                     </span>
 
-                    <span onClick={e => onVoteDown()}>
+                    <span onClick={e => backend.voteCard(refSpec, -1)}>
                       <ThumbsDownIcon />
                     </span>
 
