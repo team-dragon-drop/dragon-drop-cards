@@ -3,6 +3,7 @@ import ThumbsUpIcon from 'material-ui/svg-icons/action/thumb-up'
 import ThumbsDownIcon from 'material-ui/svg-icons/action/thumb-down'
 import EditIcon from 'material-ui/svg-icons/image/edit'
 import CollectionIcon from 'material-ui/svg-icons/file/folder'
+import ReactMarkdown from 'react-markdown'
 import RemoveCardButton from '../RemoveCardButton'
 import {BackendActions} from '../../backend'
 import {SubCard} from '.'
@@ -66,7 +67,7 @@ export default class BaseCard extends React.Component {
                         <CollectionIcon />
                       </span>
                     )}
-                    <span>{name}</span>
+                    <ReactMarkdown source={name} className="card__markdown" />
                   </div>
                   <div>{this.votes()}</div>
                 </div>
