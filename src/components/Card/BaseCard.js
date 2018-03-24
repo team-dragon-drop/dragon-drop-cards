@@ -34,8 +34,11 @@ export default class BaseCard extends React.Component {
 
   render() {
     const {connectDropTarget, connectDragSource} = this.props
-    const {key, id, subCards, name, columnId} = this.props
+    const {key, id, subCards, name, columnId, parentCardId} = this.props
     const {onVoteUp, onVoteDown} = this.props
+    const refSpec = parentCardId
+      ? {columnId: columnId, cardId: parentCardId, subCardId: id}
+      : {columnId: columnId, cardId: id}
 
     return (
       <BackendActions>
@@ -73,11 +76,6 @@ export default class BaseCard extends React.Component {
                   >
                     {subCards &&
                       Object.keys(subCards).map(subCardId => {
-                        const refSpec = {
-                          columnId: columnId,
-                          cardId: id,
-                          subCardId: subCardId,
-                        }
                         return (
                           <SubCard
                             key={subCardId}
@@ -88,6 +86,9 @@ export default class BaseCard extends React.Component {
                             parentCardId={id}
                             onVoteUp={() => backend.voteCard(refSpec, +1)}
                             onVoteDown={() => backend.voteCard(refSpec, -1)}
+                            onMergeCard={(card, targetCard) =>
+                              backend.mergeCard(card, targetCard)
+                            }
                             onMoveCard={(oldRefSpec, newRefSpec) =>
                               backend.moveCard(oldRefSpec, newRefSpec)
                             }
@@ -110,7 +111,7 @@ export default class BaseCard extends React.Component {
                     </span>
 
                     <RemoveCardButton
-                      removeCard={() => backend.removeCard(columnId, id)}
+                      removeCard={() => backend.removeCard(refSpec)}
                     />
                   </div>
                 </div>
