@@ -29,9 +29,9 @@ const cardSource = {
       dropResult.type === 'card' ||
       (dropResult.type === 'group' && dropResult.id !== item.parentCardId)
     ) {
-      props.onMergeCard(item, dropResult)
+      props.onMerge(item, dropResult)
     } else if (dropResult.type === 'column') {
-      props.onMoveCard(item.refSpec, dropResult.refSpec)
+      props.onMove(item.refSpec, dropResult.refSpec)
     }
   },
 }
@@ -44,18 +44,11 @@ function sourceCollect(connect, monitor) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// DROPPABLE
+// DROPPABLE (Not used, canDrop=false)
 
 const cardTarget = {
   drop(props) {
-    return {
-      id: props.id,
-      name: props.name,
-      votes: props.votes || 0,
-      columnId: props.columnId,
-      subCards: props.subCards || [], // FIXME: Not actually an array
-      type: 'subcard',
-    }
+    return {}
   },
   hover(props, monitor) {},
   canDrop() {

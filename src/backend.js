@@ -51,27 +51,24 @@ class FirebaseBackend {
     })
   }
 
-  mergeCard(sourceCard, destinationCard) {
-    const parentCardRef = database().ref(
-      this._buildRef(destinationCard.refSpec),
-    )
-
-    if (!destinationCard.subCards) {
-      parentCardRef
+  addToOrCreateGroup(source, destinationGroup) {
+    const groupRef = database().ref(this._buildRef(destinationGroup.refSpec))
+    if (!destinationGroup.subCards) {
+      groupRef
         .child('subCards')
         .push()
         .set({
-          name: destinationCard.name,
-          votes: destinationCard.votes,
+          name: destinationGroup.name,
+          votes: destinationGroup.votes,
         })
     }
 
-    parentCardRef.update({name: destinationCard.name.replace(/\.*$/, '...')})
-    parentCardRef
+    groupRef.update({name: destinationGroup.name.replace(/\.*$/, '...')})
+    groupRef
       .child('subCards')
       .push()
-      .set({name: sourceCard.name, votes: sourceCard.votes})
-    this.removeCard(sourceCard.refSpec)
+      .set({name: source.name, votes: source.votes})
+    this.removeCard(source.refSpec)
   }
 
   addColumn(columnName) {
