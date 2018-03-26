@@ -87,7 +87,7 @@ export default class BaseCard extends React.Component {
                     {subCards &&
                       Object.keys(subCards)
                         .map(id => ({...subCards[id], id}))
-                        .sort((a, b) => (a.votes || 0) < (b.votes || 0))
+                        .sort((a, b) => (b.votes || 0) - (a.votes || 0))
                         .map(subCard => {
                           return (
                             <SubCard

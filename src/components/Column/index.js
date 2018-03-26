@@ -48,7 +48,7 @@ const Column = ({
             {cards &&
               Object.keys(cards)
                 .map(id => ({...cards[id], id}))
-                .sort((a, b) => (a.votes || 0) < (b.votes || 0))
+                .sort((a, b) => (b.votes || 0) - (a.votes || 0))
                 .map(card => {
                   return (
                     <Card
