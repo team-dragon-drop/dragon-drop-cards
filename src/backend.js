@@ -29,8 +29,7 @@ class FirebaseBackend {
   }
 
   editCard(columnId, id, content) {
-    // TODO: Replace the prompt with with Material-UI
-    const newContent = prompt('Edit Card', content)
+    const newContent = content
     if (newContent) {
       database()
         .ref(`/${this.boardId}/columns/${columnId}/cards`)
