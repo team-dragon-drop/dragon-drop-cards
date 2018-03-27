@@ -6,6 +6,7 @@ import {BackendActions} from '../../backend'
 import Header from './Header'
 import AddCardButton from './AddCardButton'
 import ColumnHOC from './ColumnHOC'
+import {sortCardsByVotes} from '../../utils'
 import './styles.css'
 
 const SelectedIndicator = () => (
@@ -45,28 +46,24 @@ const Column = ({
           )}
 
           <ul className="column__card-list">
-            {cards &&
-              Object.keys(cards)
-                .map(id => ({...cards[id], id}))
-                .sort((a, b) => (b.votes || 0) - (a.votes || 0))
-                .map(card => {
-                  return (
-                    <Card
-                      key={card.id}
-                      id={card.id}
-                      name={card.name}
-                      votes={card.votes}
-                      subCards={card.subCards}
-                      columnId={id}
-                      onMerge={(source, destination) =>
-                        backend.addToOrCreateGroup(source, destination)
-                      }
-                      onMove={(oldRefSpec, newRefSpec) =>
-                        backend.moveCard(oldRefSpec, newRefSpec)
-                      }
-                    />
-                  )
-                })}
+            {sortCardsByVotes(cards).map(card => {
+              return (
+                <Card
+                  key={card.id}
+                  id={card.id}
+                  name={card.name}
+                  votes={card.votes}
+                  subCards={card.subCards}
+                  columnId={id}
+                  onMerge={(source, destination) =>
+                    backend.addToOrCreateGroup(source, destination)
+                  }
+                  onMove={(oldRefSpec, newRefSpec) =>
+                    backend.moveCard(oldRefSpec, newRefSpec)
+                  }
+                />
+              )
+            })}
             {isOver && canDrop && <Placeholder />}
           </ul>
 

@@ -6,6 +6,7 @@ import CollectionIcon from 'material-ui/svg-icons/file/folder'
 import ReactMarkdown from 'react-markdown'
 import RemoveCardButton from '../RemoveCardButton'
 import {BackendActions} from '../../backend'
+import {sortCardsByVotes} from '../../utils'
 import {SubCard} from '.'
 import './styles.css'
 import 'github-markdown-css'
@@ -84,28 +85,24 @@ export default class BaseCard extends React.Component {
                     style={{display: subCards ? 'flex' : 'none'}}
                     className="card__subcards"
                   >
-                    {subCards &&
-                      Object.keys(subCards)
-                        .map(id => ({...subCards[id], id}))
-                        .sort((a, b) => (b.votes || 0) - (a.votes || 0))
-                        .map(subCard => {
-                          return (
-                            <SubCard
-                              key={subCard.id}
-                              id={subCard.id}
-                              name={subCard.name}
-                              votes={subCard.votes}
-                              columnId={columnId}
-                              parentCardId={id}
-                              onMerge={(source, destination) =>
-                                backend.addToOrCreateGroup(source, destination)
-                              }
-                              onMove={(oldRefSpec, newRefSpec) =>
-                                backend.moveCard(oldRefSpec, newRefSpec)
-                              }
-                            />
-                          )
-                        })}
+                    {sortCardsByVotes(subCards).map(subCard => {
+                      return (
+                        <SubCard
+                          key={subCard.id}
+                          id={subCard.id}
+                          name={subCard.name}
+                          votes={subCard.votes}
+                          columnId={columnId}
+                          parentCardId={id}
+                          onMerge={(source, destination) =>
+                            backend.addToOrCreateGroup(source, destination)
+                          }
+                          onMove={(oldRefSpec, newRefSpec) =>
+                            backend.moveCard(oldRefSpec, newRefSpec)
+                          }
+                        />
+                      )
+                    })}
                   </ul>
 
                   <div className="card__actions">
