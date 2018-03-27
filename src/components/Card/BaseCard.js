@@ -1,10 +1,10 @@
 import React from 'react'
 import ThumbsUpIcon from 'material-ui/svg-icons/action/thumb-up'
 import ThumbsDownIcon from 'material-ui/svg-icons/action/thumb-down'
-import EditIcon from 'material-ui/svg-icons/image/edit'
 import CollectionIcon from 'material-ui/svg-icons/file/folder'
 import ReactMarkdown from 'react-markdown'
 import RemoveCardButton from '../RemoveCardButton'
+import EditCardButton from '../EditCardButton'
 import {BackendActions} from '../../backend'
 import {sortCardsByVotes} from '../../utils'
 import {SubCard} from '.'
@@ -114,9 +114,12 @@ export default class BaseCard extends React.Component {
                       <ThumbsDownIcon />
                     </span>
 
-                    <span onClick={e => backend.editCard(columnId, id, name)}>
-                      <EditIcon />
-                    </span>
+                    <EditCardButton
+                      currentValue={name}
+                      onSubmit={newContent =>
+                        backend.editCard(refSpec, newContent)
+                      }
+                    />
 
                     <RemoveCardButton
                       removeCard={() => backend.removeCard(refSpec)}

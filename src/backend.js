@@ -28,15 +28,11 @@ class FirebaseBackend {
       .remove()
   }
 
-  editCard(columnId, id, content) {
-    // TODO: Replace the prompt with with Material-UI
-    const newContent = prompt('Edit Card', content)
-    if (newContent) {
+  editCard(refSpec, content) {
+    content &&
       database()
-        .ref(`/${this.boardId}/columns/${columnId}/cards`)
-        .child(id)
-        .update({name: newContent})
-    }
+        .ref(this._buildRef(refSpec))
+        .update({name: content})
   }
 
   moveCard(oldRefSpec, newRefSpec) {
