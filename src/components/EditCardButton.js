@@ -3,6 +3,7 @@ import FlatButton from 'material-ui/FlatButton'
 import Dialog from 'material-ui/Dialog'
 import TextField from 'material-ui/TextField'
 import EditIcon from 'material-ui/svg-icons/image/edit'
+import {KeyboardShortcutInhibitor} from './KeyboardShortcuts'
 
 export default class EditCardButton extends Component {
   state = {
@@ -67,6 +68,7 @@ export default class EditCardButton extends Component {
               ref="card"
             />
           </form>
+          <KeyboardShortcutInhibitor />
         </Dialog>
       </span>
     )
