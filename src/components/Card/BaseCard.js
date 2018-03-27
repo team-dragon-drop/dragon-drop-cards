@@ -114,7 +114,12 @@ export default class BaseCard extends React.Component {
                       <ThumbsDownIcon />
                     </span>
 
-                    <EditCardButton currentValue={name} onSubmit={newContent => backend.editCard(columnId, id, newContent)}/>
+                    <EditCardButton
+                      currentValue={name}
+                      onSubmit={newContent =>
+                        backend.editCard(refSpec, newContent)
+                      }
+                    />
 
                     <RemoveCardButton
                       removeCard={() => backend.removeCard(refSpec)}

@@ -28,14 +28,11 @@ class FirebaseBackend {
       .remove()
   }
 
-  editCard(columnId, id, content) {
-    const newContent = content
-    if (newContent) {
+  editCard(refSpec, content) {
+    content &&
       database()
-        .ref(`/${this.boardId}/columns/${columnId}/cards`)
-        .child(id)
-        .update({name: newContent})
-    }
+        .ref(this._buildRef(refSpec))
+        .update({name: content})
   }
 
   moveCard(oldRefSpec, newRefSpec) {
