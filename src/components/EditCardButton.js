@@ -60,12 +60,15 @@ export default class EditCardButton extends Component {
         >
           <form id="editCardForm" onSubmit={this.handleSubmit}>
             <TextField
+              hintText="Markdown is supported"
+              floatingLabelText="Card Text"
               multiLine={true}
               rows={1}
               fullWidth={true}
               onChange={this.handleChange}
-              name={this.state.newContent}
+              name="card"
               ref="card"
+              defaultValue={this.props.currentValue}
             />
           </form>
           <KeyboardShortcutInhibitor />
