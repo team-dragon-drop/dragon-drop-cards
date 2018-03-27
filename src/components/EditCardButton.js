@@ -8,7 +8,7 @@ export default class EditCardButton extends Component {
   state = {
     open: false,
     newContent: '',
-    value: this.props.currentValue
+    value: this.props.currentValue,
   }
 
   handleOpen = () => {
@@ -49,9 +49,7 @@ export default class EditCardButton extends Component {
 
     return (
       <span>
-        <EditIcon
-          onTouchTap={() => this.handleOpen()}
-        />
+        <EditIcon onTouchTap={() => this.handleOpen()} />
         <Dialog
           title="Edit This Card"
           actions={actions}
