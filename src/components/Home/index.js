@@ -27,7 +27,7 @@ export default class Home extends Component {
     return (
       <div className="homepage-container">
         <h1 className="homepage-title">Dragon Drop Cards</h1>
-        <em> Come for the dragons, stay for the &mdash; actually don't stay </em>
+        <em className="homepage-description"> Come for the dragons, stay for the cards.</em>
         <Logo />
         <div className="create-board">
           <TextField
