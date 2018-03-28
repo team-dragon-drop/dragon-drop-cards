@@ -57,9 +57,12 @@ class FirebaseBackend {
           name: destinationGroup.name,
           votes: destinationGroup.votes,
         })
+      groupRef.update({
+        name: destinationGroup.name.replace(/\.*$/, '...'),
+        votes: 0,
+      })
     }
 
-    groupRef.update({name: destinationGroup.name.replace(/\.*$/, '...')})
     groupRef
       .child('subCards')
       .push()
