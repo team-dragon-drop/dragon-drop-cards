@@ -61,12 +61,12 @@ export default class AppBar extends Component {
     return (
       <div className="app-bar">
         <MuiAppBar
-          title="Dragon Drop"
-          titleStyle={{textAlign: 'center'}}
+          title={<a href="/">Dragon Drop</a>}
+          titleStyle={{textAlign: 'center', fontFamily: 'Sheeping-Dogs', fontSize: '40px', lineHeight: '74px', height:'74px'}}
           onTitleTouchTap={() => (window.location.href = '/')}
           showMenuIconButton={false}
           iconElementRight={
-            <IconButton>
+            <IconButton style={{marginTop:'4px'}}>
               <AddIcon
                 onTouchTap={() => this.handleOpen()}
                 label={this.props.buttonLabel}
