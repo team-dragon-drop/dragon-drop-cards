@@ -1,4 +1,5 @@
 import React, {Component} from 'react'
+import {Link} from 'react-router-dom'
 import Dialog from 'material-ui/Dialog'
 import FlatButton from 'material-ui/FlatButton'
 import TextField from 'material-ui/TextField'
@@ -61,12 +62,17 @@ export default class AppBar extends Component {
     return (
       <div className="app-bar">
         <MuiAppBar
-          title={<a href="/">Dragon Drop</a>}
-          titleStyle={{textAlign: 'center', fontFamily: 'Sheeping-Dogs', fontSize: '40px', lineHeight: '74px', height:'74px'}}
-          onTitleTouchTap={() => (window.location.href = '/')}
+          title={<Link to="/">Dragon Drop</Link>}
+          titleStyle={{
+            textAlign: 'center',
+            fontFamily: 'Sheeping-Dogs',
+            fontSize: '40px',
+            lineHeight: '74px',
+            height: '74px',
+          }}
           showMenuIconButton={false}
           iconElementRight={
-            <IconButton style={{marginTop:'4px'}}>
+            <IconButton style={{marginTop: '4px'}}>
               <AddIcon
                 onTouchTap={() => this.handleOpen()}
                 label={this.props.buttonLabel}
