@@ -13,22 +13,6 @@ export default class App extends Component {
           path="/b/:boardId"
           render={({match}) => <Board boardId={match.params.boardId} />}
         />
-
-        <Route
-          path="/"
-          render={({location}) => {
-            console.log('can haz ga?', typeof window.ga === 'function')
-            if (typeof window.ga === 'function') {
-              window.ga('set', 'page', location.pathname + location.search)
-              window.ga('send', 'pageview')
-              console.log(
-                'Supposedly sent a pageview',
-                location.pathname + location.search,
-              )
-            }
-            return null
-          }}
-        />
       </main>
     )
   }
