@@ -3,8 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "devDependencies": {
-    "firebase-tools": "^3.9.2",
-    "react-scripts": "^1.0.10"
+    "firebase-tools": "^3.9.2"
   },
   "dependencies": {
     "firebase": "^4.0.0",
@@ -12,12 +11,13 @@
     "github-markdown-css": "^2.10.0",
     "gsap": "^1.20.3",
     "material-ui": "^0.18.1",
-    "react": "^15.3.1",
+    "react": "^16.3.1",
+    "react-dom": "^16.3.1",
+    "react-scripts": "1.1.4",
     "react-broadcast": "^0.6.1",
     "react-dev-utils": "^3.0.2",
     "react-dnd": "^2.4.0",
     "react-dnd-html5-backend": "^2.4.1",
-    "react-dom": "^15.3.1",
     "react-error-overlay": "^1.0.9",
     "react-markdown": "^3.3.0",
     "react-router-dom": "^4.1.2",
@@ -26,6 +26,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "deploy": "yarn build && ./node_modules/.bin/firebase deploy"
   },
