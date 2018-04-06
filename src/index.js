@@ -1,10 +1,12 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import App from './App'
 import firebase from 'firebase'
 import injectTapEventPlugin from 'react-tap-event-plugin'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import {BrowserRouter as Router} from 'react-router-dom'
+import registerServiceWorker from './registerServiceWorker'
+
+import App from './App'
 import './index.css'
 
 injectTapEventPlugin()
@@ -25,3 +27,5 @@ ReactDOM.render(
   </MuiThemeProvider>,
   document.getElementById('root'),
 )
+
+registerServiceWorker()
