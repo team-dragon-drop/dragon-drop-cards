@@ -33,6 +33,7 @@ class Board extends Component {
               <meta property="og:title" content={`Dragon Drop Cards – ${state.name}`}/>
               <meta property="og:description" content="Create actions and items for your board here." />
               <meta property="og:image" content={logo} />
+              <meta name="robots" content="noindex, nofollow" />
             </Helmet>
             <AppBar
               onButtonTouchTap={columnName => backend.addColumn(columnName)}
