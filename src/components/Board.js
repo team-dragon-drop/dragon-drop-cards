@@ -1,4 +1,5 @@
 import React, {Component} from 'react'
+import Helmet from 'react-helmet';
 import Column from './Column'
 import HTML5Backend from 'react-dnd-html5-backend'
 import AppBar from './AppBar'
@@ -6,6 +7,7 @@ import {DragDropContext} from 'react-dnd'
 import {FirebaseProvider} from '../backend'
 import {KeyboardShortcuts} from './KeyboardShortcuts'
 import {clamp} from '../utils'
+import logo from './Home/dragon-drop-logo.svg'
 
 class Board extends Component {
   state = {selectedColumn: null}
@@ -26,6 +28,12 @@ class Board extends Component {
       <FirebaseProvider firebaseKey={this.props.boardId}>
         {(state, backend) => (
           <div className="App">
+            <Helmet>
+              <title>{`Dragon Drop Cards – ${state.name}`}</title>
+              <meta property="og:title" content={`Dragon Drop Cards – ${state.name}`}/>
+              <meta property="og:description" content="Create actions and items for your board here." />
+              <meta property="og:image" content={logo} />
+            </Helmet>
             <AppBar
               onButtonTouchTap={columnName => backend.addColumn(columnName)}
               loading={state.loading}
