@@ -1,0 +1,20 @@
+{
+    "name": "Dragon Drop Cards",
+    "short_name": "Dragon Drop Cards",
+    "icons": [
+        {
+            "src": "/android-chrome-192x192.png?v=qA3PPWkJR7",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "/android-chrome-512x512.png?v=qA3PPWkJR7",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ],
+    "theme_color": "#000000",
+    "background_color": "#000000",
+    "start_url": "https://dragondropcards.com",
+    "display": "standalone"
+}
