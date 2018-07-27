@@ -12,6 +12,12 @@ import logo from './Home/dragon-drop-logo.svg'
 class Board extends Component {
   state = {selectedColumn: null}
 
+  constructBoardMetaTitle(state) {
+    if (state.name) {
+      return(`${state.name} – Dragon Drop Cards`);
+    }
+  }
+
   incrementColumn(columns, increment) {
     const {selectedColumn} = this.state
     const target = selectedColumn === null ? 0 : selectedColumn + increment
@@ -29,8 +35,8 @@ class Board extends Component {
         {(state, backend) => (
           <div className="App">
             <Helmet>
-              <title>{`Dragon Drop Cards – ${state.name}`}</title>
-              <meta property="og:title" content={`Dragon Drop Cards – ${state.name}`}/>
+              <title>{this.constructBoardMetaTitle(state)}</title>
+              <meta property="og:title" content={this.constructBoardMetaTitle(state)}/>
               <meta property="og:description" content="Create actions and items for your board here." />
               <meta property="og:image" content={logo} />
               <meta name="robots" content="noindex, nofollow" />
