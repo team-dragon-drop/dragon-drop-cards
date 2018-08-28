@@ -1,0 +1,40 @@
+
+.logo-container {
+  margin: 0 auto;
+  width: 270px;
+  height: 400px;
+  position: relative;
+}
+
+.logo-container img{
+  position: absolute;
+}
+
+
+.logo__head {
+  position: relative;
+  left: 33px;
+}
+
+.logo--ddhead {
+  z-index: 1;
+  width: 80%;
+}
+
+.logo--ddjaw {
+  width: 40%;
+  z-index: 0;
+  top: 104px;
+  left: 9px;
+}
+
+.logo--ddfireball {
+  z-index: -1;
+  width: 40%;
+  top: 80px;
+  left: 50px;
+}
+
+.logo--ddbox {
+  top: 150px;
+}

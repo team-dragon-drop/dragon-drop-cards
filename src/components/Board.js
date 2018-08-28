@@ -7,7 +7,7 @@ import {DragDropContext} from 'react-dnd'
 import {FirebaseProvider} from '../backend'
 import {KeyboardShortcuts} from './KeyboardShortcuts'
 import {clamp} from '../utils'
-import logo from './Home/dragon-drop-logo.svg'
+import logo from './Home/Logo/dragon-drop-logo.svg'
 
 class Board extends Component {
   state = {selectedColumn: null}
