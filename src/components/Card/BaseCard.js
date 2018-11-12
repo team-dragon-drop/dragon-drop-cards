@@ -8,6 +8,7 @@ import EditCardButton from '../EditCardButton'
 import {BackendActions} from '../../backend'
 import {sortCardsByVotes} from '../../utils'
 import {SubCard} from '.'
+import {TweenMax} from 'gsap'
 import './styles.css'
 import 'github-markdown-css'
 
@@ -47,6 +48,14 @@ export default class BaseCard extends React.Component {
     let className = 'card'
     if (canDrop) className += ' card--can-drop'
     if (isOver) className += ' card--is-over'
+
+    const animate = (className, isUp) => {
+      const color = isUp ? "#9acd32" : "#dc1f1f";
+      const direction = isUp ? -10 : 10;
+      const rotation = isUp ? 20 : -20;
+      TweenMax.to(className, .1, {y:direction, color: color, rotation: rotation});
+      TweenMax.to(className, .1, {y:0, color: "#d3d3d3", rotation: 0, delay: .3});
+    }
 
     return (
       <BackendActions>
@@ -106,12 +115,18 @@ export default class BaseCard extends React.Component {
                   </ul>
 
                   <div className="card__actions">
-                    <span onClick={e => backend.voteCard(refSpec, +1)}>
-                      <ThumbsUpIcon />
+                    <span onClick={(e) => {
+                        backend.voteCard(refSpec, +1)
+                        animate(`.card__thumbsup-${refSpec.cardId}`, true);
+                    }}>
+                      <ThumbsUpIcon style={{color: "#d3d3d3"}} className={`card__thumbsup-${refSpec.cardId}`}/>
                     </span>
 
-                    <span onClick={e => backend.voteCard(refSpec, -1)}>
-                      <ThumbsDownIcon />
+                    <span onClick={e => {
+                      backend.voteCard(refSpec, -1)
+                      animate(`.card__thumbsdown-${refSpec.cardId}`, false);
+                    }}>
+                      <ThumbsDownIcon style={{color: "#d3d3d3"}} className={`card__thumbsdown-${refSpec.cardId}`}/>
                     </span>
 
                     <EditCardButton
