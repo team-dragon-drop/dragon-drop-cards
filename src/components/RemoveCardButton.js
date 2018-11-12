@@ -38,7 +38,7 @@ export default class RemoveCardButton extends Component {
 
     return (
       <span onClick={() => this.handleOpen()} >
-        <DeleteIcon />
+        <DeleteIcon style={{color: "#d3d3d3"}} />
         <Dialog
           title="Are you sure you want to delete this?"
           actions={actions}

@@ -50,7 +50,7 @@ export default class EditCardButton extends Component {
 
     return (
       <span>
-        <EditIcon onTouchTap={() => this.handleOpen()} />
+        <EditIcon onTouchTap={() => this.handleOpen()} style={{color: "#d3d3d3"}} />
         <Dialog
           title="Edit This Card"
           actions={actions}
