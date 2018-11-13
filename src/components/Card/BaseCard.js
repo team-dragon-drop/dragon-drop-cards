@@ -52,8 +52,7 @@ export default class BaseCard extends React.Component {
     const animate = (className, isUp) => {
       const color = isUp ? "#9acd32" : "#dc1f1f";
       const direction = isUp ? -10 : 10;
-      const rotation = isUp ? 20 : -20;
-      TweenMax.to(className, .1, {y:direction, color: color, rotation: rotation});
+      TweenMax.to(className, .1, {y:direction, color: color, rotation: -20});
       TweenMax.to(className, .1, {y:0, color: "#d3d3d3", rotation: 0, delay: .3});
     }
 
