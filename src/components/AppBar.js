@@ -1,7 +1,11 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '@material-ui/core/Button';
+import Toolbar from '@material-ui/core/Toolbar';
 import TextField from '@material-ui/core/TextField';
 import MuiAppBar from '@material-ui/core/AppBar';
 import LinearProgress from '@material-ui/core/LinearProgress';
@@ -19,9 +23,7 @@ export default class AppBar extends Component {
   };
 
   handleOpen = () => {
-    this.setState({ open: true }, () => {
-      this.refs.newColumn.focus();
-    });
+    this.setState({ open: true });
   };
 
   handleClose = () => {
@@ -33,7 +35,7 @@ export default class AppBar extends Component {
   };
 
   handleSubmit = e => {
-    this.props.onButtonTouchTap(this.state.newColumnName);
+    this.props.onClick(this.state.newColumnName);
     this.setState({ newColumnName: '', open: false });
     e.preventDefault();
   };
@@ -48,53 +50,42 @@ export default class AppBar extends Component {
   }
 
   render() {
-    const actions = [
-      <Button
-        label="Cancel"
-        primary={true}
-        onTouchTap={() => this.handleClose()}
-      />,
-      <Button label="Add" primary={true} form="addColumnForm" type="submit" />,
-    ];
-
     return (
       <div className="app-bar">
-        <MuiAppBar
-          title={<Link to="/">Dragon Drop</Link>}
-          titleStyle={{
-            textAlign: 'center',
-            fontFamily: 'Sheeping-Dogs',
-            fontSize: '40px',
-            lineHeight: '74px',
-            height: '74px',
-          }}
-          showMenuIconButton={false}
-          iconElementRight={
-            <IconButton style={{ marginTop: '4px' }}>
-              <AddIcon
-                onTouchTap={() => this.handleOpen()}
-                label={this.props.buttonLabel}
-              />
+        <MuiAppBar position="static">
+          <Toolbar>
+            <Link to="/">Dragon Drop</Link>
+            <IconButton onClick={() => this.handleOpen()}>
+              <AddIcon label={this.props.buttonLabel} />
             </IconButton>
-          }
-        />
+          </Toolbar>
+        </MuiAppBar>
         {this.loadingIndicator()}
-        <Dialog
-          title="Add A New Column"
-          actions={actions}
-          modal={false}
-          open={this.state.open}
-          onRequestClose={this.handleClose}
-        >
-          <form id="addColumnForm" onSubmit={this.handleSubmit}>
-            <TextField
-              onChange={this.handleChange}
-              name="newColumn"
-              ref="newColumn"
-            />
-          </form>
+
+        <Dialog open={this.state.open} onClose={this.handleClose}>
+          <DialogTitle id="form-dialog-title">Add A New Column</DialogTitle>
+          <DialogContent>
+            <form id="addColumnForm" onSubmit={this.handleSubmit}>
+              <TextField
+                label="Column Name"
+                fullWidth={true}
+                onChange={this.handleChange}
+                name="newColumn"
+                inputRef={el => el && el.focus()}
+              />
+            </form>
+          </DialogContent>
+          <DialogActions>
+            <Button color="primary" onClick={() => this.handleClose()}>
+              Cancel
+            </Button>
+            <Button color="primary" form="addColumnForm" type="submit">
+              Add
+            </Button>
+          </DialogActions>
           <KeyboardShortcutInhibitor />
         </Dialog>
+
         <KeyboardShortcuts
           keys={{
             67: () => this.handleOpen(), // c
