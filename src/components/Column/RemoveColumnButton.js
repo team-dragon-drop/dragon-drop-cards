@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import CloseIcon from '@material-ui/icons/Close';
 import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '@material-ui/core/Button';
 import { KeyboardShortcuts } from '../KeyboardShortcuts';
 
@@ -23,19 +25,6 @@ export default class RemoveColumnButton extends Component {
   };
 
   render() {
-    const actions = [
-      <Button
-        label="No"
-        primary={true}
-        onTouchTap={() => this.handleClose()}
-      />,
-      <Button
-        label="Yes"
-        primary={true}
-        onTouchTap={() => this.handleRemoveColumn()}
-      />,
-    ];
-
     return (
       <div>
         <span
@@ -43,20 +32,26 @@ export default class RemoveColumnButton extends Component {
           style={{ float: 'right' }}
           onClick={() => this.handleOpen()}
         >
-          <CloseIcon color="#ccc" />
+          <CloseIcon />
         </span>
-        <Dialog
-          title="Are you sure you want to delete this?"
-          actions={actions}
-          modal={false}
-          open={this.state.open}
-          onRequestClose={this.handleClose}
-        >
+
+        <Dialog open={this.state.open} onClose={this.handleClose}>
+          <DialogTitle id="form-dialog-title">
+            Are you sure you want to delete this?
+          </DialogTitle>
           <KeyboardShortcuts
             keys={{
               13: () => this.handleRemoveColumn(),
             }}
           />
+          <DialogActions>
+            <Button color="primary" onClick={() => this.handleClose()}>
+              No
+            </Button>
+            <Button color="primary" onClick={() => this.handleRemoveColumn()}>
+              Yes
+            </Button>
+          </DialogActions>
         </Dialog>
       </div>
     );

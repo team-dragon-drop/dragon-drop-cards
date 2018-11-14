@@ -24,15 +24,11 @@ export default class RemoveCardButton extends Component {
 
   render() {
     const actions = [
-      <Button
-        label="No"
-        primary={true}
-        onTouchTap={() => this.handleClose()}
-      />,
+      <Button label="No" primary={true} onClick={() => this.handleClose()} />,
       <Button
         label="Yes"
         primary={true}
-        onTouchTap={() => this.handleRemoveCard()}
+        onClick={() => this.handleRemoveCard()}
       />,
     ];
 

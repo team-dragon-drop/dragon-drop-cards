@@ -1,26 +1,26 @@
-import React, {Component} from 'react'
+import React, { Component } from 'react';
 import Helmet from 'react-helmet';
-import Column from './Column'
-import HTML5Backend from 'react-dnd-html5-backend'
-import AppBar from './AppBar'
-import {DragDropContext} from 'react-dnd'
-import {FirebaseProvider} from '../backend'
-import {KeyboardShortcuts} from './KeyboardShortcuts'
-import {clamp} from '../utils'
-import logo from './Home/dragon-drop-logo.svg'
+import Column from './Column';
+import HTML5Backend from 'react-dnd-html5-backend';
+import AppBar from './AppBar';
+import { DragDropContext } from 'react-dnd';
+import { FirebaseProvider } from '../backend';
+import { KeyboardShortcuts } from './KeyboardShortcuts';
+import { clamp } from '../utils';
+import logo from './Home/dragon-drop-logo.svg';
 
 class Board extends Component {
-  state = {selectedColumn: null}
+  state = { selectedColumn: null };
 
   incrementColumn(columns, increment) {
-    const {selectedColumn} = this.state
-    const target = selectedColumn === null ? 0 : selectedColumn + increment
-    const range = [0, Object.keys(columns).length - 1]
-    this.setState({selectedColumn: clamp(target, range)})
+    const { selectedColumn } = this.state;
+    const target = selectedColumn === null ? 0 : selectedColumn + increment;
+    const range = [0, Object.keys(columns).length - 1];
+    this.setState({ selectedColumn: clamp(target, range) });
   }
 
   clearSelectedColumn() {
-    this.setState({selectedColumn: null})
+    this.setState({ selectedColumn: null });
   }
 
   render() {
@@ -30,13 +30,19 @@ class Board extends Component {
           <div className="App">
             <Helmet>
               <title>{`Dragon Drop Cards – ${state.name}`}</title>
-              <meta property="og:title" content={`Dragon Drop Cards – ${state.name}`}/>
-              <meta property="og:description" content="Create actions and items for your board here." />
+              <meta
+                property="og:title"
+                content={`Dragon Drop Cards – ${state.name}`}
+              />
+              <meta
+                property="og:description"
+                content="Create actions and items for your board here."
+              />
               <meta property="og:image" content={logo} />
               <meta name="robots" content="noindex, nofollow" />
             </Helmet>
             <AppBar
-              onButtonTouchTap={columnName => backend.addColumn(columnName)}
+              onClick={columnName => backend.addColumn(columnName)}
               loading={state.loading}
             />
 
@@ -66,8 +72,8 @@ class Board extends Component {
           </div>
         )}
       </FirebaseProvider>
-    )
+    );
   }
 }
 
-export default DragDropContext(HTML5Backend)(Board)
+export default DragDropContext(HTML5Backend)(Board);
