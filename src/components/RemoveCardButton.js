@@ -1,44 +1,44 @@
-import React, { Component } from "react";
-import Dialog from 'material-ui/Dialog';
-import FlatButton from 'material-ui/FlatButton';
-import DeleteIcon from 'material-ui/svg-icons/action/delete';
-import { KeyboardShortcuts } from "./KeyboardShortcuts";
+import React, { Component } from 'react';
+import Dialog from '@material-ui/core/Dialog';
+import Button from '@material-ui/core/Button';
+import DeleteIcon from '@material-ui/icons/Delete';
+import { KeyboardShortcuts } from './KeyboardShortcuts';
 
 export default class RemoveCardButton extends Component {
   state = {
-    open: false
+    open: false,
   };
 
   handleOpen = () => {
-    this.setState({open: true});
+    this.setState({ open: true });
   };
 
   handleClose = () => {
-    this.setState({open: false});
+    this.setState({ open: false });
   };
 
   handleRemoveCard = () => {
     this.handleClose();
     this.props.removeCard();
-  }
+  };
 
   render() {
     const actions = [
-      <FlatButton
+      <Button
         label="No"
         primary={true}
-        onTouchTap={() => this.handleClose() }
+        onTouchTap={() => this.handleClose()}
       />,
-      <FlatButton
+      <Button
         label="Yes"
         primary={true}
-        onTouchTap={() => this.handleRemoveCard() }
-      />
+        onTouchTap={() => this.handleRemoveCard()}
+      />,
     ];
 
     return (
-      <span onClick={() => this.handleOpen()} >
-        <DeleteIcon style={{color: "#d3d3d3"}} />
+      <span onClick={() => this.handleOpen()}>
+        <DeleteIcon style={{ color: '#d3d3d3' }} />
         <Dialog
           title="Are you sure you want to delete this?"
           actions={actions}
@@ -46,9 +46,11 @@ export default class RemoveCardButton extends Component {
           open={this.state.open}
           onRequestClose={this.handleClose}
         >
-          <KeyboardShortcuts keys={{
-            13: () => this.handleRemoveCard()
-          }}/>
+          <KeyboardShortcuts
+            keys={{
+              13: () => this.handleRemoveCard(),
+            }}
+          />
         </Dialog>
       </span>
     );
