@@ -1,21 +1,21 @@
-import React from 'react'
-import Paper from 'material-ui/Paper'
-import KeyboardArrowDown from 'material-ui/svg-icons/hardware/keyboard-arrow-down'
-import {Card} from '../Card'
-import {BackendActions} from '../../backend'
-import Header from './Header'
-import AddCardButton from './AddCardButton'
-import ColumnHOC from './ColumnHOC'
-import {sortCardsByVotes} from '../../utils'
-import './styles.css'
+import React from 'react';
+import Paper from '@material-ui/core/Paper';
+import KeyboardArrowDown from '@material-ui/icons/KeyboardArrowDown';
+import { Card } from '../Card';
+import { BackendActions } from '../../backend';
+import Header from './Header';
+import AddCardButton from './AddCardButton';
+import ColumnHOC from './ColumnHOC';
+import { sortCardsByVotes } from '../../utils';
+import './styles.css';
 
 const SelectedIndicator = () => (
   <KeyboardArrowDown color="#fff" className="column__selected-indicator" />
-)
+);
 
 const Placeholder = () => (
-  <li style={{height: '40px', opacity: 0.5, backgroundColor: 'grey'}} />
-)
+  <li style={{ height: '40px', opacity: 0.5, backgroundColor: 'grey' }} />
+);
 
 const Column = ({
   id,
@@ -42,7 +42,7 @@ const Column = ({
               >
                 {name}
               </Header>
-            </div>,
+            </div>
           )}
 
           <ul className="column__card-list">
@@ -62,7 +62,7 @@ const Column = ({
                     backend.moveCard(oldRefSpec, newRefSpec)
                   }
                 />
-              )
+              );
             })}
             {isOver && canDrop && <Placeholder />}
           </ul>
@@ -75,6 +75,6 @@ const Column = ({
       </div>
     )}
   </BackendActions>
-)
+);
 
-export default ColumnHOC(Column)
+export default ColumnHOC(Column);
