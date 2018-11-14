@@ -1,46 +1,46 @@
-import React, {Component} from 'react'
-import CloseIcon from 'material-ui/svg-icons/navigation/close'
-import Dialog from 'material-ui/Dialog'
-import FlatButton from 'material-ui/FlatButton'
-import {KeyboardShortcuts} from '../KeyboardShortcuts'
+import React, { Component } from 'react';
+import CloseIcon from '@material-ui/icons/Close';
+import Dialog from '@material-ui/core/Dialog';
+import Button from '@material-ui/core/Button';
+import { KeyboardShortcuts } from '../KeyboardShortcuts';
 
 export default class RemoveColumnButton extends Component {
   state = {
     open: false,
-  }
+  };
 
   handleOpen = () => {
-    this.setState({open: true})
-  }
+    this.setState({ open: true });
+  };
 
   handleClose = () => {
-    this.setState({open: false})
-  }
+    this.setState({ open: false });
+  };
 
   handleRemoveColumn = () => {
-    this.handleClose()
-    this.props.onClick()
-  }
+    this.handleClose();
+    this.props.onClick();
+  };
 
   render() {
     const actions = [
-      <FlatButton
+      <Button
         label="No"
         primary={true}
         onTouchTap={() => this.handleClose()}
       />,
-      <FlatButton
+      <Button
         label="Yes"
         primary={true}
         onTouchTap={() => this.handleRemoveColumn()}
       />,
-    ]
+    ];
 
     return (
       <div>
         <span
           className="column__close"
-          style={{float: 'right'}}
+          style={{ float: 'right' }}
           onClick={() => this.handleOpen()}
         >
           <CloseIcon color="#ccc" />
@@ -59,6 +59,6 @@ export default class RemoveColumnButton extends Component {
           />
         </Dialog>
       </div>
-    )
+    );
   }
 }

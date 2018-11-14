@@ -1,49 +1,51 @@
-import React, {Component} from 'react'
-import {Redirect} from 'react-router'
-import RaisedButton from 'material-ui/RaisedButton'
-import TextField from 'material-ui/TextField'
-import Logo from './Logo'
-import {newBoardKey} from '../../backend'
-import {generateDragonName} from './dragonGenerator'
-import './styles.css'
+import React, { Component } from 'react';
+import { Redirect } from 'react-router';
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
+import Logo from './Logo';
+import { newBoardKey } from '../../backend';
+import { generateDragonName } from './dragonGenerator';
+import './styles.css';
 
 export default class Home extends Component {
   constructor() {
-    super()
+    super();
     this.state = {
       boardName: generateDragonName(),
-    }
+    };
   }
 
   handleChange(event) {
-    this.setState({boardName: event.target.value})
+    this.setState({ boardName: event.target.value });
   }
 
   newBoard() {
-    this.setState({newUrl: `/b/${newBoardKey(this.state.boardName)}`})
+    this.setState({ newUrl: `/b/${newBoardKey(this.state.boardName)}` });
   }
 
   render() {
     return (
       <div className="homepage-container">
         <h1 className="homepage-title">Dragon Drop Cards</h1>
-        <em className="homepage-description"> Come for the dragons, stay for the cards.</em>
+        <em className="homepage-description">
+          {' '}
+          Come for the dragons, stay for the cards.
+        </em>
         <Logo />
         <div className="create-board">
           <TextField
-            floatingLabelText="Board Name"
+            inputProps={{ style: { color: 'white' } }}
+            label="Board Name"
             fullWidth={true}
-            inputStyle={{color: 'white'}}
-            floatingLabelStyle={{color: 'white'}}
             value={this.state.boardName}
             onChange={event => this.handleChange(event)}
           />
-          <RaisedButton onClick={() => this.newBoard()}>
+          <Button variant="contained" onClick={() => this.newBoard()}>
             Create New Board
-          </RaisedButton>
+          </Button>
         </div>
         {this.state.newUrl && <Redirect push to={this.state.newUrl} />}
       </div>
-    )
+    );
   }
 }
