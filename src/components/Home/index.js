@@ -40,7 +40,11 @@ export default class Home extends Component {
             value={this.state.boardName}
             onChange={event => this.handleChange(event)}
           />
-          <Button variant="contained" onClick={() => this.newBoard()}>
+          <Button
+            variant="outlined"
+            style={{ color: 'white', borderColor: 'white' }}
+            onClick={() => this.newBoard()}
+          >
             Create New Board
           </Button>
         </div>

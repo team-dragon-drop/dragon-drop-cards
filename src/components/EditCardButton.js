@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogTitle from '@material-ui/core/DialogTitle';
 import TextField from '@material-ui/core/TextField';
 import EditIcon from '@material-ui/icons/Edit';
 import { KeyboardShortcutInhibitor } from './KeyboardShortcuts';
@@ -13,9 +16,7 @@ export default class EditCardButton extends Component {
   };
 
   handleOpen = () => {
-    this.setState({ open: true }, () => {
-      this.refs.card.focus();
-    });
+    this.setState({ open: true });
   };
 
   handleClose = () => {
@@ -34,41 +35,40 @@ export default class EditCardButton extends Component {
   };
 
   render() {
-    const actions = [
-      <Button
-        label="Cancel"
-        primary={true}
-        onTouchTap={() => this.handleClose()}
-      />,
-      <Button label="Edit" primary={true} form="editCardForm" type="submit" />,
-    ];
-
     return (
       <span>
         <EditIcon
-          onTouchTap={() => this.handleOpen()}
+          onClick={() => this.handleOpen()}
           style={{ color: '#d3d3d3' }}
         />
-        <Dialog
-          title="Edit This Card"
-          actions={actions}
-          modal={false}
-          open={this.state.open}
-          onRequestClose={this.handleClose}
-        >
-          <form id="editCardForm" onSubmit={this.handleSubmit}>
-            <TextField
-              hintText="Markdown is supported"
-              floatingLabelText="Card Text"
-              multiLine={true}
-              rows={1}
-              fullWidth={true}
-              onChange={this.handleChange}
-              name="card"
-              ref="card"
-              defaultValue={this.props.currentValue}
-            />
-          </form>
+        <Dialog open={this.state.open} onClose={this.handleClose}>
+          <DialogTitle id="form-dialog-title">Edit card</DialogTitle>
+          <DialogContent>
+            <form id="editCardForm" onSubmit={this.handleSubmit}>
+              <TextField
+                placeholder="Markdown is supported"
+                label="Card Text"
+                multiline
+                rows={1}
+                fullWidth={true}
+                onChange={this.handleChange}
+                name="card"
+                ref="card"
+                defaultValue={this.props.currentValue}
+                inputRef={el => el && el.focus()}
+              />
+            </form>
+          </DialogContent>
+          <DialogActions>
+            <Button color="primary" onClick={() => this.handleClose()}>
+              Cancel
+            </Button>
+            ,
+            <Button form="editCardForm" type="submit">
+              Edit
+            </Button>
+            ,
+          </DialogActions>
           <KeyboardShortcutInhibitor />
         </Dialog>
       </span>
