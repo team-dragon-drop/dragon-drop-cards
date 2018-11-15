@@ -27,16 +27,17 @@ export default class RemoveColumnButton extends Component {
   render() {
     return (
       <div>
-        <span
+        <CloseIcon
           className="column__close"
-          style={{ float: 'right' }}
           onClick={() => this.handleOpen()}
-        >
-          <CloseIcon />
-        </span>
+        />
 
-        <Dialog open={this.state.open} onClose={this.handleClose}>
-          <DialogTitle id="form-dialog-title">
+        <Dialog
+          classes={{ paper: 'dialog' }}
+          open={this.state.open}
+          onClose={this.handleClose}
+        >
+          <DialogTitle className="dialog-title" id="form-dialog-title">
             Are you sure you want to delete this?
           </DialogTitle>
           <KeyboardShortcuts

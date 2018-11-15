@@ -53,17 +53,24 @@ export default class AppBar extends Component {
     return (
       <div className="app-bar">
         <MuiAppBar position="static">
-          <Toolbar>
-            <Link to="/">Dragon Drop</Link>
+          <Toolbar className="toolbar">
+            <Link className="toolbar__title" to="/">
+              Dragon Drop
+            </Link>
             <IconButton onClick={() => this.handleOpen()}>
-              <AddIcon label={this.props.buttonLabel} />
+              <AddIcon
+                className="toolbar__add-icon"
+                label={this.props.buttonLabel}
+              />
             </IconButton>
           </Toolbar>
         </MuiAppBar>
         {this.loadingIndicator()}
 
-        <Dialog open={this.state.open} onClose={this.handleClose}>
-          <DialogTitle id="form-dialog-title">Add A New Column</DialogTitle>
+        <Dialog classes={{ paper: 'dialog' }} open={this.state.open} onClose={this.handleClose}>
+          <DialogTitle className="dialog-title" id="form-dialog-title">
+            Add A New Column
+          </DialogTitle>
           <DialogContent>
             <form id="addColumnForm" onSubmit={this.handleSubmit}>
               <TextField

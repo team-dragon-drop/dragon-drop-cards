@@ -53,8 +53,14 @@ export default class AddCardButton extends Component {
         >
           Add Card
         </Button>
-        <Dialog open={this.state.open} onClose={this.handleClose}>
-          <DialogTitle id="form-dialog-title">Add A New Card</DialogTitle>
+        <Dialog
+          classes={{ paper: 'dialog' }}
+          open={this.state.open}
+          onClose={this.handleClose}
+        >
+          <DialogTitle className="dialog-title" id="form-dialog-title">
+            Add A New Card
+          </DialogTitle>
           <DialogContent>
             <form id="addCardForm" onSubmit={this.handleSubmit}>
               <TextField

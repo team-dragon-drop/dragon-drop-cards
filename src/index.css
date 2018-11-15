@@ -46,8 +46,23 @@ h1 {
   color: white;
 }
 
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+}
+
+.toolbar__add-icon {
+  color: white;
+}
+
+.toolbar__title {
+  font-family: Sheeping-Dogs, serif;
+  font-size: 1.6rem;
+}
+
 .board-title {
-  margin: 80px 0 15px;
+  margin: 60px 0 15px;
+  color: white;
 }
 
 .columns {
@@ -77,6 +92,14 @@ li {
 }
 .add-card-placeholder a {
   color: #999;
+}
+
+.dialog-title h2 {
+  padding: 0;
+}
+
+.dialog {
+  min-width: 320px;
 }
 
 .clearfix:after {
