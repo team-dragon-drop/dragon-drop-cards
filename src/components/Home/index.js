@@ -35,6 +35,7 @@ export default class Home extends Component {
         <div className="create-board">
           <TextField
             inputProps={{ style: { color: 'white' } }}
+            InputLabelProps={{ style: { color: 'white' } }}
             label="Board Name"
             fullWidth={true}
             value={this.state.boardName}

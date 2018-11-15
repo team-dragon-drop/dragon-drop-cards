@@ -41,8 +41,14 @@ export default class EditCardButton extends Component {
           onClick={() => this.handleOpen()}
           style={{ color: '#d3d3d3' }}
         />
-        <Dialog open={this.state.open} onClose={this.handleClose}>
-          <DialogTitle id="form-dialog-title">Edit card</DialogTitle>
+        <Dialog
+          classes={{ paper: 'dialog' }}
+          open={this.state.open}
+          onClose={this.handleClose}
+        >
+          <DialogTitle className="dialog-title" id="form-dialog-title">
+            Edit card
+          </DialogTitle>
           <DialogContent>
             <form id="editCardForm" onSubmit={this.handleSubmit}>
               <TextField
@@ -63,11 +69,9 @@ export default class EditCardButton extends Component {
             <Button color="primary" onClick={() => this.handleClose()}>
               Cancel
             </Button>
-            ,
-            <Button form="editCardForm" type="submit">
+            <Button color="primary" form="editCardForm" type="submit">
               Edit
             </Button>
-            ,
           </DialogActions>
           <KeyboardShortcutInhibitor />
         </Dialog>
