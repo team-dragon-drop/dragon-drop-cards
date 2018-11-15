@@ -7,8 +7,8 @@ import RemoveCardButton from '../RemoveCardButton';
 import EditCardButton from '../EditCardButton';
 import { BackendActions } from '../../backend';
 import { sortCardsByVotes } from '../../utils';
-import { SubCard } from '.';
 import { TweenMax } from 'gsap';
+import { Draggable } from 'react-beautiful-dnd';
 import './styles.css';
 import 'github-markdown-css';
 
@@ -38,13 +38,8 @@ export default class BaseCard extends React.Component {
   }
 
   render() {
-    const {
-      connectDropTarget,
-      connectDragSource,
-      canDrop,
-      isOver,
-    } = this.props;
-    const { key, id, subCards, name, columnId, parentCardId } = this.props;
+    const { canDrop, isOver } = this.props;
+    const { id, subCards, name, columnId, parentCardId } = this.props;
 
     const refSpec = parentCardId
       ? { columnId: columnId, cardId: parentCardId, subCardId: id }
@@ -73,11 +68,13 @@ export default class BaseCard extends React.Component {
 
     return (
       <BackendActions>
-        {backend =>
-          connectDropTarget(
-            connectDragSource(
-              <li key={key} id={id} className={className}>
+        {backend => (
+          <Draggable index={this.props.index} draggableId={id}>
+            {(provided, snapshot) => (
+              <li id={id} className={className}>
                 <div
+                  ref={provided.innerRef}
+                  {...provided.dragHandleProps}
                   className="card__head"
                   onClick={() => {
                     this.setState({
@@ -107,26 +104,7 @@ export default class BaseCard extends React.Component {
                   <ul
                     style={{ display: subCards ? 'flex' : 'none' }}
                     className="card__subcards"
-                  >
-                    {sortCardsByVotes(subCards).map(subCard => {
-                      return (
-                        <SubCard
-                          key={subCard.id}
-                          id={subCard.id}
-                          name={subCard.name}
-                          votes={subCard.votes}
-                          columnId={columnId}
-                          parentCardId={id}
-                          onMerge={(source, destination) =>
-                            backend.addToOrCreateGroup(source, destination)
-                          }
-                          onMove={(oldRefSpec, newRefSpec) =>
-                            backend.moveCard(oldRefSpec, newRefSpec)
-                          }
-                        />
-                      );
-                    })}
-                  </ul>
+                  />
 
                   <div className="card__actions">
                     <span
@@ -166,9 +144,9 @@ export default class BaseCard extends React.Component {
                   </div>
                 </div>
               </li>
-            )
-          )
-        }
+            )}
+          </Draggable>
+        )}
       </BackendActions>
     );
   }

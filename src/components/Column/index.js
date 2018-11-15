@@ -1,12 +1,12 @@
 import React from 'react';
 import Paper from '@material-ui/core/Paper';
 import KeyboardArrowDown from '@material-ui/icons/KeyboardArrowDown';
-import { Card } from '../Card';
+import Card from '../Card/BaseCard';
 import { BackendActions } from '../../backend';
 import Header from './Header';
 import AddCardButton from './AddCardButton';
-import ColumnHOC from './ColumnHOC';
 import { sortCardsByVotes } from '../../utils';
+import { Droppable } from 'react-beautiful-dnd';
 import './styles.css';
 
 const SelectedIndicator = () => (
@@ -17,64 +17,59 @@ const Placeholder = () => (
   <li style={{ height: '40px', opacity: 0.5, backgroundColor: 'grey' }} />
 );
 
-const Column = ({
-  id,
-  name,
-  cards,
-  selected,
-  connectDropTarget,
-  isOver,
-  canDrop,
-}) => (
+export default ({ id, name, cards, selected, isOver, canDrop }) => (
   <BackendActions>
     {backend => (
-      <div className="column">
-        {selected && <SelectedIndicator />}
+      <Droppable type="card" droppableId={id}>
+        {(provided, snapshot) => (
+          <div
+            ref={provided.innerRef}
+            {...provided.droppableProps}
+            className="column"
+          >
+            {selected && <SelectedIndicator />}
 
-        <Paper className="column-container">
-          {connectDropTarget(
-            <div>
-              <Header
-                onDoubleClick={() => backend.editColumn(id, name)}
-                onRemove={() => backend.removeColumn(id)}
-                canDrop={canDrop}
-                isOver={isOver}
-              >
-                {name}
-              </Header>
-            </div>
-          )}
-
-          <ul className="column__card-list">
-            {sortCardsByVotes(cards).map(card => {
-              return (
-                <Card
-                  key={card.id}
-                  id={card.id}
-                  name={card.name}
-                  votes={card.votes}
-                  subCards={card.subCards}
-                  columnId={id}
-                  onMerge={(source, destination) =>
-                    backend.addToOrCreateGroup(source, destination)
-                  }
-                  onMove={(oldRefSpec, newRefSpec) =>
-                    backend.moveCard(oldRefSpec, newRefSpec)
-                  }
-                />
-              );
-            })}
-            {isOver && canDrop && <Placeholder />}
-          </ul>
-
-          <AddCardButton
-            keyboardShortcutsActive={selected}
-            onSubmit={newCardName => backend.addCard(id, newCardName)}
-          />
-        </Paper>
-      </div>
+            <Paper className="column-container">
+              <div>
+                <Header
+                  onDoubleClick={() => backend.editColumn(id, name)}
+                  onRemove={() => backend.removeColumn(id)}
+                  canDrop={canDrop}
+                  isOver={isOver}
+                >
+                  {name}
+                </Header>
+              </div>
+              <ul className="column__card-list">
+                {sortCardsByVotes(cards).map((card, index) => {
+                  return (
+                    <Card
+                      index={index}
+                      key={card.id}
+                      id={card.id}
+                      name={card.name}
+                      votes={card.votes}
+                      subCards={card.subCards}
+                      columnId={id}
+                      onMerge={(source, destination) =>
+                        backend.addToOrCreateGroup(source, destination)
+                      }
+                      onMove={(oldRefSpec, newRefSpec) =>
+                        backend.moveCard(oldRefSpec, newRefSpec)
+                      }
+                    />
+                  );
+                })}
+                {provided.placeholder}
+              </ul>
+              <AddCardButton
+                keyboardShortcutsActive={selected}
+                onSubmit={newCardName => backend.addCard(id, newCardName)}
+              />
+            </Paper>
+          </div>
+        )}
+      </Droppable>
     )}
   </BackendActions>
 );
-
-export default ColumnHOC(Column);
