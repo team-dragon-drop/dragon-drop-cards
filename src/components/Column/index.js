@@ -1,12 +1,12 @@
 import React from 'react';
 import Paper from '@material-ui/core/Paper';
 import KeyboardArrowDown from '@material-ui/icons/KeyboardArrowDown';
-import { Card } from '../Card';
+import Card from '../Card/BaseCard';
 import { BackendActions } from '../../backend';
 import Header from './Header';
 import AddCardButton from './AddCardButton';
-import ColumnHOC from './ColumnHOC';
 import { sortCardsByVotes } from '../../utils';
+import { Droppable } from 'react-beautiful-dnd';
 import './styles.css';
 
 const SelectedIndicator = () => (
@@ -17,38 +17,37 @@ const Placeholder = () => (
   <li style={{ height: '40px', opacity: 0.5, backgroundColor: 'grey' }} />
 );
 
-const Column = ({
+export default ({
   id,
+  domRef,
   name,
   cards,
   selected,
-  connectDropTarget,
   isOver,
   canDrop,
+  ...props
 }) => (
   <BackendActions>
     {backend => (
-      <div className="column">
+      <div className="column" ref={domRef} {...props}>
         {selected && <SelectedIndicator />}
 
         <Paper className="column-container">
-          {connectDropTarget(
-            <div>
-              <Header
-                onDoubleClick={() => backend.editColumn(id, name)}
-                onRemove={() => backend.removeColumn(id)}
-                canDrop={canDrop}
-                isOver={isOver}
-              >
-                {name}
-              </Header>
-            </div>
-          )}
-
+          <div>
+            <Header
+              onDoubleClick={() => backend.editColumn(id, name)}
+              onRemove={() => backend.removeColumn(id)}
+              canDrop={canDrop}
+              isOver={isOver}
+            >
+              {name}
+            </Header>
+          </div>
           <ul className="column__card-list">
-            {sortCardsByVotes(cards).map(card => {
+            {sortCardsByVotes(cards).map((card, index) => {
               return (
                 <Card
+                  index={index}
                   key={card.id}
                   id={card.id}
                   name={card.name}
@@ -64,9 +63,7 @@ const Column = ({
                 />
               );
             })}
-            {isOver && canDrop && <Placeholder />}
           </ul>
-
           <AddCardButton
             keyboardShortcutsActive={selected}
             onSubmit={newCardName => backend.addCard(id, newCardName)}
@@ -76,5 +73,3 @@ const Column = ({
     )}
   </BackendActions>
 );
-
-export default ColumnHOC(Column);
