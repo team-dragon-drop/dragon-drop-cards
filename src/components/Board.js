@@ -23,14 +23,34 @@ export default class Board extends Component {
     this.setState({ selectedColumn: null });
   }
 
-  handleDragon(dragon) {
+  handleDragon(dragon, backend, state) {
     console.log(dragon);
 
     const { destination, source, draggableId, combine, type } = dragon;
 
     // Combining cards
     if (combine) {
-      console.log('COMBINE', source, destination);
+      console.log('COMBINE', dragon);
+
+      const card = {
+        ...state.columns[dragon.source.droppableId].cards[dragon.draggableId],
+        refSpec: {
+          columnId: dragon.source.droppableId,
+          cardId: dragon.draggableId,
+        },
+      };
+
+      const group = {
+        ...state.columns[dragon.combine.droppableId].cards[
+          dragon.combine.draggableId
+        ],
+        refSpec: {
+          columnId: dragon.combine.droppableId,
+          cardId: dragon.combine.draggableId,
+        },
+      };
+
+      backend.addToOrCreateGroup(card, group);
       // const cards = [...start.cardIds];
       // cards.splice(source.index, 1);
 
@@ -57,7 +77,7 @@ export default class Board extends Component {
       //     [source.droppableId]: newCards,
       //   },
       // });
-      // return;
+      return;
     }
 
     // const finish = this.state.columns[destination.droppableId];
@@ -75,22 +95,6 @@ export default class Board extends Component {
     ) {
       console.log('SAME_CARD');
       return;
-    }
-
-    // Persist ordering with columns
-    if (type === 'column') {
-      console.log('REORDER_COLUMN');
-      return;
-      // const newColumnOrder = Array.from(this.state.columnOrder);
-      // newColumnOrder.splice(source.index, 1);
-      // newColumnOrder.splice(destination.index, 0, draggableId);
-
-      // const newState = {
-      //   ...this.state,
-      //   columnOrder: newColumnOrder,
-      // };
-      // this.setState(newState);
-      // return;
     }
 
     // Reordering within same column
@@ -114,99 +118,69 @@ export default class Board extends Component {
       // };
 
       // this.setState(newState);
-      // return;
+      return;
     }
 
-    // const startCardIds = Array.from(start.cardIds);
-    // startCardIds.splice(source.index, 1);
-    // const newStart = {
-    //   ...start,
-    //   cardIds: startCardIds,
-    // };
-
-    // const finishCardIds = Array.from(finish.cardIds);
-    // finishCardIds.splice(destination.index, 0, draggableId);
-    // const newFinish = {
-    //   ...finish,
-    //   cardIds: finishCardIds,
-    // };
-
-    // const newState = {
-    //   ...this.state,
-    //   columns: {
-    //     ...this.state.columns,
-    //     [newStart.id]: newStart,
-    //     [newFinish.id]: newFinish,
-    //   },
-    // };
-
-    // this.setState(newState);
+    console.log('COLUMN_CHANGE');
+    console.log(dragon);
+    const card = {
+      columnId: dragon.source.droppableId,
+      cardId: dragon.draggableId,
+    };
+    const newColumn = { columnId: dragon.destination.droppableId };
+    backend.moveCard(card, newColumn);
   }
 
   render() {
     return (
       <FirebaseProvider firebaseKey={this.props.boardId}>
         {(state, backend) => (
-          <DragDropContext onDragEnd={this.handleDragon}>
-            <Droppable direction="horizontal" droppableId="all-columns">
-              {provided => (
-                <div
-                  ref={provided.innerRef}
-                  {...provided.droppableProps}
-                  className="App"
-                >
-                  <Helmet>
-                    <title>{`Dragon Drop Cards – ${state.name}`}</title>
-                    <meta
-                      property="og:title"
-                      content={`Dragon Drop Cards – ${state.name}`}
-                    />
-                    <meta
-                      property="og:description"
-                      content="Create actions and items for your board here."
-                    />
-                    <meta property="og:image" content={logo} />
-                    <meta name="robots" content="noindex, nofollow" />
-                  </Helmet>
-                  <AppBar
-                    onClick={columnName => backend.addColumn(columnName)}
-                    loading={state.loading}
+          <DragDropContext
+            onDragEnd={dragon => this.handleDragon(dragon, backend, state)}
+          >
+            <div className="App">
+              <Helmet>
+                <title>{`Dragon Drop Cards – ${state.name}`}</title>
+                <meta
+                  property="og:title"
+                  content={`Dragon Drop Cards – ${state.name}`}
+                />
+                <meta
+                  property="og:description"
+                  content="Create actions and items for your board here."
+                />
+                <meta property="og:image" content={logo} />
+                <meta name="robots" content="noindex, nofollow" />
+              </Helmet>
+              <AppBar
+                onClick={columnName => backend.addColumn(columnName)}
+                loading={state.loading}
+              />
+
+              <h2 className="board-title">{state.name}</h2>
+
+              <div className="columns">
+                {Object.keys(state.columns).map((id, index) => (
+                  <Column
+                    key={id}
+                    id={id}
+                    cards={state.columns[id].cards}
+                    name={state.columns[id].name}
+                    selected={index === this.state.selectedColumn}
                   />
+                ))}
+              </div>
 
-                  <h2 className="board-title">{state.name}</h2>
-
-                  <div className="columns">
-                    {Object.keys(state.columns).map((id, index) => (
-                      <Draggable draggableId={id} index={index}>
-                        {provided => (
-                          <Column
-                            domRef={provided.innerRef}
-                            {...provided.draggableProps}
-                            {...provided.dragHandleProps}
-                            key={id}
-                            id={id}
-                            cards={state.columns[id].cards}
-                            name={state.columns[id].name}
-                            selected={index === this.state.selectedColumn}
-                          />
-                        )}
-                      </Draggable>
-                    ))}
-                    {provided.placeholder}
-                  </div>
-
-                  <KeyboardShortcuts
-                    keys={{
-                      27: () => this.clearSelectedColumn(null), // ESC
-                      37: () => this.incrementColumn(state.columns, -1), // Left
-                      39: () => this.incrementColumn(state.columns, +1), // Right
-                      72: () => this.incrementColumn(state.columns, -1), // h
-                      76: () => this.incrementColumn(state.columns, +1), // l
-                    }}
-                  />
-                </div>
-              )}
-            </Droppable>
+              <KeyboardShortcuts
+                keys={{
+                  27: () => this.clearSelectedColumn(null), // ESC
+                  37: () => this.incrementColumn(state.columns, -1), // Left
+                  39: () => this.incrementColumn(state.columns, +1), // Right
+                  72: () => this.incrementColumn(state.columns, -1), // h
+                  76: () => this.incrementColumn(state.columns, +1), // l
+                }}
+              />
+            </div>
           </DragDropContext>
         )}
       </FirebaseProvider>

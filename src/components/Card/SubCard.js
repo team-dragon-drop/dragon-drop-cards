@@ -5,15 +5,13 @@ import CollectionIcon from '@material-ui/icons/Folder';
 import ReactMarkdown from 'react-markdown';
 import RemoveCardButton from '../RemoveCardButton';
 import EditCardButton from '../EditCardButton';
-import SubCard from './SubCard';
 import { BackendActions } from '../../backend';
 import { sortCardsByVotes } from '../../utils';
 import { TweenMax } from 'gsap';
-import { Draggable } from 'react-beautiful-dnd';
 import './styles.css';
 import 'github-markdown-css';
 
-export default class BaseCard extends React.Component {
+export default class SubCard extends React.Component {
   state = {
     expanded: false,
   };
@@ -21,12 +19,6 @@ export default class BaseCard extends React.Component {
   votes() {
     const { votes, subCards } = this.props;
     let total = votes || 0;
-
-    if (subCards) {
-      Object.keys(subCards).forEach(x => {
-        total += subCards[x].votes;
-      });
-    }
 
     return (
       <span
@@ -39,6 +31,7 @@ export default class BaseCard extends React.Component {
   }
 
   render() {
+    const { canDrop, isOver } = this.props;
     const {
       id,
       subCards,
@@ -46,7 +39,6 @@ export default class BaseCard extends React.Component {
       columnId,
       parentCardId,
       domRef,
-      handle,
       ...props
     } = this.props;
 
@@ -55,6 +47,8 @@ export default class BaseCard extends React.Component {
       : { columnId: columnId, cardId: id };
 
     let className = 'card';
+    if (canDrop) className += ' card--can-drop';
+    if (isOver) className += ' card--is-over';
 
     const animate = (cardId, isUp) => {
       const className = isUp ? '.card__thumbsup' : '.card__thumbsdown';
@@ -77,22 +71,8 @@ export default class BaseCard extends React.Component {
       <BackendActions>
         {backend => (
           <li {...props} ref={domRef} id={id} className={className}>
-            <div
-              {...handle}
-              className="card__head"
-              onClick={() => {
-                this.setState({
-                  ...this.state,
-                  expanded: !this.state.expanded,
-                });
-              }}
-            >
+            <div className="card__head">
               <div className="card__info">
-                {subCards && (
-                  <span className="card__icon">
-                    <CollectionIcon />
-                  </span>
-                )}
                 <ReactMarkdown
                   source={name}
                   className="markdown-body card__markdown"
@@ -105,31 +85,6 @@ export default class BaseCard extends React.Component {
               className="card__drawer"
               style={{ display: this.state.expanded ? 'flex' : 'none' }}
             >
-              <ul
-                style={{ display: subCards ? 'flex' : 'none' }}
-                className="card__subcards"
-              >
-                {sortCardsByVotes(subCards).map((subCard, index) => {
-                  return (
-                    <Draggable draggableId={subCard.id} index={index}>
-                      {provided => (
-                        <SubCard
-                          domRef={provided.innerRef}
-                          key={subCard.id}
-                          id={subCard.id}
-                          name={subCard.name}
-                          votes={subCard.votes}
-                          columnId={columnId}
-                          parentCardId={id}
-                          {...provided.draggableProps}
-                          {...provided.dragHandleProps}
-                        />
-                      )}
-                    </Draggable>
-                  );
-                })}
-              </ul>
-
               <div className="card__actions">
                 <span
                   onClick={e => {

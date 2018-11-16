@@ -10,7 +10,5 @@ export function totalVotes(card) {
 }
 
 export function sortCardsByVotes(cards) {
-  return Object.keys(cards || {})
-    .map(id => ({ ...cards[id], id }))
-    .sort((a, b) => totalVotes(b) - totalVotes(a));
+  return Object.keys(cards || {}).map(id => ({ ...cards[id], id }));
 }

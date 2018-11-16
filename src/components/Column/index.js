@@ -6,7 +6,7 @@ import { BackendActions } from '../../backend';
 import Header from './Header';
 import AddCardButton from './AddCardButton';
 import { sortCardsByVotes } from '../../utils';
-import { Droppable } from 'react-beautiful-dnd';
+import { Droppable, Draggable } from 'react-beautiful-dnd';
 import './styles.css';
 
 const SelectedIndicator = () => (
@@ -26,50 +26,62 @@ export default ({
   isOver,
   canDrop,
   ...props
-}) => (
-  <BackendActions>
-    {backend => (
-      <div className="column" ref={domRef} {...props}>
-        {selected && <SelectedIndicator />}
+}) => {
+  return (
+    <BackendActions>
+      {backend => (
+        <div className="column" ref={domRef} {...props}>
+          {selected && <SelectedIndicator />}
 
-        <Paper className="column-container">
-          <div>
-            <Header
-              onDoubleClick={() => backend.editColumn(id, name)}
-              onRemove={() => backend.removeColumn(id)}
-              canDrop={canDrop}
-              isOver={isOver}
-            >
-              {name}
-            </Header>
-          </div>
-          <ul className="column__card-list">
-            {sortCardsByVotes(cards).map((card, index) => {
-              return (
-                <Card
-                  index={index}
-                  key={card.id}
-                  id={card.id}
-                  name={card.name}
-                  votes={card.votes}
-                  subCards={card.subCards}
-                  columnId={id}
-                  onMerge={(source, destination) =>
-                    backend.addToOrCreateGroup(source, destination)
-                  }
-                  onMove={(oldRefSpec, newRefSpec) =>
-                    backend.moveCard(oldRefSpec, newRefSpec)
-                  }
-                />
-              );
-            })}
-          </ul>
-          <AddCardButton
-            keyboardShortcutsActive={selected}
-            onSubmit={newCardName => backend.addCard(id, newCardName)}
-          />
-        </Paper>
-      </div>
-    )}
-  </BackendActions>
-);
+          <Paper className="column-container">
+            <div>
+              <Header
+                onDoubleClick={() => backend.editColumn(id, name)}
+                onRemove={() => backend.removeColumn(id)}
+                canDrop={canDrop}
+                isOver={isOver}
+              >
+                {name}
+              </Header>
+            </div>
+            <Droppable isCombineEnabled droppableId={id}>
+              {provided => (
+                <ul
+                  ref={provided.innerRef}
+                  {...provided.droppableProps}
+                  className="column__card-list"
+                >
+                  {sortCardsByVotes(cards).map((card, index) => {
+                    return (
+                      <Draggable draggableId={card.id} index={index}>
+                        {provided => (
+                          <Card
+                            domRef={provided.innerRef}
+                            {...provided.draggableProps}
+                            handle={provided.dragHandleProps}
+                            index={index}
+                            key={card.id}
+                            id={card.id}
+                            name={card.name}
+                            votes={card.votes}
+                            subCards={card.subCards}
+                            columnId={id}
+                          />
+                        )}
+                      </Draggable>
+                    );
+                  })}
+                  {provided.placeholder}
+                </ul>
+              )}
+            </Droppable>
+            <AddCardButton
+              keyboardShortcutsActive={selected}
+              onSubmit={newCardName => backend.addCard(id, newCardName)}
+            />
+          </Paper>
+        </div>
+      )}
+    </BackendActions>
+  );
+};

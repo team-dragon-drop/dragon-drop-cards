@@ -1,16 +1,16 @@
-import React, {Component} from 'react'
-import {Broadcast, Subscriber} from 'react-broadcast'
-import {database} from 'firebase'
+import React, { Component } from 'react';
+import { Broadcast, Subscriber } from 'react-broadcast';
+import { database } from 'firebase';
 
 class FirebaseBackend {
   constructor(boardId, onChangeCallback) {
-    this.boardId = boardId
+    this.boardId = boardId;
 
     database()
       .ref(`/${boardId}`)
       .on('value', snapshot => {
-        onChangeCallback(snapshot.val())
-      })
+        onChangeCallback(snapshot.val());
+      });
   }
 
   addCard(columnId, cardName) {
@@ -18,56 +18,57 @@ class FirebaseBackend {
       database()
         .ref(`/${this.boardId}/columns/${columnId}/cards/`)
         .push()
-        .set({name: cardName})
+        .set({ name: cardName });
     }
   }
 
   removeCard(refSpec) {
     database()
       .ref(this._buildRef(refSpec))
-      .remove()
+      .remove();
   }
 
   editCard(refSpec, content) {
     content &&
       database()
         .ref(this._buildRef(refSpec))
-        .update({name: content})
+        .update({ name: content });
   }
 
   moveCard(oldRefSpec, newRefSpec) {
     let newRef = database()
       .ref(`${this._buildRef(newRefSpec)}/cards`)
-      .push()
-    let oldRef = database().ref(this._buildRef(oldRefSpec))
+      .push();
+    let oldRef = database().ref(this._buildRef(oldRefSpec));
     oldRef.once('value', function(snap) {
       newRef.set(snap.val(), function(error) {
-        !error ? oldRef.remove() : console.error(error)
-      })
-    })
+        !error ? oldRef.remove() : console.error(error);
+      });
+    });
   }
 
   addToOrCreateGroup(source, destinationGroup) {
-    const groupRef = database().ref(this._buildRef(destinationGroup.refSpec))
+    const groupRef = database().ref(this._buildRef(destinationGroup.refSpec));
+    console.log(destinationGroup);
     if (!destinationGroup.subCards) {
       groupRef
         .child('subCards')
         .push()
         .set({
           name: destinationGroup.name,
-          votes: destinationGroup.votes,
-        })
+          votes: destinationGroup.votes || 0,
+        });
       groupRef.update({
         name: destinationGroup.name.replace(/\.*$/, '...'),
         votes: 0,
-      })
+      });
     }
 
     groupRef
       .child('subCards')
       .push()
-      .set({name: source.name, votes: source.votes})
-    this.removeCard(source.refSpec)
+      .set({ name: source.name, votes: source.votes || 0 });
+    this.removeCard(source.refSpec);
   }
 
   addColumn(columnName) {
@@ -75,7 +76,7 @@ class FirebaseBackend {
       database()
         .ref(`/${this.boardId}/columns`)
         .push()
-        .set({name: columnName})
+        .set({ name: columnName });
     }
   }
 
@@ -84,19 +85,19 @@ class FirebaseBackend {
       database()
         .ref(`/${this.boardId}/columns`)
         .child(columnId)
-        .remove()
+        .remove();
     }
   }
 
   editColumn(id, content) {
     // TODO: Replace the prompt with with Material-UI
-    const newContent = prompt('Edit Column', content)
+    const newContent = prompt('Edit Column', content);
     if (newContent) {
       database()
         .ref(`/${this.boardId}/columns`)
         .child(id)
         .child('name')
-        .set(newContent)
+        .set(newContent);
     }
   }
 
@@ -104,38 +105,38 @@ class FirebaseBackend {
     database()
       .ref(`${this._buildRef(refSpec)}/votes`)
       .transaction(currentVotes => {
-        return Number.isInteger(currentVotes) ? currentVotes + votes : votes
-      })
+        return Number.isInteger(currentVotes) ? currentVotes + votes : votes;
+      });
   }
 
   _buildRef(refSpec) {
-    let ref = this.boardId
+    let ref = this.boardId;
     if (refSpec.columnId) {
-      ref += `/columns/${refSpec.columnId}`
+      ref += `/columns/${refSpec.columnId}`;
       if (refSpec.cardId) {
-        ref += `/cards/${refSpec.cardId}`
+        ref += `/cards/${refSpec.cardId}`;
         if (refSpec.subCardId) {
-          ref += `/subCards/${refSpec.subCardId}`
+          ref += `/subCards/${refSpec.subCardId}`;
         }
       }
     }
-    return ref
+    return ref;
   }
 }
 
 export const newBoardKey = boardName => {
   const ref = database()
     .ref('/')
-    .push()
+    .push();
   ref.set({
     name: boardName,
-    columns: [{name: 'Good'}, {name: 'Bad'}, {name: 'Questions'}],
-  })
-  return ref.key
-}
+    columns: [{ name: 'Good' }, { name: 'Bad' }, { name: 'Questions' }],
+  });
+  return ref.key;
+};
 
 export class FirebaseProvider extends Component {
-  state = {backend: {}, loading: true, columns: [], name: ''}
+  state = { backend: {}, loading: true, columns: [], name: '' };
 
   componentDidMount() {
     const backend = new FirebaseBackend(this.props.firebaseKey, val => {
@@ -143,27 +144,27 @@ export class FirebaseProvider extends Component {
         loading: false,
         columns: val ? val.columns : [],
         name: val ? val.name : '',
-      })
-    })
-    this.setState({backend})
+      });
+    });
+    this.setState({ backend });
   }
 
   render() {
-    const {children: render} = this.props
-    const {backend} = this.state
+    const { children: render } = this.props;
+    const { backend } = this.state;
     return (
       <Broadcast channel="backend" value={backend}>
         {render(this.state, backend)}
       </Broadcast>
-    )
+    );
   }
 }
 
 export class BackendActions extends Component {
   render() {
-    const render = this.props.children
+    const render = this.props.children;
     return (
       <Subscriber channel="backend">{backend => render(backend)}</Subscriber>
-    )
+    );
   }
 }
