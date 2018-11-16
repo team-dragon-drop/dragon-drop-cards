@@ -1,96 +1,92 @@
-import React, {Component} from 'react'
-import FlatButton from 'material-ui/FlatButton'
-import Dialog from 'material-ui/Dialog'
-import TextField from 'material-ui/TextField'
+import React, { Component } from 'react';
+import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import TextField from '@material-ui/core/TextField';
 import {
   KeyboardShortcuts,
   KeyboardShortcutInhibitor,
-} from '../KeyboardShortcuts'
+} from '../KeyboardShortcuts';
 
 export default class AddCardButton extends Component {
   state = {
     open: false,
     newCardName: '',
-  }
+  };
 
   handleOpen = () => {
-    this.setState({open: true}, () => {
-      this.refs.newCard.focus()
-    })
-  }
+    this.setState({ open: true });
+  };
 
   handleClose = () => {
-    this.setState({open: false})
-  }
+    this.setState({ open: false });
+  };
 
   handleChange = e => {
-    this.setState({newCardName: e.target.value})
-  }
+    this.setState({ newCardName: e.target.value });
+  };
 
   handleSubmit = e => {
-    this.props.onSubmit(this.state.newCardName)
-    this.handleClose()
-    this.setState({newCardName: ''})
-    e.preventDefault()
-  }
+    this.props.onSubmit(this.state.newCardName);
+    this.handleClose();
+    this.setState({ newCardName: '' });
+    e.preventDefault();
+  };
 
   render() {
-    const actions = [
-      <FlatButton
-        label="Cancel"
-        primary={true}
-        onTouchTap={() => this.handleClose()}
-      />,
-      <FlatButton
-        label="Add"
-        primary={true}
-        form="addCardForm"
-        type="submit"
-      />,
-    ]
-
     let keyboardShortcuts = (
       <KeyboardShortcuts
         keys={{
           65: () => this.handleOpen(), // a
         }}
       />
-    )
+    );
 
     return (
       <div>
-        <FlatButton
-          onTouchTap={() => this.handleOpen()}
+        <Button
+          onClick={() => this.handleOpen()}
           fullWidth={true}
-          backgroundColor="#fff"
-          hoverColor="#f6f6f6"
-          style={{height: 50}}
+          style={{ height: 50 }}
         >
           Add Card
-        </FlatButton>
+        </Button>
         <Dialog
-          title="Add A New Card"
-          actions={actions}
-          modal={false}
+          classes={{ paper: 'dialog' }}
           open={this.state.open}
-          onRequestClose={this.handleClose}
+          onClose={this.handleClose}
         >
-          <form id="addCardForm" onSubmit={this.handleSubmit}>
-            <TextField
-              hintText="Markdown is supported"
-              floatingLabelText="Card Text"
-              multiLine={true}
-              rows={1}
-              fullWidth={true}
-              onChange={this.handleChange}
-              name="newCard"
-              ref="newCard"
-            />
-          </form>
+          <DialogTitle className="dialog-title" id="form-dialog-title">
+            Add A New Card
+          </DialogTitle>
+          <DialogContent>
+            <form id="addCardForm" onSubmit={this.handleSubmit}>
+              <TextField
+                placeholder="Markdown is supported"
+                label="Card Text"
+                multiline
+                rows={3}
+                fullWidth={true}
+                onChange={this.handleChange}
+                name="newCard"
+                inputRef={el => el && el.focus()}
+              />
+            </form>
+          </DialogContent>
+          <DialogActions>
+            <Button color="primary" onClick={() => this.handleClose()}>
+              Cancel
+            </Button>
+            <Button color="primary" form="addCardForm" type="submit">
+              Add
+            </Button>
+          </DialogActions>
           <KeyboardShortcutInhibitor />
         </Dialog>
         {this.props.keyboardShortcutsActive && keyboardShortcuts}
       </div>
-    )
+    );
   }
 }

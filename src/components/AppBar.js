@@ -1,108 +1,104 @@
-import React, {Component} from 'react'
-import {Link} from 'react-router-dom'
-import Dialog from 'material-ui/Dialog'
-import FlatButton from 'material-ui/FlatButton'
-import TextField from 'material-ui/TextField'
-import MuiAppBar from 'material-ui/AppBar'
-import LinearProgress from 'material-ui/LinearProgress'
-import AddIcon from 'material-ui/svg-icons/content/add'
-import IconButton from 'material-ui/IconButton'
-import {KeyboardShortcuts, KeyboardShortcutInhibitor} from './KeyboardShortcuts'
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Button from '@material-ui/core/Button';
+import Toolbar from '@material-ui/core/Toolbar';
+import TextField from '@material-ui/core/TextField';
+import MuiAppBar from '@material-ui/core/AppBar';
+import LinearProgress from '@material-ui/core/LinearProgress';
+import AddIcon from '@material-ui/icons/Add';
+import IconButton from '@material-ui/core/IconButton';
+import {
+  KeyboardShortcuts,
+  KeyboardShortcutInhibitor,
+} from './KeyboardShortcuts';
 
 export default class AppBar extends Component {
   state = {
     open: false,
     newColumnName: '',
-  }
+  };
 
   handleOpen = () => {
-    this.setState({open: true}, () => {
-      this.refs.newColumn.focus()
-    })
-  }
+    this.setState({ open: true });
+  };
 
   handleClose = () => {
-    this.setState({open: false})
-  }
+    this.setState({ open: false });
+  };
 
   handleChange = e => {
-    this.setState({newColumnName: e.target.value})
-  }
+    this.setState({ newColumnName: e.target.value });
+  };
 
   handleSubmit = e => {
-    this.props.onButtonTouchTap(this.state.newColumnName)
-    this.setState({newColumnName: '', open: false})
-    e.preventDefault()
-  }
+    this.props.onClick(this.state.newColumnName);
+    this.setState({ newColumnName: '', open: false });
+    e.preventDefault();
+  };
 
   loadingIndicator() {
     if (this.props.loading) {
-      return <LinearProgress mode="indeterminate" />
+      return <LinearProgress mode="indeterminate" />;
     } else {
       // This keeps the height consistent instead of jumping by 4 pixels
-      return <div style={{height: '4px'}} />
+      return <div style={{ height: '4px' }} />;
     }
   }
 
   render() {
-    const actions = [
-      <FlatButton
-        label="Cancel"
-        primary={true}
-        onTouchTap={() => this.handleClose()}
-      />,
-      <FlatButton
-        label="Add"
-        primary={true}
-        form="addColumnForm"
-        type="submit"
-      />,
-    ]
-
     return (
       <div className="app-bar">
-        <MuiAppBar
-          title={<Link to="/">Dragon Drop</Link>}
-          titleStyle={{
-            textAlign: 'center',
-            fontFamily: 'Sheeping-Dogs',
-            fontSize: '40px',
-            lineHeight: '74px',
-            height: '74px',
-          }}
-          showMenuIconButton={false}
-          iconElementRight={
-            <IconButton style={{marginTop: '4px'}}>
+        <MuiAppBar position="static">
+          <Toolbar className="toolbar">
+            <Link className="toolbar__title" to="/">
+              Dragon Drop
+            </Link>
+            <IconButton onClick={() => this.handleOpen()}>
               <AddIcon
-                onTouchTap={() => this.handleOpen()}
+                className="toolbar__add-icon"
                 label={this.props.buttonLabel}
               />
             </IconButton>
-          }
-        />
+          </Toolbar>
+        </MuiAppBar>
         {this.loadingIndicator()}
-        <Dialog
-          title="Add A New Column"
-          actions={actions}
-          modal={false}
-          open={this.state.open}
-          onRequestClose={this.handleClose}
-        >
-          <form id="addColumnForm" onSubmit={this.handleSubmit}>
-            <TextField
-              onChange={this.handleChange}
-              name="newColumn"
-              ref="newColumn"
-            />
-          </form>
+
+        <Dialog classes={{ paper: 'dialog' }} open={this.state.open} onClose={this.handleClose}>
+          <DialogTitle className="dialog-title" id="form-dialog-title">
+            Add A New Column
+          </DialogTitle>
+          <DialogContent>
+            <form id="addColumnForm" onSubmit={this.handleSubmit}>
+              <TextField
+                label="Column Name"
+                fullWidth={true}
+                onChange={this.handleChange}
+                name="newColumn"
+                inputRef={el => el && el.focus()}
+              />
+            </form>
+          </DialogContent>
+          <DialogActions>
+            <Button color="primary" onClick={() => this.handleClose()}>
+              Cancel
+            </Button>
+            <Button color="primary" form="addColumnForm" type="submit">
+              Add
+            </Button>
+          </DialogActions>
           <KeyboardShortcutInhibitor />
         </Dialog>
+
         <KeyboardShortcuts
           keys={{
             67: () => this.handleOpen(), // c
           }}
         />
       </div>
-    )
+    );
   }
 }
