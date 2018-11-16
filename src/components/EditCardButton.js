@@ -1,79 +1,81 @@
-import React, {Component} from 'react'
-import FlatButton from 'material-ui/FlatButton'
-import Dialog from 'material-ui/Dialog'
-import TextField from 'material-ui/TextField'
-import EditIcon from 'material-ui/svg-icons/image/edit'
-import {KeyboardShortcutInhibitor} from './KeyboardShortcuts'
+import React, { Component } from 'react';
+import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import TextField from '@material-ui/core/TextField';
+import EditIcon from '@material-ui/icons/Edit';
+import { KeyboardShortcutInhibitor } from './KeyboardShortcuts';
 
 export default class EditCardButton extends Component {
   state = {
     open: false,
     newContent: '',
     value: this.props.currentValue,
-  }
+  };
 
   handleOpen = () => {
-    this.setState({open: true}, () => {
-      this.refs.card.focus()
-    })
-  }
+    this.setState({ open: true });
+  };
 
   handleClose = () => {
-    this.setState({open: false})
-  }
+    this.setState({ open: false });
+  };
 
   handleChange = e => {
-    this.setState({newContent: e.target.value})
-  }
+    this.setState({ newContent: e.target.value });
+  };
 
   handleSubmit = e => {
-    this.props.onSubmit(this.state.newContent)
-    this.handleClose()
-    this.setState({newContent: e.target.value})
-    e.preventDefault()
-  }
+    this.props.onSubmit(this.state.newContent);
+    this.handleClose();
+    this.setState({ newContent: e.target.value });
+    e.preventDefault();
+  };
 
   render() {
-    const actions = [
-      <FlatButton
-        label="Cancel"
-        primary={true}
-        onTouchTap={() => this.handleClose()}
-      />,
-      <FlatButton
-        label="Edit"
-        primary={true}
-        form="editCardForm"
-        type="submit"
-      />,
-    ]
-
     return (
       <span>
-        <EditIcon onTouchTap={() => this.handleOpen()} style={{color: "#d3d3d3"}} />
+        <EditIcon
+          onClick={() => this.handleOpen()}
+          style={{ color: '#d3d3d3' }}
+        />
         <Dialog
-          title="Edit This Card"
-          actions={actions}
-          modal={false}
+          classes={{ paper: 'dialog' }}
           open={this.state.open}
-          onRequestClose={this.handleClose}
+          onClose={this.handleClose}
         >
-          <form id="editCardForm" onSubmit={this.handleSubmit}>
-            <TextField
-              hintText="Markdown is supported"
-              floatingLabelText="Card Text"
-              multiLine={true}
-              rows={1}
-              fullWidth={true}
-              onChange={this.handleChange}
-              name="card"
-              ref="card"
-              defaultValue={this.props.currentValue}
-            />
-          </form>
+          <DialogTitle className="dialog-title" id="form-dialog-title">
+            Edit card
+          </DialogTitle>
+          <DialogContent>
+            <form id="editCardForm" onSubmit={this.handleSubmit}>
+              <TextField
+                placeholder="Markdown is supported"
+                label="Card Text"
+                multiline
+                rows={1}
+                fullWidth={true}
+                onChange={this.handleChange}
+                name="card"
+                ref="card"
+                defaultValue={this.props.currentValue}
+                inputRef={el => el && el.focus()}
+              />
+            </form>
+          </DialogContent>
+          <DialogActions>
+            <Button color="primary" onClick={() => this.handleClose()}>
+              Cancel
+            </Button>
+            <Button color="primary" form="editCardForm" type="submit">
+              Edit
+            </Button>
+          </DialogActions>
           <KeyboardShortcutInhibitor />
         </Dialog>
       </span>
-    )
+    );
   }
 }

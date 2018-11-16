@@ -1,64 +1,60 @@
-import React, {Component} from 'react'
-import CloseIcon from 'material-ui/svg-icons/navigation/close'
-import Dialog from 'material-ui/Dialog'
-import FlatButton from 'material-ui/FlatButton'
-import {KeyboardShortcuts} from '../KeyboardShortcuts'
+import React, { Component } from 'react';
+import CloseIcon from '@material-ui/icons/Close';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Button from '@material-ui/core/Button';
+import { KeyboardShortcuts } from '../KeyboardShortcuts';
 
 export default class RemoveColumnButton extends Component {
   state = {
     open: false,
-  }
+  };
 
   handleOpen = () => {
-    this.setState({open: true})
-  }
+    this.setState({ open: true });
+  };
 
   handleClose = () => {
-    this.setState({open: false})
-  }
+    this.setState({ open: false });
+  };
 
   handleRemoveColumn = () => {
-    this.handleClose()
-    this.props.onClick()
-  }
+    this.handleClose();
+    this.props.onClick();
+  };
 
   render() {
-    const actions = [
-      <FlatButton
-        label="No"
-        primary={true}
-        onTouchTap={() => this.handleClose()}
-      />,
-      <FlatButton
-        label="Yes"
-        primary={true}
-        onTouchTap={() => this.handleRemoveColumn()}
-      />,
-    ]
-
     return (
       <div>
-        <span
+        <CloseIcon
           className="column__close"
-          style={{float: 'right'}}
           onClick={() => this.handleOpen()}
-        >
-          <CloseIcon color="#ccc" />
-        </span>
+        />
+
         <Dialog
-          title="Are you sure you want to delete this?"
-          actions={actions}
-          modal={false}
+          classes={{ paper: 'dialog' }}
           open={this.state.open}
-          onRequestClose={this.handleClose}
+          onClose={this.handleClose}
         >
+          <DialogTitle className="dialog-title" id="form-dialog-title">
+            Are you sure you want to delete this?
+          </DialogTitle>
           <KeyboardShortcuts
             keys={{
               13: () => this.handleRemoveColumn(),
             }}
           />
+          <DialogActions>
+            <Button color="primary" onClick={() => this.handleClose()}>
+              No
+            </Button>
+            <Button color="primary" onClick={() => this.handleRemoveColumn()}>
+              Yes
+            </Button>
+          </DialogActions>
         </Dialog>
       </div>
-    )
+    );
   }
 }
