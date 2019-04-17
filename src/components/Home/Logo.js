@@ -29,7 +29,7 @@ export default class Logo extends Component {
       <React.Fragment>
         <div className="speech-bubble">
           <p>
-            Note: This board is publically accessible. It is your responsibility
+            Note: All boards are publically accessible. It is your responsibility
             to ensure that you are legally and contractually permitted to
             disclose any information on this site, including compliance with any
             company policies of your employer. You should also not disclose any
